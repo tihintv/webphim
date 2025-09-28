@@ -103,11 +103,19 @@
     ];
 
     function loadMovies() {
-      const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (!data || !data.length) {
+      let data;
+      try {
+        data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      } catch (e) {
+        data = null;
+      }
+
+      // Nếu chưa có hoặc là mảng rỗng → tự nạp mẫu
+      if (!Array.isArray(data) || data.length === 0) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(SAMPLE_MOVIES));
         return SAMPLE_MOVIES;
       }
+
       return data;
     }
 
