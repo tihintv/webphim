@@ -20,45 +20,6 @@ menu_toggle.onclick = function() {
     menu_tablet.classList.toggle('active')
 }
 
-
-// SLIDE
-
-let big_slider = document.querySelector("#big-slider")
-
-if (big_slider) {
-    let big_slide_items = big_slider.querySelectorAll('.big-slide-item')
-    let big_slide_index = 0
-    let slide_play = true
-    let slide_next = big_slider.querySelector(".slide-next")
-    let slide_prev = big_slider.querySelector(".slide-prev")
-
-    showSlide = (index) => {
-        big_slider.querySelector(".big-slide-item.active").classList.remove('active')
-        big_slide_items[index].classList.add('active')
-    }
-
-    nextSlide = () => {
-        big_slide_index = big_slide_index + 1 === big_slide_items.length ? 0 : big_slide_index + 1
-        showSlide(big_slide_index)
-    }
-
-    prevSlide = () => {
-        big_slide_index = big_slide_index - 1 < 0 ? big_slide_items.length - 1 : big_slide_index - 1
-        showSlide(big_slide_index)
-    }
-
-    slide_next.addEventListener("click", () => nextSlide())
-    slide_prev.addEventListener("click", () => prevSlide())
-
-    big_slider.addEventListener("mouseover", () => slide_play = false)
-    big_slider.addEventListener("mouseleave", () => slide_play = true)
-
-    setTimeout(() => big_slide_items[0].classList.add('active'), 200)
-    setInterval(() => {
-        if (!slide_play) return
-        nextSlide()
-    }, 5000)
-}
 let big_slide_items = big_slider.querySelectorAll('.big-slide-item')
 
 let big_slide_index = 0
