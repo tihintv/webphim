@@ -7,21 +7,37 @@
   <link rel="stylesheet" href="style.css" />
   <script type="module" src="main.js" defer></script>
   <style>
+    .add-movie-wrapper {
+      display: flex;
+      justify-content: center;
+      padding: 40px 16px;
+      background-color: #121212;
+    }
+
     .add-movie-form {
+      width: 100%;
       max-width: 500px;
-      margin: 40px auto;
       padding: 20px;
       background: #1c1c1c;
       border-radius: 8px;
       color: white;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
     }
+
+    .add-movie-form h2 {
+      margin-bottom: 12px;
+    }
+
     .add-movie-form input {
       width: 100%;
-      padding: 8px;
-      margin: 8px 0;
+      padding: 10px;
+      margin: 10px 0;
       border-radius: 5px;
       border: none;
+      background-color: #2c2c2c;
+      color: white;
     }
+
     .add-movie-form button {
       padding: 10px 20px;
       background: crimson;
@@ -29,49 +45,8 @@
       color: white;
       cursor: pointer;
       border-radius: 5px;
+      width: 100%;
     }
-      /* ... phần CSS cũ ... */
-
-  .add-movie-wrapper {
-    display: flex;
-    justify-content: center;
-    padding: 40px 16px;
-    background-color: #121212;
-  }
-
-  .add-movie-form {
-    width: 100%;
-    max-width: 500px;
-    padding: 20px;
-    background: #1c1c1c;
-    border-radius: 8px;
-    color: white;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
-  }
-
-  .add-movie-form h2 {
-    margin-bottom: 12px;
-  }
-
-  .add-movie-form input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
-    border: none;
-    background-color: #2c2c2c;
-    color: white;
-  }
-
-  .add-movie-form button {
-    padding: 10px 20px;
-    background: crimson;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    width: 100%;
-  }
   </style>
 </head>
 <body>
@@ -81,16 +56,17 @@
   </section>
 
   <section class="add-movie-wrapper">
-  <div class="add-movie-form">
-    <h2>Thêm phim mới</h2>
-    <form id="movieForm">
-      <input type="text" id="title" placeholder="Tên phim" required />
-      <input type="number" id="rating" placeholder="Điểm đánh giá (VD: 9.0)" step="0.1" required />
-      <input type="number" id="duration" placeholder="Thời lượng (VD: 120)" required />
-      <input type="text" id="poster" placeholder="Link ảnh poster (URL hoặc ./assets/...)" required />
-      <button type="submit">Thêm phim</button>
-    </form>
-  </div>
+    <div class="add-movie-form">
+      <h2>Thêm phim mới</h2>
+      <form id="movieForm">
+        <input type="text" id="title" placeholder="Tên phim" required />
+        <input type="number" id="rating" placeholder="Điểm đánh giá (VD: 9.0)" step="0.1" required />
+        <input type="number" id="duration" placeholder="Thời lượng (VD: 120)" required />
+        <input type="text" id="poster" placeholder="Link ảnh poster (URL hoặc ./assets/...)" required />
+        <button type="submit">Thêm phim</button>
+      </form>
+    </div>
+  </section>
 
 </body>
 </html>
