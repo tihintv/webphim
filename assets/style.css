@@ -1310,13 +1310,12 @@ a.movie-item:hover {
   font-size: 13px;
   opacity: 0.8;
 }
-/* Xóa nền + viền cho phần danh sách phim */
-#movie-list-section,
-#movie-list-section .section-wrapper {
-  background: none !important;
-  border: none !important;
-  box-shadow: none !important;
+#movie-list {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
+
 
 
 
