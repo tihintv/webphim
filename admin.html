@@ -24,8 +24,8 @@
       <input id="title" placeholder="Tên phim" required />
       <input id="year" placeholder="Năm phát hành" required />
       <input id="genres" placeholder="Thể loại (cách nhau bằng dấu phẩy)" />
-      <input id="poster" placeholder="Poster URL (https://...)" />
-      <input id="video" placeholder="Video URL (YouTube, Vimeo, direct link...)" />
+      <input id="poster" placeholder="Poster URL (https://... hoặc posters/tenanh.jpg)" />
+      <input id="video" placeholder="Video URL (YouTube, Vimeo, direct link, hoặc path trong repo)" />
       <textarea id="desc" placeholder="Mô tả"></textarea>
       <button type="submit">Lưu phim</button>
     </form>
@@ -46,6 +46,8 @@
 
   <script>
     const STORAGE_KEY = "movies";
+    const BASE_URL = "https://thintv.github.io/webphim/";
+
     let movies = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
     let editIndex = -1;
 
@@ -81,13 +83,27 @@
       const videoEl = document.getElementById("video");
       const descEl = document.getElementById("desc");
 
+      // Xử lý poster: nếu không bắt đầu bằng http -> thêm prefix BASE_URL
+      const posterInput = posterEl.value.trim();
+      let posterUrl = posterInput;
+      if (posterInput && !posterInput.startsWith("http")) {
+        posterUrl = BASE_URL + posterInput;
+      }
+
+      // Xử lý video: nếu không bắt đầu bằng http -> thêm prefix BASE_URL
+      const videoInput = videoEl.value.trim();
+      let videoUrl = videoInput;
+      if (videoInput && !videoInput.startsWith("http")) {
+        videoUrl = BASE_URL + videoInput;
+      }
+
       const movie = {
         id: Date.now(),
         title: titleEl.value.trim(),
         year: yearEl.value.trim(),
         genres: genresEl.value.split(",").map(g => g.trim()).filter(Boolean),
-        poster: posterEl.value.trim(),
-        videoUrl: videoEl.value.trim(),
+        poster: posterUrl,
+        videoUrl: videoUrl,
         description: descEl.value.trim()
       };
 
@@ -108,8 +124,8 @@
       document.getElementById("title").value = m.title;
       document.getElementById("year").value = m.year;
       document.getElementById("genres").value = m.genres.join(", ");
-      document.getElementById("poster").value = m.poster;
-      document.getElementById("video").value = m.videoUrl || "";
+      document.getElementById("poster").value = m.poster.includes(BASE_URL) ? m.poster.replace(BASE_URL, "") : m.poster;
+      document.getElementById("video").value = m.videoUrl.includes(BASE_URL) ? m.videoUrl.replace(BASE_URL, "") : m.videoUrl;
       document.getElementById("desc").value = m.description;
       editIndex = idx;
     }
