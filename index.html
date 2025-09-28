@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WebPhim — Index (đọc LocalStorage)</title>
+  <style>
+    body { margin: 0; font-family: system-ui, sans-serif; background: #0b0d10; color: #e8eef5; }
+    .container { max-width: min(1200px, 92vw); margin: 24px auto; }
+
+    header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #1c222b; position: sticky; top: 0; background: #0b0d10; z-index: 10; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo { width: 28px; height: 28px; border-radius: 8px; background: #6ea8fe; display: grid; place-items: center; font-weight: 700; color: white; }
+    h1 { font-size: 18px; margin: 0; }
+
+    .search input { padding: 10px; border-radius: 10px; border: 1px solid #1c222b; background: #11151b; color: #e8eef5; width: 220px; }
+
+    .grid { margin-top: 16px; display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    .card { background: #11151b; border: 1px solid #1c222b; border-radius: 14px; overflow: hidden; cursor: pointer; transition: transform .12s ease; }
+    .card:hover { transform: translateY(-3px); }
+    .poster { aspect-ratio: 2/3; width: 100%; object-fit: cover; }
+    .content { padding: 10px; }
+    .title { font-size: 14px; font-weight: 700; }
+
+    .empty { text-align: center; color: #93a1b0; padding: 40px 10px; border: 1px dashed #1c222b; border-radius: 12px; }
+
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.65); display: none; justify-content: center; align-items: center; z-index: 100; }
+    .modal.active { display: flex; }
+    .modal-content { background: #11151b; border-radius: 16px; max-width: 600px; width: 92%; padding: 20px; color: #e8eef5; position: relative; }
+    .modal-content img { width: 180px; float: left; margin-right: 16px; border-radius: 12px; }
+    .modal h2 { margin-top: 0; }
+    .modal .close { position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 20px; color: #e8eef5; cursor: pointer; }
+    .genres { margin: 8px 0; }
+    .genres span { display: inline-block; margin-right: 6px; padding: 4px 8px; background: #1b2838; border-radius: 999px; font-size: 12px; }
+
+    @media(max-width: 480px) {
+      .modal-content img { width: 100%; float: none; margin: 0 0 12px 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand"><div class="logo">🎬</div><h1>WebPhim</h1></div>
+      <div class="search"><input id="q" type="search" placeholder="Tìm phim…" /></div>
+    </header>
+
+    <main>
+      <section id="grid" class="grid"></section>
+      <div id="empty" class="empty" hidden>Không có phim phù hợp.</div>
+    </main>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <button class="close" aria-label="Đóng">×</button>
+      <img id="modalPoster" alt="Poster phim" />
+      <h2 id="modalTitle"></h2>
+      <div id="modalYear"></div>
+      <div id="modalGenres" class="genres"></div>
+      <p id="modalDesc"></p>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "movies";
+
+    const placeholderPoster = (title = "Poster") => `https://placehold.co/400x600/png?text=${encodeURIComponent(title)}`;
+
+    const SAMPLE_MOVIES = [
+      { id: 1, title: "Demon Slayer: Kimetsu no Yaiba", year: 2019, genres: ["Action", "Anime"], poster: placeholderPoster("Demon Slayer"), description: "Tanjiro chiến đấu với quỷ để cứu em gái." },
+      { id: 2, title: "Spirited Away", year: 2001, genres: ["Fantasy", "Anime"], poster: placeholderPoster("Spirited Away"), description: "Cô bé lạc vào thế giới linh hồn." },
+      { id: 3, title: "Parasite", year: 2019, genres: ["Drama", "Thriller"], poster: placeholderPoster("Parasite"), description: "Bức tranh châm biếm giàu nghèo đan xen kịch tính." }
+    ];
+
+    function loadMovies() {
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (!data || !data.length) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(SAMPLE_MOVIES));
+        return SAMPLE_MOVIES;
+      }
+      return data;
+    }
+
+    let movies = loadMovies();
+
+    const gridEl = document.getElementById('grid');
+    const emptyEl = document.getElementById('empty');
+    const qEl = document.getElementById('q');
+    const modal = document.getElementById('modal');
+    const modalPoster = document.getElementById('modalPoster');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalYear = document.getElementById('modalYear');
+    const modalGenres = document.getElementById('modalGenres');
+    const modalDesc = document.getElementById('modalDesc');
+
+    function movieCard(movie) {
+      return `
+        <article class="card" data-id="${movie.id}">
+          <img class="poster" src="${movie.poster || placeholderPoster(movie.title)}" alt="${movie.title}" />
+          <div class="content">
+            <h3 class="title">${movie.title}</h3>
+          </div>
+        </article>`;
+    }
+
+    function renderMovies(list) {
+      if (!list.length) { gridEl.innerHTML = ''; emptyEl.hidden = false; return; }
+      emptyEl.hidden = true;
+      gridEl.innerHTML = list.map(movieCard).join('');
+      document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', () => {
+          const id = Number(card.dataset.id);
+          const m = movies.find(x => x.id === id);
+          openModal(m);
+        });
+      });
+    }
+
+    function openModal(m) {
+      modalPoster.src = m.poster || placeholderPoster(m.title);
+      modalTitle.textContent = m.title;
+      modalYear.textContent = `Năm phát hành: ${m.year}`;
+      modalGenres.innerHTML = m.genres.map(g => `<span>${g}</span>`).join('');
+      modalDesc.textContent = m.description;
+      modal.classList.add('active');
+    }
+    function closeModal() { modal.classList.remove('active'); }
+
+    document.querySelector('.close').addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    const normalizeText = (s = "") => s.toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+    function filterMovies(keyword) {
+      const kw = normalizeText(keyword);
+      if (!kw) return movies;
+      return movies.filter(m => normalizeText(m.title).includes(kw) || normalizeText(m.genres.join(' ')).includes(kw) || String(m.year).includes(kw));
+    }
+
+    qEl.addEventListener('input', () => renderMovies(filterMovies(qEl.value)));
+    window.addEventListener('keydown', e => { if (e.key === '/' && document.activeElement !== qEl) { e.preventDefault(); qEl.focus(); }});
+
+    renderMovies(movies);
+  </script>
+</body>
+</html>

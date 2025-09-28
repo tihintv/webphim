@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WebPhim — Admin (với LocalStorage)</title>
+  <style>
+    body { margin: 0; font-family: system-ui, sans-serif; background: #0b0d10; color: #e8eef5; }
+    .container { max-width: 800px; margin: 20px auto; padding: 20px; background: #11151b; border-radius: 12px; }
+    h1 { margin-top: 0; text-align: center; }
+
+    form { display: grid; gap: 12px; margin-bottom: 20px; }
+    label { display: flex; flex-direction: column; font-size: 14px; }
+    input, textarea { padding: 8px; border-radius: 8px; border: 1px solid #1c222b; background: #0b0d10; color: #e8eef5; }
+    textarea { resize: vertical; min-height: 60px; }
+    button { padding: 10px 14px; border: none; border-radius: 8px; cursor: pointer; background: #6ea8fe; color: #fff; font-weight: 600; }
+    button:hover { background: #528de8; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 8px; border: 1px solid #1c222b; text-align: left; }
+    th { background: #1b2838; }
+    td button { margin-right: 6px; padding: 4px 8px; font-size: 12px; }
+    .actions { white-space: nowrap; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Trang Admin — Quản lý phim</h1>
+    <form id="movieForm">
+      <input type="hidden" id="movieId" />
+      <label>Tên phim<input id="title" required /></label>
+      <label>Năm phát hành<input id="year" type="number" required /></label>
+      <label>Thể loại (cách nhau bằng dấu phẩy)<input id="genres" required /></label>
+      <label>Poster URL<input id="poster" placeholder="https://..." /></label>
+      <label>Mô tả<textarea id="description"></textarea></label>
+      <button type="submit">Lưu phim</button>
+    </form>
+
+    <table>
+      <thead><tr><th>Tên phim</th><th>Năm</th><th>Thể loại</th><th>Hành động</th></tr></thead>
+      <tbody id="movieTable"></tbody>
+    </table>
+  </div>
+
+  <script>
+    // ================================
+    // BƯỚC 4 (phần 1): Lưu/Xoá/Sửa vào LocalStorage
+    // ================================
+
+    const STORAGE_KEY = "movies";
+
+    function loadMovies() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    }
+
+    function saveMovies() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(movies));
+    }
+
+    let movies = loadMovies();
+
+    const form = document.getElementById('movieForm');
+    const movieTable = document.getElementById('movieTable');
+
+    function renderTable() {
+      movieTable.innerHTML = movies.map(m => `
+        <tr>
+          <td>${m.title}</td>
+          <td>${m.year}</td>
+          <td>${m.genres.join(', ')}</td>
+          <td class="actions">
+            <button onclick="editMovie(${m.id})">Sửa</button>
+            <button onclick="deleteMovie(${m.id})">Xoá</button>
+          </td>
+        </tr>`).join('');
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const id = document.getElementById('movieId').value;
+      const title = document.getElementById('title').value.trim();
+      const year = parseInt(document.getElementById('year').value);
+      const genres = document.getElementById('genres').value.split(',').map(g => g.trim()).filter(Boolean);
+      const poster = document.getElementById('poster').value.trim();
+      const description = document.getElementById('description').value.trim();
+
+      if (id) {
+        const idx = movies.findIndex(m => m.id == id);
+        if (idx > -1) movies[idx] = { id: Number(id), title, year, genres, poster, description };
+      } else {
+        const newId = movies.length ? Math.max(...movies.map(m => m.id)) + 1 : 1;
+        movies.push({ id: newId, title, year, genres, poster, description });
+      }
+
+      saveMovies();
+      form.reset();
+      document.getElementById('movieId').value = '';
+      renderTable();
+    });
+
+    window.editMovie = function(id) {
+      const m = movies.find(x => x.id === id);
+      if (!m) return;
+      document.getElementById('movieId').value = m.id;
+      document.getElementById('title').value = m.title;
+      document.getElementById('year').value = m.year;
+      document.getElementById('genres').value = m.genres.join(', ');
+      document.getElementById('poster').value = m.poster;
+      document.getElementById('description').value = m.description;
+    }
+
+    window.deleteMovie = function(id) {
+      if (confirm('Bạn có chắc muốn xoá phim này?')) {
+        movies = movies.filter(m => m.id !== id);
+        saveMovies();
+        renderTable();
+      }
+    }
+
+    renderTable();
+  </script>
+</body>
+</html>
