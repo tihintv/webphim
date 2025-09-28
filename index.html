@@ -156,27 +156,51 @@
 
      <footer class="footer ">
           <!-- DANH SÁCH PHIM -->
-<div class="section" id="movie-section">
-  <div class="section-header">
-    <h2>Danh sách phim</h2>
-  </div>
-  <div class="movies-slide row" id="movie-list">
-    <!-- JavaScript sẽ render phim tại đây -->
+<div class="section" id="movie-list-section">
+  <div class="section-wrapper">
+    <div class="section-header">
+      Danh Sách Phim
+    </div>
+
+    <div class="movies-slide row" id="movie-list">
+      <!-- Các phim sẽ được thêm động từ main.js -->
+      <!-- Ví dụ mẫu -->
+      <a href="#" class="movie-item col-3-5 m-5 s-11 to-top show-on-scroll">
+        <div>
+          <img src="./assets/img/Images/raya1.jpg" alt="">
+          <div class="movie-item-content">
+            <div class="movie-item-title">Raya and the Last Dragon</div>
+            <div class="movies-infors-card">
+              <div class="movies-infor">
+                <ion-icon name="bookmark-outline"></ion-icon>
+                <span>9.0</span>
+              </div>
+              <div class="movies-infor">
+                <ion-icon name="time-outline"></ion-icon>
+                <span>120 mins</span>
+              </div>
+              <div class="movies-infor">
+                <ion-icon name="cube-outline"></ion-icon>
+                <span>FHD</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="movie-item-overlay"></div>
+        <div class="movie-item-act">
+          <i class='bx bxs-right-arrow'></i>
+          <div>
+            <i class='bx bxs-share-alt'></i>
+            <i class='bx bxs-heart'></i>
+            <i class='bx bx-plus-medical'></i>
+          </div>
+        </div>
+      </a>
+    </div>
   </div>
 </div>
-
-<!-- FORM THÊM PHIM -->
-<div class="section" id="add-movie-section">
-  <h3>Thêm phim mới</h3>
-  <form id="add-movie-form">
-    <input type="text" id="title" placeholder="Tên phim" required />
-    <input type="text" id="poster" placeholder="Link ảnh poster" required />
-    <input type="text" id="rating" placeholder="Điểm (VD: 9.0)" />
-    <input type="text" id="duration" placeholder="Thời lượng (VD: 120 mins)" />
-    <button type="submit">Thêm phim</button>
-  </form>
-</div>
-
+<!-- END DANH SÁCH PHIM -->
+          
           <div class="section-wrapper">
                <div class="row ">
                    <div class="col-6 footer-header">
