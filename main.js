@@ -200,3 +200,64 @@ document.getElementById("add-movie-form").addEventListener("submit", function(e)
 
 // Render phim khi tải trang
 renderMovies();
+// Danh sách phim mẫu
+const movies = [
+  {
+    title: "Raya and the Last Dragon",
+    img: "./assets/img/Images/raya1.jpg",
+    rating: "9.0",
+    duration: "120 mins",
+    quality: "FHD"
+  },
+  {
+    title: "Venom: Let There Be Carnage",
+    img: "./assets/img/Images/p-4.jpg",
+    rating: "8.5",
+    duration: "115 mins",
+    quality: "FHD"
+  },
+  {
+    title: "Deadpool 2",
+    img: "./assets/img/Images/p-5.jpg",
+    rating: "8.7",
+    duration: "110 mins",
+    quality: "HD"
+  }
+];
+
+// Render danh sách phim
+function renderMovies() {
+  const movieList = document.getElementById("movie-list");
+  if (!movieList) return;
+
+  movieList.innerHTML = "";
+  movies.forEach(m => {
+    movieList.innerHTML += `
+      <a href="#" class="movie-item col-3-5 m-5 s-11 to-top show-on-scroll">
+        <div>
+          <img src="${m.img}" alt="${m.title}">
+          <div class="movie-item-content">
+            <div class="movie-item-title">${m.title}</div>
+            <div class="movies-infors-card">
+              <div class="movies-infor"><ion-icon name="bookmark-outline"></ion-icon><span>${m.rating}</span></div>
+              <div class="movies-infor"><ion-icon name="time-outline"></ion-icon><span>${m.duration}</span></div>
+              <div class="movies-infor"><ion-icon name="cube-outline"></ion-icon><span>${m.quality}</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="movie-item-overlay"></div>
+        <div class="movie-item-act">
+          <i class='bx bxs-right-arrow'></i>
+          <div>
+            <i class='bx bxs-share-alt'></i>
+            <i class='bx bxs-heart'></i>
+            <i class='bx bx-plus-medical'></i>
+          </div>
+        </div>
+      </a>
+    `;
+  });
+}
+
+// Gọi hàm khi load trang
+renderMovies();
