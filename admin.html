@@ -25,6 +25,7 @@
       <input id="year" placeholder="Năm phát hành" required />
       <input id="genres" placeholder="Thể loại (cách nhau bằng dấu phẩy)" />
       <input id="poster" placeholder="Poster URL (https://...)" />
+      <input id="video" placeholder="Video URL (YouTube, Vimeo, direct link...)" />
       <textarea id="desc" placeholder="Mô tả"></textarea>
       <button type="submit">Lưu phim</button>
     </form>
@@ -35,6 +36,7 @@
           <th>Tên phim</th>
           <th>Năm</th>
           <th>Thể loại</th>
+          <th>Video</th>
           <th>Hành động</th>
         </tr>
       </thead>
@@ -60,6 +62,7 @@
           <td>${m.title}</td>
           <td>${m.year}</td>
           <td>${Array.isArray(m.genres) ? m.genres.join(", ") : ""}</td>
+          <td>${m.videoUrl ? `<a href="${m.videoUrl}" target="_blank">Xem</a>` : ""}</td>
           <td>
             <button onclick="editMovie(${idx})">Sửa</button>
             <button onclick="deleteMovie(${idx})">Xóa</button>
@@ -75,6 +78,7 @@
       const yearEl = document.getElementById("year");
       const genresEl = document.getElementById("genres");
       const posterEl = document.getElementById("poster");
+      const videoEl = document.getElementById("video");
       const descEl = document.getElementById("desc");
 
       const movie = {
@@ -83,6 +87,7 @@
         year: yearEl.value.trim(),
         genres: genresEl.value.split(",").map(g => g.trim()).filter(Boolean),
         poster: posterEl.value.trim(),
+        videoUrl: videoEl.value.trim(),
         description: descEl.value.trim()
       };
 
@@ -104,6 +109,7 @@
       document.getElementById("year").value = m.year;
       document.getElementById("genres").value = m.genres.join(", ");
       document.getElementById("poster").value = m.poster;
+      document.getElementById("video").value = m.videoUrl || "";
       document.getElementById("desc").value = m.description;
       editIndex = idx;
     }
