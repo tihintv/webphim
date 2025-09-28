@@ -1,8 +1,5 @@
 let nav = document.querySelectorAll(".nav-item")
 
-
-console.log("toi là tuan ")
-
 for (let i = 0; i < nav.length; i++) {
     nav[i].onclick = function() {
         let j = 0;
