@@ -133,3 +133,70 @@ function activeLink() {
 }
 
 list.forEach((item) => item.addEventListener('click', activeLink))
+// =========================
+// QUẢN LÝ DANH SÁCH PHIM
+// =========================
+
+// Mảng phim mẫu
+let movies = [
+  {
+    title: "Raya and the Last Dragon",
+    poster: "./assets/img/Images/raya1.jpg",
+    rating: "9.0",
+    duration: "120 mins"
+  },
+  {
+    title: "Venom 2",
+    poster: "./assets/img/Images/p-4.jpg",
+    rating: "8.5",
+    duration: "110 mins"
+  }
+];
+
+// Hàm render phim
+function renderMovies() {
+  const container = document.getElementById("movie-list");
+  container.innerHTML = "";
+
+  movies.forEach((movie) => {
+    const item = document.createElement("div");
+    item.classList.add("movie-item", "col-3-5", "m-5", "s-11");
+    item.innerHTML = `
+      <div>
+        <img src="${movie.poster}" alt="${movie.title}">
+        <div class="movie-item-content">
+          <div class="movie-item-title">${movie.title}</div>
+          <div class="movies-infors-card">
+            <div class="movies-infor">
+              <ion-icon name="bookmark-outline"></ion-icon>
+              <span>${movie.rating}</span>
+            </div>
+            <div class="movies-infor">
+              <ion-icon name="time-outline"></ion-icon>
+              <span>${movie.duration}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    container.appendChild(item);
+  });
+}
+
+// Xử lý form thêm phim
+document.getElementById("add-movie-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const title = document.getElementById("title").value;
+  const poster = document.getElementById("poster").value;
+  const rating = document.getElementById("rating").value || "N/A";
+  const duration = document.getElementById("duration").value || "N/A";
+
+  movies.push({ title, poster, rating, duration });
+
+  renderMovies();
+  this.reset();
+});
+
+// Render phim khi tải trang
+renderMovies();
