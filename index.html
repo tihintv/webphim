@@ -1,232 +1,120 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WebPhim</title>
   <style>
-    :root { --bg:#0b0d10; --card:#11151b; --line:#1c222b; --fg:#e8eef5; --muted:#9fb3c8; --brand:#6ea8fe; }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5;background:var(--bg);color:var(--fg);}
-    header{position:sticky;top:0;z-index:10;display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);background:#0b0d10f5;backdrop-filter:saturate(1.2) blur(4px)}
-    .brand{display:flex;gap:10px;align-items:center}
-    .logo{width:28px;height:28px;border-radius:8px;background:var(--brand);display:grid;place-items:center;color:#fff;font-weight:700}
-    h1{font-size:18px;margin:0}
-    #q{width:320px;max-width:55vw;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:#11151b;color:var(--fg);outline:none}
-    main{max-width:min(1200px,92vw);margin:16px auto 32px}
-    .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .12s ease}
-    .card:hover{transform:translateY(-2px)}
-    .poster{width:100%;aspect-ratio:2/3;object-fit:cover;background:#111}
+    body{margin:0;font-family:sans-serif;background:#111;color:#eee}
+    header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#000}
+    #q{padding:8px 12px;border-radius:6px;border:none;background:#222;color:#fff}
+    .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));padding:20px}
+    .card{background:#1a1a1a;border-radius:10px;overflow:hidden;cursor:pointer;transition:.2s}
+    .card:hover{transform:scale(1.03)}
+    .poster{width:100%;aspect-ratio:2/3;object-fit:cover}
     .content{padding:10px}
-    .title{margin:0;font-weight:700;font-size:15px}
-    .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
-    .chip{font-size:12px;padding:3px 8px;border-radius:999px;background:#1b2838;border:1px solid var(--line);color:#b8c2cc}
-    /* Modal */
-    .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center}
     .modal.active{display:flex}
-    .box{background:var(--card);border:1px solid var(--line);border-radius:16px;max-width:860px;width:92%;padding:18px 18px 20px;position:relative}
-    .close{position:absolute;right:10px;top:6px;font-size:20px;cursor:pointer}
-    .info{display:grid;grid-template-columns:180px 1fr;gap:14px}
-    .info img{width:180px;border-radius:12px;object-fit:cover}
-    .watch{display:inline-block;margin:8px 0 10px;padding:10px 14px;background:var(--brand);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer}
-    .episodes{margin-top:10px}
-    .episodes h3{margin:0 0 8px}
-    .ep-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
-    .ep{padding:8px 10px;background:#0f141a;border:1px solid var(--line);border-radius:8px;color:var(--fg);text-align:left;cursor:pointer}
-    .player{margin-top:12px}
-    .player iframe,.player video{width:100%;max-height:420px;border-radius:12px}
-    @media(max-width:560px){ .info{grid-template-columns:1fr} .info img{width:100%} #q{max-width:65vw} }
+    .modal-content{background:#1a1a1a;padding:20px;border-radius:10px;max-width:800px;width:90%;position:relative}
+    .close{position:absolute;top:10px;right:15px;cursor:pointer;font-size:20px}
+    .watch-btn{display:inline-block;margin:8px 0;padding:8px 14px;background:#3b82f6;color:#fff;border-radius:6px;text-decoration:none}
+    .episodes button{display:block;margin:4px 0;padding:6px;background:#333;color:#fff;border:none;border-radius:6px;cursor:pointer}
+    .player iframe,.player video{width:100%;max-height:400px;border-radius:8px}
   </style>
 </head>
 <body>
   <header>
-    <div class="brand"><div class="logo">🎬</div><h1>WebPhim</h1></div>
-    <input id="q" type="search" placeholder="Tìm theo tên, thể loại…" autocomplete="off">
+    <h1>🎬 WebPhim</h1>
+    <input id="q" type="search" placeholder="Tìm phim...">
   </header>
 
-  <main>
-    <section id="grid" class="grid"></section>
-  </main>
+  <div id="grid" class="grid"></div>
 
-  <!-- Modal -->
-  <div id="modal" class="modal" aria-hidden="true">
-    <div class="box">
-      <button class="close" id="btnClose" aria-label="Đóng">×</button>
-      <div class="info">
-        <img id="mPoster" alt="Poster">
-        <div>
-          <h2 id="mTitle" style="margin:0 0 6px"></h2>
-          <div id="mYear" style="color:var(--muted);margin-bottom:6px"></div>
-          <div id="mGenres" class="chips" style="margin-bottom:8px"></div>
-          <button id="btnWatch" class="watch" hidden>▶ Xem phim</button>
-          <p id="mDesc" style="margin:6px 0 0"></p>
-        </div>
-      </div>
-
-      <div id="epsBox" class="episodes" hidden>
-        <h3 id="epsTitle">Tập phim</h3>
-        <div id="epList" class="ep-list"></div>
-      </div>
-
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="btnClose">×</span>
+      <img id="mPoster" style="width:200px;float:left;margin-right:15px;border-radius:8px">
+      <h2 id="mTitle"></h2>
+      <p id="mYear"></p>
+      <div id="mGenres"></div>
+      <a id="btnWatch" class="watch-btn" target="_blank">▶ Xem phim</a>
+      <div class="episodes" id="epsBox"></div>
+      <p id="mDesc"></p>
       <div id="player" class="player"></div>
     </div>
   </div>
 
   <script>
-    // ====== Data ======
-    const STORAGE_KEY = "movies";
-    function load() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; } }
-    let movies = load();
-
-    // ====== URL normalize (poster) ======
-    const segs = location.pathname.split("/").filter(Boolean);
-    const BASE = segs.length ? `${location.origin}/${segs[0]}/` : `${location.origin}/`;
-
-    function normalizeUrl(u) {
-      if (!u) return "";
-      u = String(u).trim();
-      // GitHub blob -> raw
-      if (u.includes("github.com") && u.includes("/blob/")) {
-        return u.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/");
-      }
-      if (/^https?:\/\//i.test(u)) return u;
-      if (u.startsWith("/")) return location.origin + u;
-      return BASE + u; // posters/abc.jpg -> https://tihintv.github.io/webphim/posters/abc.jpg
-    }
-    const placeholder = (t) => `https://placehold.co/400x600/png?text=${encodeURIComponent(t||"Poster")}`;
-
-    // ====== Search ======
-    const qEl = document.getElementById("q");
-    const norm = s => (s||"").toString().normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
-    qEl.addEventListener("input", () => render(filterBy(qEl.value)));
-
-    function filterBy(kw) {
-      const k = norm(kw);
-      if (!k) return movies;
-      return movies.filter(m =>
-        norm(m.title).includes(k) ||
-        norm((m.genres||[]).join(" ")).includes(k) ||
-        String(m.year||"").includes(k)
-      );
+    let movies=[];
+    async function loadMovies(){
+      try{
+        const res=await fetch("movies.json");
+        movies=await res.json();
+        render(movies);
+      }catch(e){console.error("Lỗi load movies.json",e);}
     }
 
-    // ====== Grid render ======
-    const grid = document.getElementById("grid");
-    function cardHtml(m) {
-      const chips = (m.genres||[]).map(g => `<span class="chip">${g}</span>`).join("");
-      const src = normalizeUrl(m.poster) || placeholder(m.title);
-      return `
-        <article class="card" data-id="${m.id}">
-          <img class="poster" src="${src}" alt="${m.title}"
-               onerror="this.onerror=null;this.src='${placeholder(m.title)}'">
-          <div class="content">
-            <h3 class="title">${m.title||""}</h3>
-            <div class="chips">${chips}</div>
-            <div class="meta">${m.year||""}</div>
-          </div>
-        </article>`;
-    }
-    function render(list) {
-      grid.innerHTML = list.map(cardHtml).join("");
-      [...grid.querySelectorAll(".card")].forEach(card=>{
-        card.addEventListener("click", ()=>{
-          const id = Number(card.dataset.id);
-          const m = movies.find(x=>x.id===id);
-          if (m) openModal(m);
-        });
+    const grid=document.getElementById("grid");
+    const q=document.getElementById("q");
+    const modal=document.getElementById("modal");
+    const btnClose=document.getElementById("btnClose");
+    const mPoster=document.getElementById("mPoster");
+    const mTitle=document.getElementById("mTitle");
+    const mYear=document.getElementById("mYear");
+    const mGenres=document.getElementById("mGenres");
+    const mDesc=document.getElementById("mDesc");
+    const btnWatch=document.getElementById("btnWatch");
+    const epsBox=document.getElementById("epsBox");
+    const player=document.getElementById("player");
+
+    function render(list){
+      grid.innerHTML=list.map(m=>`
+        <div class="card" data-id="${m.id}">
+          <img class="poster" src="${m.poster}" alt="${m.title}" onerror="this.src='https://placehold.co/200x300?text=${m.title}'">
+          <div class="content"><h3>${m.title}</h3><p>${m.year}</p></div>
+        </div>
+      `).join("");
+      document.querySelectorAll(".card").forEach(c=>{
+        c.onclick=()=>openModal(list.find(x=>x.id==c.dataset.id));
       });
     }
 
-    // ====== Modal & Player ======
-    const modal = document.getElementById("modal");
-    const btnClose = document.getElementById("btnClose");
-    const mPoster = document.getElementById("mPoster");
-    const mTitle  = document.getElementById("mTitle");
-    const mYear   = document.getElementById("mYear");
-    const mGenres = document.getElementById("mGenres");
-    const mDesc   = document.getElementById("mDesc");
-    const btnWatch= document.getElementById("btnWatch");
-    const epsBox  = document.getElementById("epsBox");
-    const epsTitle= document.getElementById("epsTitle");
-    const epList  = document.getElementById("epList");
-    const player  = document.getElementById("player");
+    function openModal(m){
+      mPoster.src=m.poster;
+      mTitle.textContent=m.title;
+      mYear.textContent="Năm: "+(m.year||"");
+      mGenres.innerHTML=(m.genres||[]).map(g=>`<span>${g}</span>`).join(", ");
+      mDesc.textContent=m.description||"";
+      btnWatch.style.display=m.videoUrl?"inline-block":"none";
+      if(m.videoUrl) btnWatch.href=m.videoUrl;
 
-    function embed(url) {
-      if (!url) return "";
-      const u = url.trim();
-      // YouTube
-      if (u.includes("youtube.com") || u.includes("youtu.be")) {
-        let id = u.split("v=")[1] || u.split("/").pop();
-        if (id.includes("&")) id = id.split("&")[0];
-        return `<iframe src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`;
+      epsBox.innerHTML="";
+      if(m.episodes && m.episodes.length){
+        epsBox.innerHTML="<h3>Tập phim</h3>"+m.episodes.map(ep=>
+          `<button onclick="document.getElementById('player').innerHTML=embed('${ep.url}')">${ep.name}</button>`
+        ).join("");
       }
-      // Vimeo
-      if (u.includes("vimeo.com")) {
-        const id = u.split("/").pop();
-        return `<iframe src="https://player.vimeo.com/video/${id}" frameborder="0" allowfullscreen></iframe>`;
-      }
-      // Google Drive
-      if (u.includes("drive.google.com")) {
-        const m = u.match(/\/d\/([^/]+)/);
-        const id = m ? m[1] : "";
-        return id ? `<iframe src="https://drive.google.com/file/d/${id}/preview" allow="autoplay"></iframe>`
-                  : `<a href="${u}" target="_blank" rel="noopener">Mở trên Google Drive</a>`;
-      }
-      // MP4/M4V
-      if (/\.(mp4|m4v)(\?.*)?$/i.test(u)) return `<video src="${u}" controls></video>`;
-      // Fallback
-      return `<a href="${u}" target="_blank" rel="noopener">Mở video</a>`;
-    }
-
-    function openModal(m) {
-      // Poster & info
-      const src = normalizeUrl(m.poster) || placeholder(m.title);
-      mPoster.src = src; mPoster.onerror = () => (mPoster.src = placeholder(m.title));
-      mTitle.textContent = m.title || "";
-      mYear.textContent  = m.year ? `Năm phát hành: ${m.year}` : "";
-      mGenres.innerHTML  = (m.genres||[]).map(g=>`<span class="chip">${g}</span>`).join("");
-      mDesc.textContent  = m.description || "";
-
-      // Nút xem chính: videoUrl > tập 1
-      const eps = Array.isArray(m.episodes) ? m.episodes : [];
-      const firstEpUrl = eps[0]?.url || "";
-      const playUrl = m.videoUrl || firstEpUrl;
-      if (playUrl) {
-        btnWatch.hidden = false;
-        btnWatch.onclick = () => { player.innerHTML = embed(playUrl); };
-      } else {
-        btnWatch.hidden = true;
-        player.innerHTML = "";
-      }
-
-      // Danh sách tập
-      if (eps.length) {
-        epsBox.hidden = false;
-        epsTitle.textContent = `Tập phim (${eps.length})`;
-        epList.innerHTML = eps.map((e, i) => {
-          const name = (typeof e === "object") ? (e.name || `Tập ${i+1}`) : String(e);
-          const url  = (typeof e === "object") ? e.url : "";
-          return `<button class="ep" data-url="${url}">▶ ${name}</button>`;
-        }).join("");
-        epList.querySelectorAll(".ep").forEach(btn=>{
-          btn.addEventListener("click", ()=>{ player.innerHTML = embed(btn.dataset.url); });
-        });
-      } else {
-        epsBox.hidden = true;
-        epList.innerHTML = "";
-      }
-
+      player.innerHTML="";
       modal.classList.add("active");
     }
 
-    function closeModal(){ modal.classList.remove("active"); player.innerHTML=""; }
-    btnClose.addEventListener("click", closeModal);
-    modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
-    window.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+    function embed(url){
+      if(url.includes("youtube")) return `<iframe src="${url.replace("watch?v=","embed/")}" allowfullscreen></iframe>`;
+      if(url.includes("drive.google.com")) return `<iframe src="https://drive.google.com/file/d/${url.split("/d/")[1].split("/")[0]}/preview"></iframe>`;
+      if(url.endsWith(".mp4")) return `<video src="${url}" controls autoplay></video>`;
+      return `<a href="${url}" target="_blank">Mở video</a>`;
+    }
 
-    // ====== Start ======
-    render(movies);
+    btnClose.onclick=()=>modal.classList.remove("active");
+    q.oninput=()=>{
+      const k=q.value.toLowerCase();
+      render(movies.filter(m=>
+        m.title.toLowerCase().includes(k) ||
+        (m.genres||[]).join(" ").toLowerCase().includes(k)
+      ));
+    };
+
+    loadMovies();
   </script>
 </body>
 </html>
