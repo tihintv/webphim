@@ -2,7 +2,253 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
+  <title>WebPhim</title><!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WebPhim</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; background:#0b0d10; color:#e8eef5; margin:0; }
+    header { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; background:#11151b; border-bottom:1px solid #1c222b; }
+    .logo { font-weight:700; font-size:18px; display:flex; align-items:center; gap:8px; }
+    .search { background:#0f141a; border:1px solid #1c222b; padding:10px 12px; border-radius:12px; color:#e8eef5; width:280px; max-width:42vw; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:16px; padding:20px; }
+    .card { background:#11151b; border:1px solid #1c222b; border-radius:14px; overflow:hidden; cursor:pointer; transition:transform .12s ease; }
+    .card:hover{ transform:translateY(-2px); }
+    .poster { width:100%; aspect-ratio:2/3; object-fit:cover; background:#111; }
+    .content { padding:10px; }
+    .title { margin:0; font-size:15px; font-weight:700; }
+    .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:4px; }
+    .chip { font-size:12px; padding:3px 8px; border-radius:999px; background:#1b2838; color:#b8c2cc; border:1px solid #1c222b; }
+
+    /* Modal */
+    .modal{ position:fixed; inset:0; background:rgba(0,0,0,.75); display:none; align-items:center; justify-content:center; z-index:100; }
+    .modal.active{ display:flex; }
+    .modal-content{ background:#11151b; border-radius:16px; padding:20px; max-width:820px; width:92%; position:relative; }
+    .modal-content img{ width:180px; float:left; margin-right:16px; border-radius:12px; }
+    .close{ position:absolute; right:12px; top:8px; font-size:20px; cursor:pointer; }
+    .watch-btn{ display:inline-block; margin:8px 0 12px; padding:10px 14px; background:#6ea8fe; color:#fff; border:none; border-radius:8px; font-weight:700; cursor:pointer; }
+    .episodes{ clear:both; margin-top:14px; }
+    .episodes h3{ margin:0 0 8px; font-size:16px; }
+    .ep-list{ display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:8px; }
+    .ep{ padding:8px; border:1px solid #1c222b; background:#0f141a; color:#e8eef5; border-radius:8px; cursor:pointer; text-align:left; }
+    .player{ margin-top:14px; }
+    .player iframe,.player video{ width:100%; max-height:420px; border-radius:12px; }
+
+    @media(max-width:560px){
+      .modal-content img{ width:100%; float:none; margin:0 0 12px 0; }
+      .search{ width:55vw; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">🎬 WebPhim</div>
+    <input id="q" class="search" type="search" placeholder="Tìm theo tên, thể loại…" autocomplete="off">
+  </header>
+
+  <main>
+    <section id="grid" class="grid"></section>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeBtn">×</span>
+      <img id="modalPoster" alt="Poster phim">
+      <h2 id="modalTitle" style="margin-top:0"></h2>
+      <div id="modalYear"></div>
+      <div id="modalGenres" class="chips" style="margin:6px 0 8px;"></div>
+
+      <button id="watchBtn" class="watch-btn" hidden>▶ Xem phim</button>
+
+      <div id="episodesBox" class="episodes" hidden>
+        <h3 id="episodesTitle">Tập phim</h3>
+        <div id="epList" class="ep-list"></div>
+      </div>
+
+      <p id="modalDesc"></p>
+      <div id="videoPlayer" class="player"></div>
+    </div>
+  </div>
+
+  <script>
+    const KEY = "movies";
+
+    // ===== Utility =====
+    const placeholder = (t="Poster") => `https://placehold.co/400x600/png?text=${encodeURIComponent(t)}`;
+
+    // Lấy base repo path hiện tại (ví dụ /webphim/)
+    const firstSeg = "/" + location.pathname.split("/").filter(Boolean)[0] + "/";
+    const ORIGIN = location.origin;                   // https://tihintv.github.io
+    const BASE   = ORIGIN + (firstSeg === "//" ? "/" : firstSeg); // https://tihintv.github.io/webphim/
+
+    function normalizeAssetUrl(input){
+      if(!input) return "";
+      let url = input.trim();
+
+      // Fix link blob GitHub -> raw (ít dùng cho ảnh repo, nhưng phòng hờ)
+      if(url.includes("github.com") && url.includes("/blob/")){
+        return url.replace("github.com","raw.githubusercontent.com").replace("/blob/","/");
+      }
+
+      // http(s)
+      if(/^https?:\/\//i.test(url)){
+        try{
+          const u = new URL(url);
+          // ép về domain hiện tại nếu path trùng repo (tránh lẫn domain thintv/tihintv)
+          if(u.pathname.startsWith(firstSeg)) return ORIGIN + u.pathname + u.search + u.hash;
+          return url;
+        }catch{ return url; }
+      }
+
+      // Bắt đầu bằng "/" => tuyệt đối theo domain hiện tại
+      if(url.startsWith("/")) return ORIGIN + url;
+
+      // Relative => theo repo hiện tại
+      return BASE + url;
+    }
+
+    function load(){ try{ return JSON.parse(localStorage.getItem(KEY))||[] }catch{ return [] } }
+
+    // ===== Render grid =====
+    const grid  = document.getElementById("grid");
+    const qEl   = document.getElementById("q");
+
+    const norm = s => (s||"").toString().normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+
+    function cardTpl(m){
+      const poster = normalizeAssetUrl(m.poster);
+      const chips  = (m.genres||[]).map(g=>`<span class="chip">${g}</span>`).join("");
+      return `
+        <article class="card" data-id="${m.id}">
+          <img class="poster" src="${poster||placeholder(m.title)}" alt="${m.title}"
+               onerror="this.onerror=null;this.src='${placeholder(m.title)}';">
+          <div class="content">
+            <h3 class="title">${m.title||""}</h3>
+            <div class="chips">${chips}</div>
+            <div class="meta">${m.year||""}</div>
+          </div>
+        </article>`;
+    }
+
+    function render(list){
+      if(!list.length){ grid.innerHTML = ""; return; }
+      grid.innerHTML = list.map(cardTpl).join("");
+      document.querySelectorAll(".card").forEach(el=>{
+        el.addEventListener("click", ()=>{
+          const id = Number(el.dataset.id);
+          const m  = movies.find(x=>x.id===id);
+          openModal(m);
+        });
+      });
+    }
+
+    function applyFilter(){
+      const kw = norm(qEl.value);
+      if(!kw) return render(movies);
+      render(movies.filter(m => norm(m.title).includes(kw) ||
+                                norm((m.genres||[]).join(" ")).includes(kw) ||
+                                String(m.year||"").includes(kw)));
+    }
+
+    qEl.addEventListener("input", applyFilter);
+
+    // ===== Modal & player =====
+    const modal        = document.getElementById("modal");
+    const closeBtn     = document.getElementById("closeBtn");
+    const modalPoster  = document.getElementById("modalPoster");
+    const modalTitle   = document.getElementById("modalTitle");
+    const modalYear    = document.getElementById("modalYear");
+    const modalGenres  = document.getElementById("modalGenres");
+    const modalDesc    = document.getElementById("modalDesc");
+    const watchBtn     = document.getElementById("watchBtn");
+    const videoPlayer  = document.getElementById("videoPlayer");
+    const episodesBox  = document.getElementById("episodesBox");
+    const episodesTitle= document.getElementById("episodesTitle");
+    const epList       = document.getElementById("epList");
+
+    function driveEmbed(u){
+      const m = u.match(/\/d\/([^/]+)/);
+      const id = m ? m[1] : "";
+      return id ? `<iframe src="https://drive.google.com/file/d/${id}/preview" allow="autoplay"></iframe>`
+                : `<a target="_blank" rel="noopener" href="${u}">Mở video trên Google Drive</a>`;
+    }
+
+    function buildEmbed(u){
+      if(!u) return "";
+      const url = u.trim();
+
+      // YouTube
+      if(url.includes("youtube.com") || url.includes("youtu.be")){
+        let id = url.split("v=")[1] || url.split("/").pop();
+        if(id.includes("&")) id = id.split("&")[0];
+        return `<iframe src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`;
+      }
+      // Vimeo
+      if(url.includes("vimeo.com")){
+        const id = url.split("/").pop();
+        return `<iframe src="https://player.vimeo.com/video/${id}" frameborder="0" allowfullscreen></iframe>`;
+      }
+      // Google Drive
+      if(url.includes("drive.google.com")) return driveEmbed(url);
+      // MP4 / M4V
+      if(/\.(mp4|m4v)(\?.*)?$/i.test(url)) return `<video src="${url}" controls></video>`;
+      // Khác
+      return `<a target="_blank" rel="noopener" href="${url}">Mở video</a>`;
+    }
+
+    function openModal(m){
+      // Poster + info
+      const poster = normalizeAssetUrl(m.poster);
+      modalPoster.src = poster || placeholder(m.title);
+      modalPoster.onerror = () => { modalPoster.src = placeholder(m.title); };
+      modalTitle.textContent = m.title || "";
+      modalYear.textContent  = m.year ? `Năm phát hành: ${m.year}` : "";
+      modalGenres.innerHTML  = (m.genres||[]).map(g=>`<span class="chip">${g}</span>`).join("");
+      modalDesc.textContent  = m.description || "";
+
+      // Nút Xem phim ưu tiên: videoUrl > tập đầu tiên
+      const eps = (m.episodes||[]);
+      const firstEp = eps[0]?.url || "";
+      const playUrl = m.videoUrl || firstEp;
+      if(playUrl){
+        watchBtn.hidden = false;
+        watchBtn.onclick = ()=>{ videoPlayer.innerHTML = buildEmbed(playUrl); };
+      } else {
+        watchBtn.hidden = true;
+        videoPlayer.innerHTML = "";
+      }
+
+      // Danh sách tập + số tập
+      if(eps.length){
+        episodesBox.hidden = false;
+        episodesTitle.textContent = `Tập phim (${eps.length})`;
+        epList.innerHTML = eps.map((e,idx)=>`<button class="ep" data-url="${e.url}">▶ Tập ${idx+1}: ${e.name}</button>`).join("");
+        epList.querySelectorAll(".ep").forEach(btn=>{
+          btn.addEventListener("click", ()=>{ videoPlayer.innerHTML = buildEmbed(btn.dataset.url); });
+        });
+      }else{
+        episodesBox.hidden = true;
+        epList.innerHTML = "";
+      }
+
+      modal.classList.add("active");
+    }
+
+    function closeModal(){ modal.classList.remove("active"); videoPlayer.innerHTML=""; }
+    closeBtn.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e)=>{ if(e.target===modal) closeModal(); });
+    window.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeModal(); });
+
+    // ===== Start =====
+    const movies = load();
+    render(movies);
+  </script>
+</body>
+</html>
+
   <style>
     body { font-family: Arial, sans-serif; background: #0d0f12; color: white; margin: 0; }
     header { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; background: #111; }
