@@ -17,6 +17,9 @@
     .movie-item{background:#222;padding:10px;margin:6px 0;border-radius:6px;display:flex;justify-content:space-between;align-items:center}
     .movie-title{font-weight:bold}
     .btn-group{display:flex;gap:6px}
+    .episode-item{display:flex;gap:6px;margin:5px 0}
+    .episode-item input{flex:1}
+    .episode-item button{margin-top:0}
     #posterPreview{max-width:150px;margin-top:6px;border-radius:8px}
   </style>
 </head>
@@ -27,14 +30,18 @@
     <input id="year" placeholder="Năm">
     <input id="genres" placeholder="Thể loại (cách nhau dấu phẩy)">
 
-    <!-- Chọn file poster -->
+    <!-- Poster upload -->
     <label>Poster:</label>
     <input type="file" id="posterFile" accept="image/*" onchange="handlePosterUpload(event)">
     <input id="poster" placeholder="Poster (ví dụ: posters/abc.jpg)">
     <img id="posterPreview" src="" alt="Preview poster">
 
     <input id="videoUrl" placeholder="Video chính (YouTube/MP4/Drive)">
-    <textarea id="episodes" placeholder="Danh sách tập (mỗi dòng: Tập 1:https://...)"></textarea>
+    
+    <h3>Tập phim</h3>
+    <div id="episodesContainer"></div>
+    <button onclick="addEpisodeField()">➕ Thêm tập</button>
+
     <textarea id="description" placeholder="Mô tả"></textarea>
     <button class="add-btn" id="saveBtn" onclick="addMovie()">➕ Lưu phim</button>
     <button class="add-btn" style="display:none" id="updateBtn" onclick="updateMovie()">💾 Cập nhật phim</button>
@@ -63,15 +70,34 @@
       }
     }
 
-    // Xử lý upload poster
+    // Poster upload preview
     function handlePosterUpload(e){
       const file = e.target.files[0];
       if(file){
-        const preview=document.getElementById("posterPreview");
-        preview.src=URL.createObjectURL(file);
-        // Gợi ý đường dẫn để bạn upload lên GitHub
+        document.getElementById("posterPreview").src=URL.createObjectURL(file);
         document.getElementById("poster").value="posters/"+file.name;
       }
+    }
+
+    // Episodes input
+    function addEpisodeField(name="", url=""){
+      const container = document.getElementById("episodesContainer");
+      const div=document.createElement("div");
+      div.className="episode-item";
+      div.innerHTML=`
+        <input type="text" placeholder="Tên tập" value="${name}">
+        <input type="text" placeholder="URL" value="${url}">
+        <button class="delete-btn" onclick="this.parentElement.remove()">❌</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function getEpisodesFromForm(){
+      const rows=document.querySelectorAll("#episodesContainer .episode-item");
+      return Array.from(rows).map(r=>{
+        const inputs=r.querySelectorAll("input");
+        return {name:inputs[0].value.trim(), url:inputs[1].value.trim()};
+      }).filter(ep=>ep.name && ep.url);
     }
 
     function getFormData(){
@@ -81,36 +107,34 @@
       let poster=document.getElementById("poster").value.trim();
       const videoUrl=document.getElementById("videoUrl").value.trim();
       const description=document.getElementById("description").value.trim();
-      const episodes=document.getElementById("episodes").value.split("\n").map(l=>{
-        const idx=l.indexOf(":");
-        if(idx==-1) return null;
-        return {name:l.slice(0,idx).trim(),url:l.slice(idx+1).trim()};
-      }).filter(Boolean);
-
-      if(!poster.startsWith("http")) poster = poster.replace(/^\.?\//,""); 
+      const episodes=getEpisodesFromForm();
+      if(!poster.startsWith("http")) poster=poster.replace(/^\.?\//,"");
       return {title,year,genres,poster,videoUrl,episodes,description};
     }
 
     function addMovie(){
-      const data = getFormData();
-      movies.push({id:Date.now(), ...data});
+      const data=getFormData();
+      movies.push({id:Date.now(),...data});
       renderMovies();
       updateOutput();
       resetForm();
     }
 
     function editMovie(id){
-      const m = movies.find(x=>x.id===id);
+      const m=movies.find(x=>x.id===id);
       if(!m) return;
-      editingId = id;
+      editingId=id;
 
-      document.getElementById("title").value = m.title;
-      document.getElementById("year").value = m.year;
-      document.getElementById("genres").value = m.genres.join(", ");
-      document.getElementById("poster").value = m.poster;
-      document.getElementById("videoUrl").value = m.videoUrl;
-      document.getElementById("description").value = m.description;
-      document.getElementById("episodes").value = (m.episodes||[]).map(ep=>`${ep.name}:${ep.url}`).join("\n");
+      document.getElementById("title").value=m.title;
+      document.getElementById("year").value=m.year;
+      document.getElementById("genres").value=m.genres.join(", ");
+      document.getElementById("poster").value=m.poster;
+      document.getElementById("videoUrl").value=m.videoUrl;
+      document.getElementById("description").value=m.description;
+
+      // episodes
+      document.getElementById("episodesContainer").innerHTML="";
+      (m.episodes||[]).forEach(ep=>addEpisodeField(ep.name,ep.url));
 
       document.getElementById("formTitle").textContent="✏️ Sửa phim";
       document.getElementById("saveBtn").style.display="none";
@@ -118,22 +142,22 @@
     }
 
     function updateMovie(){
-      const data = getFormData();
-      movies = movies.map(m=> m.id===editingId ? {...m, ...data} : m);
+      const data=getFormData();
+      movies=movies.map(m=>m.id===editingId?{...m,...data}:m);
       renderMovies();
       updateOutput();
       resetForm();
     }
 
     function deleteMovie(id){
-      movies = movies.filter(m=>m.id!==id);
+      movies=movies.filter(m=>m.id!==id);
       renderMovies();
       updateOutput();
     }
 
     function renderMovies(){
       const list=document.getElementById("movieList");
-      list.innerHTML = movies.map(m=>`
+      list.innerHTML=movies.map(m=>`
         <div class="movie-item">
           <span class="movie-title">${m.title} (${m.year})</span>
           <div class="btn-group">
@@ -145,15 +169,15 @@
     }
 
     function updateOutput(){
-      document.getElementById("output").textContent = JSON.stringify(movies,null,2);
+      document.getElementById("output").textContent=JSON.stringify(movies,null,2);
     }
 
     function downloadJSON(){
-      const blob = new Blob([JSON.stringify(movies,null,2)], {type: "application/json"});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "movies.json";
+      const blob=new Blob([JSON.stringify(movies,null,2)],{type:"application/json"});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a");
+      a.href=url;
+      a.download="movies.json";
       a.click();
       URL.revokeObjectURL(url);
     }
@@ -161,6 +185,7 @@
     function resetForm(){
       editingId=null;
       document.querySelectorAll("input,textarea").forEach(el=>el.value="");
+      document.getElementById("episodesContainer").innerHTML="";
       document.getElementById("posterPreview").src="";
       document.getElementById("formTitle").textContent="➕ Thêm phim mới";
       document.getElementById("saveBtn").style.display="inline-block";
