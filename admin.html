@@ -2,182 +2,49 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Trang Admin — Quản lý phim</title>
+  <title>Admin WebPhim</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      padding: 20px;
-    }
-    .container {
-      width: 680px;
-      background: #1a1d24;
-      padding: 20px;
-      border-radius: 12px;
-    }
-    h1 { text-align: center; margin-bottom: 12px; }
-    input, textarea {
-      width: 100%;
-      margin: 6px 0;
-      padding: 10px;
-      border: none;
-      border-radius: 6px;
-      background: #0d0f12;
-      color: #fff;
-    }
-    textarea { min-height: 70px; }
-    button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 8px;
-      background: #4a90e2;
-      border: none;
-      border-radius: 6px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    table {
-      width: 100%;
-      margin-top: 20px;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 10px;
-      border-bottom: 1px solid #2a2d34;
-      text-align: left;
-    }
-    th { background: #1f2430; }
-    tr:nth-child(even) { background: #2a2d34; }
-    .btn {
-      padding: 5px 10px;
-      margin: 2px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 12px;
-    }
-    .edit { background: #4caf50; color: white; }
-    .delete { background: #f44336; color: white; }
-    .view { background: #8e44ad; color: white; }
+    body{font-family:sans-serif;background:#111;color:#fff;display:flex;justify-content:center;padding:20px}
+    .box{width:600px;background:#1a1a1a;padding:20px;border-radius:10px}
+    input,textarea{width:100%;margin:6px 0;padding:8px;border-radius:6px;border:none;background:#222;color:#fff}
+    button{margin-top:10px;padding:10px;background:#3b82f6;border:none;border-radius:6px;color:#fff;cursor:pointer}
+    pre{background:#000;padding:10px;border-radius:6px;white-space:pre-wrap}
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Quản lý phim</h1>
-
+  <div class="box">
+    <h2>Thêm phim</h2>
     <input id="title" placeholder="Tên phim">
-    <input id="year" placeholder="Năm phát hành">
-    <input id="genres" placeholder="Thể loại (cách nhau bằng dấu phẩy)">
-    <input id="poster" placeholder="Poster URL (https://… hoặc posters/tênảnh.jpg)">
-    <input id="videoUrl" placeholder="Video URL (YouTube, Vimeo, Google Drive, MP4…)">
-    <textarea id="episodes" placeholder="Danh sách tập: 
-Tập 1:https://link1
-Tập 2:https://link2"></textarea>
-    <textarea id="description" placeholder="Mô tả phim"></textarea>
-    <button onclick="saveMovie()">Lưu phim</button>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Tên phim</th>
-          <th>Năm</th>
-          <th>Thể loại</th>
-          <th>Video chính</th>
-          <th>Số tập</th>
-          <th>Hành động</th>
-        </tr>
-      </thead>
-      <tbody id="movieTable"></tbody>
-    </table>
+    <input id="year" placeholder="Năm">
+    <input id="genres" placeholder="Thể loại (cách nhau dấu phẩy)">
+    <input id="poster" placeholder="Poster (posters/abc.jpg)">
+    <input id="videoUrl" placeholder="Video chính (YouTube/MP4/Drive)">
+    <textarea id="episodes" placeholder="Danh sách tập (mỗi dòng: Tập 1:https://...)"></textarea>
+    <textarea id="description" placeholder="Mô tả"></textarea>
+    <button onclick="addMovie()">Thêm phim</button>
+    <h3>Dữ liệu JSON</h3>
+    <pre id="output"></pre>
   </div>
 
   <script>
-    const KEY = "movies";
+    let movies=[];
 
-    function loadMovies() {
-      try { return JSON.parse(localStorage.getItem(KEY)) || []; }
-      catch { return []; }
-    }
-    function saveMovies(m) {
-      localStorage.setItem(KEY, JSON.stringify(m));
-    }
-
-    function parseEpisodes(raw) {
-      if (!raw || !raw.trim()) return [];
-      return raw.split(/\n|,/).map(s => s.trim()).filter(Boolean).map(s => {
-        const idx = s.indexOf(":"); // chỉ cắt ở dấu : đầu tiên
-        if (idx === -1) return null;
-        return {
-          name: s.slice(0, idx).trim(),
-          url: s.slice(idx + 1).trim()
-        };
+    function addMovie(){
+      const title=document.getElementById("title").value.trim();
+      const year=document.getElementById("year").value.trim();
+      const genres=document.getElementById("genres").value.split(",").map(g=>g.trim()).filter(Boolean);
+      const poster=document.getElementById("poster").value.trim();
+      const videoUrl=document.getElementById("videoUrl").value.trim();
+      const description=document.getElementById("description").value.trim();
+      const episodes=document.getElementById("episodes").value.split("\n").map(l=>{
+        const idx=l.indexOf(":");
+        if(idx==-1) return null;
+        return {name:l.slice(0,idx).trim(),url:l.slice(idx+1).trim()};
       }).filter(Boolean);
+
+      movies.push({id:Date.now(),title,year,genres,poster,videoUrl,episodes,description});
+      document.getElementById("output").textContent=JSON.stringify(movies,null,2);
     }
-
-    function renderTable() {
-      const movies = loadMovies();
-      const tbody = document.getElementById("movieTable");
-      tbody.innerHTML = movies.map((m, i) => `
-        <tr>
-          <td>${m.title}</td>
-          <td>${m.year}</td>
-          <td>${m.genres.join(", ")}</td>
-          <td>${m.videoUrl ? `<a href="${m.videoUrl}" target="_blank" class="btn view">Xem</a>` : ""}</td>
-          <td>${(m.episodes || []).length}</td>
-          <td>
-            <button class="btn edit" onclick="editMovie(${i})">Sửa</button>
-            <button class="btn delete" onclick="deleteMovie(${i})">Xóa</button>
-          </td>
-        </tr>
-      `).join("");
-    }
-
-    function saveMovie() {
-      const title = document.getElementById("title").value.trim();
-      const year = document.getElementById("year").value.trim();
-      const genres = document.getElementById("genres").value.split(",").map(g => g.trim()).filter(Boolean);
-      const poster = document.getElementById("poster").value.trim();
-      const videoUrl = document.getElementById("videoUrl").value.trim();
-      const episodes = parseEpisodes(document.getElementById("episodes").value);
-      const description = document.getElementById("description").value.trim();
-
-      const movies = loadMovies();
-      movies.push({ id: Date.now(), title, year, genres, poster, videoUrl, episodes, description });
-      saveMovies(movies);
-
-      document.querySelectorAll("#title,#year,#genres,#poster,#videoUrl,#episodes,#description")
-        .forEach(el => el.value = "");
-      renderTable();
-    }
-
-    function deleteMovie(i) {
-      const m = loadMovies(); 
-      m.splice(i, 1); 
-      saveMovies(m); 
-      renderTable();
-    }
-
-    function editMovie(i) {
-      const m = loadMovies(); 
-      const item = m[i];
-      document.getElementById("title").value = item.title || "";
-      document.getElementById("year").value = item.year || "";
-      document.getElementById("genres").value = (item.genres || []).join(", ");
-      document.getElementById("poster").value = item.poster || "";
-      document.getElementById("videoUrl").value = item.videoUrl || "";
-      document.getElementById("episodes").value = (item.episodes || []).map(e => `${e.name}:${e.url}`).join("\n");
-      document.getElementById("description").value = item.description || "";
-
-      m.splice(i, 1); 
-      saveMovies(m); 
-      renderTable();
-    }
-
-    renderTable();
   </script>
 </body>
 </html>
