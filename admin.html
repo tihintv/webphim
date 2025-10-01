@@ -7,18 +7,21 @@
     body{font-family:sans-serif;background:#111;color:#fff;display:flex;justify-content:center;padding:20px}
     .box{width:800px;background:#1a1a1a;padding:20px;border-radius:10px}
     input,textarea{width:100%;margin:6px 0;padding:8px;border-radius:6px;border:none;background:#222;color:#fff}
-    button{margin-top:10px;padding:8px 12px;background:#3b82f6;border:none;border-radius:6px;color:#fff;cursor:pointer}
+    button{margin-top:6px;padding:8px 12px;border:none;border-radius:6px;color:#fff;cursor:pointer}
+    button.add-btn{background:#3b82f6}
     button.delete-btn{background:#e11d48}
+    button.edit-btn{background:#f59e0b}
     button.download-btn{background:#10b981}
     pre{background:#000;padding:10px;border-radius:6px;white-space:pre-wrap;max-height:300px;overflow:auto}
     .movie-list{margin-top:20px}
     .movie-item{background:#222;padding:10px;margin:6px 0;border-radius:6px;display:flex;justify-content:space-between;align-items:center}
     .movie-title{font-weight:bold}
+    .btn-group{display:flex;gap:6px}
   </style>
 </head>
 <body>
   <div class="box">
-    <h2>Thêm phim mới</h2>
+    <h2 id="formTitle">➕ Thêm phim mới</h2>
     <input id="title" placeholder="Tên phim">
     <input id="year" placeholder="Năm">
     <input id="genres" placeholder="Thể loại (cách nhau dấu phẩy)">
@@ -26,7 +29,9 @@
     <input id="videoUrl" placeholder="Video chính (YouTube/MP4/Drive)">
     <textarea id="episodes" placeholder="Danh sách tập (mỗi dòng: Tập 1:https://...)"></textarea>
     <textarea id="description" placeholder="Mô tả"></textarea>
-    <button onclick="addMovie()">➕ Thêm phim</button>
+    <button class="add-btn" id="saveBtn" onclick="addMovie()">➕ Lưu phim</button>
+    <button class="add-btn" style="display:none" id="updateBtn" onclick="updateMovie()">💾 Cập nhật phim</button>
+    <button onclick="resetForm()">↩️ Hủy</button>
 
     <h2>Danh sách phim</h2>
     <div class="movie-list" id="movieList"></div>
@@ -38,8 +43,8 @@
 
   <script>
     let movies = [];
+    let editingId = null;
 
-    // Load dữ liệu từ movies.json
     async function loadMovies(){
       try{
         const res = await fetch("movies.json");
@@ -51,7 +56,7 @@
       }
     }
 
-    function addMovie(){
+    function getFormData(){
       const title=document.getElementById("title").value.trim();
       const year=document.getElementById("year").value.trim();
       const genres=document.getElementById("genres").value.split(",").map(g=>g.trim()).filter(Boolean);
@@ -64,15 +69,42 @@
         return {name:l.slice(0,idx).trim(),url:l.slice(idx+1).trim()};
       }).filter(Boolean);
 
-      if(!poster.startsWith("http")){
-        poster = poster.replace(/^\.?\//,""); 
-      }
+      if(!poster.startsWith("http")) poster = poster.replace(/^\.?\//,""); 
+      return {title,year,genres,poster,videoUrl,episodes,description};
+    }
 
-      movies.push({id:Date.now(),title,year,genres,poster,videoUrl,episodes,description});
+    function addMovie(){
+      const data = getFormData();
+      movies.push({id:Date.now(), ...data});
       renderMovies();
       updateOutput();
+      resetForm();
+    }
 
-      document.querySelectorAll("input,textarea").forEach(el=>el.value="");
+    function editMovie(id){
+      const m = movies.find(x=>x.id===id);
+      if(!m) return;
+      editingId = id;
+
+      document.getElementById("title").value = m.title;
+      document.getElementById("year").value = m.year;
+      document.getElementById("genres").value = m.genres.join(", ");
+      document.getElementById("poster").value = m.poster;
+      document.getElementById("videoUrl").value = m.videoUrl;
+      document.getElementById("description").value = m.description;
+      document.getElementById("episodes").value = (m.episodes||[]).map(ep=>`${ep.name}:${ep.url}`).join("\n");
+
+      document.getElementById("formTitle").textContent="✏️ Sửa phim";
+      document.getElementById("saveBtn").style.display="none";
+      document.getElementById("updateBtn").style.display="inline-block";
+    }
+
+    function updateMovie(){
+      const data = getFormData();
+      movies = movies.map(m=> m.id===editingId ? {...m, ...data} : m);
+      renderMovies();
+      updateOutput();
+      resetForm();
     }
 
     function deleteMovie(id){
@@ -86,7 +118,10 @@
       list.innerHTML = movies.map(m=>`
         <div class="movie-item">
           <span class="movie-title">${m.title} (${m.year})</span>
-          <button class="delete-btn" onclick="deleteMovie(${m.id})">❌ Xoá</button>
+          <div class="btn-group">
+            <button class="edit-btn" onclick="editMovie(${m.id})">✏️ Sửa</button>
+            <button class="delete-btn" onclick="deleteMovie(${m.id})">❌ Xoá</button>
+          </div>
         </div>
       `).join("");
     }
@@ -103,6 +138,14 @@
       a.download = "movies.json";
       a.click();
       URL.revokeObjectURL(url);
+    }
+
+    function resetForm(){
+      editingId=null;
+      document.querySelectorAll("input,textarea").forEach(el=>el.value="");
+      document.getElementById("formTitle").textContent="➕ Thêm phim mới";
+      document.getElementById("saveBtn").style.display="inline-block";
+      document.getElementById("updateBtn").style.display="none";
     }
 
     loadMovies();
