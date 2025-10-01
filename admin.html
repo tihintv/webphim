@@ -5,7 +5,7 @@
   <title>Admin WebPhim</title>
   <style>
     body{font-family:sans-serif;background:#111;color:#fff;display:flex;justify-content:center;padding:20px}
-    .box{width:800px;background:#1a1a1a;padding:20px;border-radius:10px}
+    .box{width:850px;background:#1a1a1a;padding:20px;border-radius:10px}
     input,textarea{width:100%;margin:6px 0;padding:8px;border-radius:6px;border:none;background:#222;color:#fff}
     button{margin-top:6px;padding:8px 12px;border:none;border-radius:6px;color:#fff;cursor:pointer}
     button.add-btn{background:#3b82f6}
@@ -21,6 +21,7 @@
     .episode-item input{flex:1}
     .episode-item button{margin-top:0}
     #posterPreview{max-width:150px;margin-top:6px;border-radius:8px}
+    .note{background:#333;padding:10px;border-radius:6px;margin-top:10px;font-size:14px;color:#ffcc00}
   </style>
 </head>
 <body>
@@ -53,6 +54,10 @@
     <h3>Dữ liệu JSON (copy hoặc tải xuống)</h3>
     <pre id="output"></pre>
     <button class="download-btn" onclick="downloadJSON()">💾 Tải movies.json</button>
+    <div class="note">
+      ⚠️ Lưu ý: Sau khi tải <b>movies.json</b> về máy, bạn phải upload file này lên GitHub repo 
+      (<code>tihintv/webphim/movies.json</code>) để lưu thay đổi vĩnh viễn.
+    </div>
   </div>
 
   <script>
@@ -132,7 +137,6 @@
       document.getElementById("videoUrl").value=m.videoUrl;
       document.getElementById("description").value=m.description;
 
-      // episodes
       document.getElementById("episodesContainer").innerHTML="";
       (m.episodes||[]).forEach(ep=>addEpisodeField(ep.name,ep.url));
 
