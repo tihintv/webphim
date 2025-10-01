@@ -2,14 +2,30 @@
   {
     "id": 1,
     "title": "Devil May Cry",
-    "year": "2025",
-    "genres": ["Anime"],
+    "year": "2007",
+    "genres": ["Anime", "Action"],
     "poster": "posters/devilmaycry.jpg",
-    "videoUrl": "https://drive.google.com/file/d/1y3lsCkdN6A88ryL8PYVjjmnqsetoyfOW/preview",
+    "videoUrl": "https://www.youtube.com/watch?v=l3UuGPCCB2k",
     "episodes": [
-      {"name": "Tập 1", "url": "https://drive.google.com/file/d/1y3lsCkdN6A88ryL8PYVjjmnqsetoyfOW/preview"},
-      {"name": "Tập 2", "url": "https://drive.google.com/file/d/1PkE7bOTbY8fE3WdXZgY7hTQ6700jHbvZ/preview"}
+      {
+        "name": "Tập 1",
+        "url": "https://www.youtube.com/watch?v=l3UuGPCCB2k"
+      },
+      {
+        "name": "Tập 2",
+        "url": "https://www.youtube.com/watch?v=EccxPvZQznQ"
+      }
     ],
-    "description": "Một anime hành động nổi tiếng."
+    "description": "Anime hành động nổi tiếng, theo chân Dante trong cuộc chiến chống quỷ dữ."
+  },
+  {
+    "id": 2,
+    "title": "Inception",
+    "year": "2010",
+    "genres": ["Sci-Fi", "Thriller"],
+    "poster": "posters/inception.jpg",
+    "videoUrl": "https://drive.google.com/file/d/1y3lsCkdN6A88ryL8PYVjjmnqsetoyfOW/preview",
+    "episodes": [],
+    "description": "Một siêu trộm xâm nhập giấc mơ để đánh cắp ý tưởng, bộ phim kinh điển của Christopher Nolan."
   }
 ]
