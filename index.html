@@ -46,6 +46,15 @@
 
   <script>
     let movies=[];
+    const BASE = "https://tihintv.github.io/webphim/";
+
+    // Hàm chuẩn hoá đường dẫn poster
+    function fixPoster(poster){
+      if(!poster) return "";
+      if(poster.startsWith("http")) return poster;
+      return BASE + poster.replace(/^\.?\//,""); 
+    }
+
     async function loadMovies(){
       try{
         const res=await fetch("movies.json");
@@ -68,19 +77,21 @@
     const player=document.getElementById("player");
 
     function render(list){
-      grid.innerHTML=list.map(m=>`
-        <div class="card" data-id="${m.id}">
-          <img class="poster" src="${m.poster}" alt="${m.title}" onerror="this.src='https://placehold.co/200x300?text=${m.title}'">
-          <div class="content"><h3>${m.title}</h3><p>${m.year}</p></div>
-        </div>
-      `).join("");
+      grid.innerHTML=list.map(m=>{
+        const poster=fixPoster(m.poster);
+        return `
+          <div class="card" data-id="${m.id}">
+            <img class="poster" src="${poster}" alt="${m.title}" onerror="this.src='https://placehold.co/200x300?text=${m.title}'">
+            <div class="content"><h3>${m.title}</h3><p>${m.year}</p></div>
+          </div>`;
+      }).join("");
       document.querySelectorAll(".card").forEach(c=>{
         c.onclick=()=>openModal(list.find(x=>x.id==c.dataset.id));
       });
     }
 
     function openModal(m){
-      mPoster.src=m.poster;
+      mPoster.src=fixPoster(m.poster);
       mTitle.textContent=m.title;
       mYear.textContent="Năm: "+(m.year||"");
       mGenres.innerHTML=(m.genres||[]).map(g=>`<span>${g}</span>`).join(", ");
@@ -100,7 +111,7 @@
 
     function embed(url){
       if(url.includes("youtube")) return `<iframe src="${url.replace("watch?v=","embed/")}" allowfullscreen></iframe>`;
-      if(url.includes("drive.google.com")) return `<iframe src="https://drive.google.com/file/d/${url.split("/d/")[1].split("/")[0]}/preview"></iframe>`;
+      if(url.includes("drive.google.com")) return `<iframe src="${url}" allow="autoplay"></iframe>`;
       if(url.endsWith(".mp4")) return `<video src="${url}" controls autoplay></video>`;
       return `<a href="${url}" target="_blank">Mở video</a>`;
     }
