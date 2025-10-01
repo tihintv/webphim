@@ -177,14 +177,14 @@
 
     function renderMovies(movies) {
       moviesContainer.innerHTML = "";
-      movies.forEach((movie, index) => {
+      movies.forEach((movie) => {
         const card = document.createElement("div");
         card.className = "movie-card";
         card.innerHTML = `
           <img src="${movie.poster}" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/200x300?text=${movie.title}'">
           <div class="movie-info">
             <h3>${movie.title}</h3>
-            <p>${movie.genre}</p>
+            <p>${movie.genres ? movie.genres.join(", ") : ""}</p>
             <p>${movie.year}</p>
           </div>
         `;
@@ -197,13 +197,13 @@
       modalPoster.src = movie.poster;
       modalTitle.textContent = movie.title;
       modalYear.textContent = movie.year;
-      modalGenre.textContent = movie.genre;
+      modalGenre.textContent = movie.genres ? movie.genres.join(", ") : "";
       modalDescription.textContent = movie.description || "";
       
       // Nút xem phim chính
-      if (movie.video) {
+      if (movie.videoUrl) {
         watchBtn.style.display = "inline-block";
-        watchBtn.onclick = () => window.open(movie.video, "_blank");
+        watchBtn.onclick = () => window.open(movie.videoUrl, "_blank");
       } else {
         watchBtn.style.display = "none";
       }
@@ -237,7 +237,7 @@
       const keyword = e.target.value.toLowerCase();
       const filtered = allMovies.filter(m =>
         m.title.toLowerCase().includes(keyword) ||
-        m.genre.toLowerCase().includes(keyword)
+        (m.genres && m.genres.join(", ").toLowerCase().includes(keyword))
       );
       renderMovies(filtered);
     });
