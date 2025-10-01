@@ -17,6 +17,7 @@
     .movie-item{background:#222;padding:10px;margin:6px 0;border-radius:6px;display:flex;justify-content:space-between;align-items:center}
     .movie-title{font-weight:bold}
     .btn-group{display:flex;gap:6px}
+    #posterPreview{max-width:150px;margin-top:6px;border-radius:8px}
   </style>
 </head>
 <body>
@@ -25,7 +26,13 @@
     <input id="title" placeholder="Tên phim">
     <input id="year" placeholder="Năm">
     <input id="genres" placeholder="Thể loại (cách nhau dấu phẩy)">
+
+    <!-- Chọn file poster -->
+    <label>Poster:</label>
+    <input type="file" id="posterFile" accept="image/*" onchange="handlePosterUpload(event)">
     <input id="poster" placeholder="Poster (ví dụ: posters/abc.jpg)">
+    <img id="posterPreview" src="" alt="Preview poster">
+
     <input id="videoUrl" placeholder="Video chính (YouTube/MP4/Drive)">
     <textarea id="episodes" placeholder="Danh sách tập (mỗi dòng: Tập 1:https://...)"></textarea>
     <textarea id="description" placeholder="Mô tả"></textarea>
@@ -53,6 +60,17 @@
         updateOutput();
       }catch(e){
         console.error("Không load được movies.json", e);
+      }
+    }
+
+    // Xử lý upload poster
+    function handlePosterUpload(e){
+      const file = e.target.files[0];
+      if(file){
+        const preview=document.getElementById("posterPreview");
+        preview.src=URL.createObjectURL(file);
+        // Gợi ý đường dẫn để bạn upload lên GitHub
+        document.getElementById("poster").value="posters/"+file.name;
       }
     }
 
@@ -143,6 +161,7 @@
     function resetForm(){
       editingId=null;
       document.querySelectorAll("input,textarea").forEach(el=>el.value="");
+      document.getElementById("posterPreview").src="";
       document.getElementById("formTitle").textContent="➕ Thêm phim mới";
       document.getElementById("saveBtn").style.display="inline-block";
       document.getElementById("updateBtn").style.display="none";
