@@ -1,36 +1,86 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
   <title>Trang Admin — Quản lý phim</title>
   <style>
-    body { margin:0; font-family: system-ui, sans-serif; background:#0b0d10; color:#e8eef5; }
-    .container { max-width:600px; margin:20px auto; background:#11151b; padding:20px; border-radius:12px; }
-    h1 { text-align:center; margin-bottom:20px; }
-    form { display:flex; flex-direction:column; gap:10px; }
-    input, textarea { padding:10px; border-radius:8px; border:1px solid #1c222b; background:#0b0d10; color:#e8eef5; }
-    button { padding:10px; border:none; border-radius:8px; background:#6ea8fe; color:white; font-weight:700; cursor:pointer; }
-    table { width:100%; margin-top:20px; border-collapse:collapse; }
-    th, td { border:1px solid #1c222b; padding:8px; text-align:left; }
-    th { background:#1b2838; }
-    td button { margin-right:6px; padding:4px 8px; font-size:12px; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      width: 600px;
+      background: #1a1d24;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    h1 {
+      text-align: center;
+    }
+    input, textarea {
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #0d0f12;
+      color: #fff;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #4a90e2;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background: #222;
+    }
+    tr:nth-child(even) {
+      background: #2a2d34;
+    }
+    .btn {
+      padding: 5px 10px;
+      margin: 2px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .edit { background: #4caf50; color: white; }
+    .delete { background: #f44336; color: white; }
+    .view { background: #8e44ad; color: white; }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Trang Admin — Quản lý phim</h1>
-    <form id="movieForm">
-      <input id="title" placeholder="Tên phim" required />
-      <input id="year" placeholder="Năm phát hành" required />
-      <input id="genres" placeholder="Thể loại (cách nhau bằng dấu phẩy)" />
-      <input id="poster" placeholder="Poster URL (https://... hoặc posters/tenanh.jpg)" />
-      <input id="video" placeholder="Video URL (YouTube, Vimeo, direct link, hoặc path trong repo)" />
-      <textarea id="desc" placeholder="Mô tả"></textarea>
-      <button type="submit">Lưu phim</button>
-    </form>
+    <input type="text" id="title" placeholder="Tên phim">
+    <input type="text" id="year" placeholder="Năm phát hành">
+    <input type="text" id="genres" placeholder="Thể loại (cách nhau bằng dấu phẩy)">
+    <input type="text" id="poster" placeholder="Poster URL (hoặc posters/tenanh.jpg)">
+    <input type="text" id="videoUrl" placeholder="Video URL (YouTube, Vimeo, direct link...)">
+    <textarea id="episodes" placeholder="Danh sách tập (vd: Tập 1:https://..., Tập 2:https://...)"></textarea>
+    <textarea id="description" placeholder="Mô tả"></textarea>
+    <button onclick="saveMovie()">Lưu phim</button>
 
-    <table id="moviesTable">
+    <table>
       <thead>
         <tr>
           <th>Tên phim</th>
@@ -40,99 +90,76 @@
           <th>Hành động</th>
         </tr>
       </thead>
-      <tbody></tbody>
+      <tbody id="movieTable"></tbody>
     </table>
   </div>
 
   <script>
-    const STORAGE_KEY = "movies";
-    const BASE_URL = "https://tihintv.github.io/webphim/";
+    function loadMovies() {
+      return JSON.parse(localStorage.getItem("movies")) || [];
+    }
 
-    let movies = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    let editIndex = -1;
-
-    function saveMovies() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(movies));
+    function saveMovies(movies) {
+      localStorage.setItem("movies", JSON.stringify(movies));
     }
 
     function renderTable() {
-      const tbody = document.querySelector("#moviesTable tbody");
-      tbody.innerHTML = "";
-      movies.forEach((m, idx) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
+      const movies = loadMovies();
+      const table = document.getElementById("movieTable");
+      table.innerHTML = movies.map((m, i) => `
+        <tr>
           <td>${m.title}</td>
           <td>${m.year}</td>
-          <td>${Array.isArray(m.genres) ? m.genres.join(", ") : ""}</td>
-          <td>${m.videoUrl ? `<a href="${m.videoUrl}" target="_blank">Xem</a>` : ""}</td>
+          <td>${m.genres.join(", ")}</td>
+          <td>${m.videoUrl ? `<a href="${m.videoUrl}" target="_blank" class="btn view">Xem</a>` : ''}</td>
           <td>
-            <button onclick="editMovie(${idx})">Sửa</button>
-            <button onclick="deleteMovie(${idx})">Xóa</button>
+            <button class="btn edit" onclick="editMovie(${i})">Sửa</button>
+            <button class="btn delete" onclick="deleteMovie(${i})">Xóa</button>
           </td>
-        `;
-        tbody.appendChild(tr);
-      });
+        </tr>
+      `).join("");
     }
 
-    document.getElementById("movieForm").addEventListener("submit", e => {
-      e.preventDefault();
-      const titleEl = document.getElementById("title");
-      const yearEl = document.getElementById("year");
-      const genresEl = document.getElementById("genres");
-      const posterEl = document.getElementById("poster");
-      const videoEl = document.getElementById("video");
-      const descEl = document.getElementById("desc");
+    function saveMovie() {
+      const title = document.getElementById("title").value;
+      const year = document.getElementById("year").value;
+      const genres = document.getElementById("genres").value.split(",").map(g => g.trim());
+      const poster = document.getElementById("poster").value;
+      const videoUrl = document.getElementById("videoUrl").value;
+      const episodes = document.getElementById("episodes").value
+        .split(",")
+        .map(e => {
+          const parts = e.split(":");
+          return { name: parts[0]?.trim(), url: parts[1]?.trim() };
+        })
+        .filter(e => e.name && e.url);
+      const description = document.getElementById("description").value;
 
-      // Xử lý poster: nếu không bắt đầu bằng http -> thêm prefix BASE_URL
-      const posterInput = posterEl.value.trim();
-      let posterUrl = posterInput;
-      if (posterInput && !posterInput.startsWith("http")) {
-        posterUrl = BASE_URL + posterInput;
-      }
-
-      // Xử lý video: nếu không bắt đầu bằng http -> thêm prefix BASE_URL
-      const videoInput = videoEl.value.trim();
-      let videoUrl = videoInput;
-      if (videoInput && !videoInput.startsWith("http")) {
-        videoUrl = BASE_URL + videoInput;
-      }
-
-      const movie = {
-        id: Date.now(),
-        title: titleEl.value.trim(),
-        year: yearEl.value.trim(),
-        genres: genresEl.value.split(",").map(g => g.trim()).filter(Boolean),
-        poster: posterUrl,
-        videoUrl: videoUrl,
-        description: descEl.value.trim()
-      };
-
-      if (editIndex >= 0) {
-        movies[editIndex] = movie;
-        editIndex = -1;
-      } else {
-        movies.push(movie);
-      }
-
-      saveMovies();
+      let movies = loadMovies();
+      movies.push({ id: Date.now(), title, year, genres, poster, videoUrl, episodes, description });
+      saveMovies(movies);
       renderTable();
-      e.target.reset();
-    });
+    }
 
-    function editMovie(idx) {
-      const m = movies[idx];
+    function deleteMovie(index) {
+      let movies = loadMovies();
+      movies.splice(index, 1);
+      saveMovies(movies);
+      renderTable();
+    }
+
+    function editMovie(index) {
+      let movies = loadMovies();
+      const m = movies[index];
       document.getElementById("title").value = m.title;
       document.getElementById("year").value = m.year;
       document.getElementById("genres").value = m.genres.join(", ");
-      document.getElementById("poster").value = m.poster.includes(BASE_URL) ? m.poster.replace(BASE_URL, "") : m.poster;
-      document.getElementById("video").value = m.videoUrl.includes(BASE_URL) ? m.videoUrl.replace(BASE_URL, "") : m.videoUrl;
-      document.getElementById("desc").value = m.description;
-      editIndex = idx;
-    }
-
-    function deleteMovie(idx) {
-      movies.splice(idx, 1);
-      saveMovies();
+      document.getElementById("poster").value = m.poster;
+      document.getElementById("videoUrl").value = m.videoUrl;
+      document.getElementById("episodes").value = (m.episodes || []).map(e => `${e.name}:${e.url}`).join(", ");
+      document.getElementById("description").value = m.description;
+      movies.splice(index, 1);
+      saveMovies(movies);
       renderTable();
     }
 
