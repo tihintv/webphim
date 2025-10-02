@@ -2,24 +2,48 @@
   {
     "id": 1,
     "title": "Devil May Cry",
-    "year": "2007",
+    "year": "2025",
     "genres": [
       "Anime",
       "Action"
     ],
     "poster": "posters/devilmaycry.jpg",
-    "videoUrl": "https://www.youtube.com/watch?v=l3UuGPCCB2k",
+    "videoUrl": "",
     "episodes": [
       {
         "name": "Tập 1",
-        "url": "https://www.youtube.com/watch?v=l3UuGPCCB2k"
+        "url": "https://drive.google.com/file/d/1y3lsCkdN6A88ryL8PYVjjmnqsetoyfOW/preview"
       },
       {
         "name": "Tập 2",
-        "url": "https://www.youtube.com/watch?v=EccxPvZQznQ"
+        "url": "https://drive.google.com/file/d/1PkE7bOTbY8fE3WdXZgY7hTQ6700jHbvZ/preview"
+      },
+      {
+        "name": "Tập 3",
+        "url": "https://drive.google.com/file/d/1fP3MIpFxIU59ZoFnAjX4i1JFMbH3rbIw/preview"
+      },
+      {
+        "name": "Tập 4",
+        "url": "https://drive.google.com/file/d/1OExtQXKwZ6bEoPRdcWqA8eUd7Nm2wsXB/preview"
+      },
+      {
+        "name": "Tập 5",
+        "url": "https://drive.google.com/file/d/15gvqwTomOzPmTbhd4li_U6nQZxDH7_yV/preview"
+      },
+      {
+        "name": "Tập 6",
+        "url": "https://drive.google.com/file/d/18SYPELjgGL1_DIpbe0YZoYiv0vdwLAG-/preview"
+      },
+      {
+        "name": "Tập 7",
+        "url": "https://drive.google.com/file/d/1CSlTpyzGq-qRfHkwyCIvLrn5qyxLjUYN/preview"
+      },
+      {
+        "name": "Tập 8",
+        "url": "https://drive.google.com/file/d/1pAw9V9Y_zREiRJ7oNZORj_ziWd_4hj8g/preview"
       }
     ],
-    "description": "Anime hành động nổi tiếng, theo chân Dante trong cuộc chiến chống quỷ dữ."
+    "description": "Khi một nhân vật phản diện bí ẩn đe dọa mở cánh cổng Địa ngục, một thợ săn quỷ đẹp trai như quỷ dữ có thể là hy vọng cứu rỗi tốt nhất thế giới. Anime hành động nổi tiếng, theo chân Dante trong cuộc chiến chống quỷ dữ."
   },
   {
     "id": 2,
