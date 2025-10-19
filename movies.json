@@ -47,16 +47,28 @@
   },
   {
     "id": 2,
-    "title": "Inception",
-    "year": "2010",
+    "title": "A Gatherer's Adventure in Isekai",
+    "year": "2025",
     "genres": [
-      "Sci-Fi",
-      "Thriller"
+      "Anime"
     ],
-    "poster": "posters/inception.jpg",
+    "poster": "posters/A-Gatherer's-Adventure-in-Isekai.jpg",
     "videoUrl": "https://drive.google.com/file/d/1y3lsCkdN6A88ryL8PYVjjmnqsetoyfOW/preview",
-    "episodes": [],
-    "description": "Một siêu trộm xâm nhập giấc mơ để đánh cắp ý tưởng, bộ phim kinh điển của Christopher Nolan."
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1cnKBrKNL-fZEbkvhRLj_NUF85_hiTlXM/preview"
+      },
+      {
+        "name": "Tập 2",
+        "url": "https://drive.google.com/file/d/1jlDayHvVEiABfQ0fLpgerlbv_NtiKspB/preview"
+      },
+      {
+        "name": "Tập 3",
+        "url": "https://drive.google.com/file/d/12RMZXOtydHZYO54LFDBBnXlz5pRGwpNX/preview"
+      }
+    ],
+    "description": "Takeru Kamishiro là một chàng trai bình thường với công việc văn phòng bình thường nhưng lại bị triệu hồi đến một thế giới khác. Takeru bắt đầu cuộc sống mới của mình tại \"Madeus\", một thế giới với kiếm và ma thuật, được trang bị đầy đủ các kỹ năng! Anh không chỉ sở hữu thể chất cường hóa và khả năng ma thuật tuyệt vời, mà còn có khả năng \"tìm kiếm\" những vật phẩm giá trị. Với những kỹ năng gian lận được trang bị, Takeru bắt đầu cuộc phiêu lưu mới của mình trong thế giới isekai mới!!"
   },
   {
     "id": 1759323515525,
