@@ -1,129 +1,46 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>WebPhim</title>
   <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
+    :root{
+      --bg:#111; --panel:#1a1a1a; --text:#fff; --muted:#aaa; --brand:#007bff; --badge:#0ea5e9;
     }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px;
-      background: #000;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 22px;
-      display: flex;
-      align-items: center;
-    }
-    header h1::before {
-      content: "🎬";
-      margin-right: 8px;
-    }
-    #searchInput {
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: none;
-      outline: none;
-    }
-    .movies-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 16px;
-      padding: 20px;
-    }
-    .movie-card {
-      background: #1a1a1a;
-      border-radius: 10px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    .movie-card:hover {
-      transform: scale(1.05);
-    }
-    .movie-card img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-      display: block;
-    }
-    .movie-info {
-      padding: 10px;
-    }
-    .movie-info h3 {
-      margin: 0;
-      font-size: 16px;
-    }
-    .movie-info p {
-      margin: 5px 0 0;
-      font-size: 14px;
-      color: #aaa;
-    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+    header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#000}
+    header h1{margin:0;font-size:20px;display:flex;align-items:center;gap:8px}
+    header h1::before{content:"🎬"}
+    #searchInput{padding:8px 12px;border-radius:8px;border:none;outline:none;background:#1e1e1e;color:#fff;width:260px}
+    .movies-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;padding:20px}
+    .movie-card{background:var(--panel);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .18s ease;position:relative}
+    .movie-card:hover{transform:translateY(-2px)}
+    .movie-card img{width:100%;height:300px;object-fit:cover;display:block;background:#222}
+    .movie-info{padding:12px}
+    .movie-info h3{margin:0 0 6px 0;font-size:16px;line-height:1.25}
+    .movie-info p{margin:4px 0;color:var(--muted);font-size:13px}
+    .epi-badge{display:inline-block;background:var(--badge);color:#fff;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:600;margin-top:5px}
     /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .modal-content {
-      background: #222;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 700px;
-      width: 90%;
-      display: flex;
-      gap: 20px;
-      position: relative;
-    }
-    .modal img {
-      width: 200px;
-      border-radius: 10px;
-    }
-    .modal-details {
-      flex: 1;
-    }
-    .close-btn {
-      position: absolute;
-      top: 10px; right: 15px;
-      cursor: pointer;
-      font-size: 20px;
-      color: #fff;
-    }
-    .btn-watch, .btn-episode {
-      display: inline-block;
-      margin: 5px 5px 5px 0;
-      padding: 6px 12px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      background: #007bff;
-      color: #fff;
-      font-size: 14px;
-    }
-    .btn-episode {
-      background: #444;
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);justify-content:center;align-items:center;z-index:1000;padding:16px}
+    .modal-content{background:#222;border-radius:14px;padding:20px;max-width:800px;width:100%;display:flex;gap:18px;position:relative}
+    .modal img{width:220px;border-radius:10px;object-fit:cover}
+    .modal-details{flex:1}
+    .close-btn{position:absolute;top:10px;right:14px;cursor:pointer;font-size:22px;color:#fff}
+    .btn-watch,.btn-episode{display:inline-block;margin:5px 6px 0 0;padding:8px 12px;border:none;border-radius:8px;cursor:pointer;color:#fff;background:var(--brand);font-size:14px}
+    .btn-episode{background:#444}
+    @media (max-width:700px){
+      .modal-content{flex-direction:column;align-items:center}
+      .modal img{width:70%}
+      #searchInput{width:55%}
     }
   </style>
 </head>
 <body>
   <header>
     <h1>WebPhim</h1>
-    <input type="text" id="searchInput" placeholder="Tìm theo tên, thể loại...">
+    <input id="searchInput" type="text" placeholder="Tìm theo tên, thể loại..." />
   </header>
 
   <main>
@@ -134,17 +51,17 @@
   <div class="modal" id="movieModal">
     <div class="modal-content">
       <span class="close-btn" id="closeModal">&times;</span>
-      <img id="modalPoster" src="" alt="Poster">
+      <img id="modalPoster" src="" alt="Poster" />
       <div class="modal-details">
         <h2 id="modalTitle"></h2>
         <p><strong>Năm:</strong> <span id="modalYear"></span></p>
         <p id="modalGenre"></p>
         <button id="watchBtn" class="btn-watch">▶ Xem phim</button>
-        <div>
+        <div style="margin-top:10px">
           <h3>Tập phim</h3>
           <div id="episodesList"></div>
         </div>
-        <p id="modalDescription" style="margin-top:10px; color:#ccc;"></p>
+        <p id="modalDescription" style="margin-top:12px;color:#ccc"></p>
       </div>
     </div>
   </div>
@@ -165,9 +82,18 @@
 
     let allMovies = [];
 
+    // Nhãn tập phim
+    function getEpisodeLabel(movie){
+      if (Array.isArray(movie.episodes) && movie.episodes.length > 0) {
+        return `${movie.episodes.length} tập`;
+      }
+      if (movie.videoUrl) return "Full";
+      return "";
+    }
+
     async function loadMovies() {
       try {
-        const res = await fetch("movies.json");
+        const res = await fetch("movies.json", {cache: "no-store"});
         allMovies = await res.json();
         renderMovies(allMovies);
       } catch (error) {
@@ -178,14 +104,17 @@
     function renderMovies(movies) {
       moviesContainer.innerHTML = "";
       movies.forEach((movie) => {
+        const badge = getEpisodeLabel(movie);
         const card = document.createElement("div");
         card.className = "movie-card";
         card.innerHTML = `
-          <img src="${movie.poster}" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/200x300?text=${movie.title}'">
+          <img src="${movie.poster}" alt="${movie.title}"
+               onerror="this.src='https://via.placeholder.com/400x600?text=${encodeURIComponent(movie.title)}'">
           <div class="movie-info">
             <h3>${movie.title}</h3>
             <p>${movie.genres ? movie.genres.join(", ") : ""}</p>
-            <p>${movie.year}</p>
+            <p>${movie.year ?? ""}</p>
+            ${badge ? `<span class="epi-badge">${badge}</span>` : ""}
           </div>
         `;
         card.addEventListener("click", () => openModal(movie));
@@ -196,11 +125,10 @@
     function openModal(movie) {
       modalPoster.src = movie.poster;
       modalTitle.textContent = movie.title;
-      modalYear.textContent = movie.year;
+      modalYear.textContent = movie.year ?? "";
       modalGenre.textContent = movie.genres ? movie.genres.join(", ") : "";
       modalDescription.textContent = movie.description || "";
-      
-      // Nút xem phim chính
+
       if (movie.videoUrl) {
         watchBtn.style.display = "inline-block";
         watchBtn.onclick = () => window.open(movie.videoUrl, "_blank");
@@ -208,14 +136,16 @@
         watchBtn.style.display = "none";
       }
 
-      // Hiển thị danh sách tập
       episodesList.innerHTML = "";
       if (movie.episodes && movie.episodes.length > 0) {
         movie.episodes.forEach((ep, i) => {
           const epBtn = document.createElement("button");
           epBtn.className = "btn-episode";
           epBtn.textContent = ep.name || `Tập ${i + 1}`;
-          epBtn.onclick = () => window.open(ep.url, "_blank");
+          epBtn.onclick = (e) => {
+            e.stopPropagation();
+            window.open(ep.url, "_blank");
+          };
           episodesList.appendChild(epBtn);
         });
       } else {
@@ -225,19 +155,14 @@
       modal.style.display = "flex";
     }
 
-    closeModal.onclick = () => {
-      modal.style.display = "none";
-    };
-    window.onclick = (e) => {
-      if (e.target === modal) modal.style.display = "none";
-    };
+    closeModal.onclick = () => { modal.style.display = "none"; };
+    window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
 
-    // Tìm kiếm
     searchInput.addEventListener("input", (e) => {
-      const keyword = e.target.value.toLowerCase();
+      const kw = e.target.value.toLowerCase();
       const filtered = allMovies.filter(m =>
-        m.title.toLowerCase().includes(keyword) ||
-        (m.genres && m.genres.join(", ").toLowerCase().includes(keyword))
+        m.title.toLowerCase().includes(kw) ||
+        (m.genres && m.genres.join(", ").toLowerCase().includes(kw))
       );
       renderMovies(filtered);
     });
