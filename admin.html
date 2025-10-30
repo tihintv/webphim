@@ -1,202 +1,217 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin WebPhim</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TiHinTV – Admin</title>
   <style>
-    body{font-family:sans-serif;background:#111;color:#fff;display:flex;justify-content:center;padding:20px}
-    .box{width:850px;background:#1a1a1a;padding:20px;border-radius:10px}
-    input,textarea{width:100%;margin:6px 0;padding:8px;border-radius:6px;border:none;background:#222;color:#fff}
-    button{margin-top:6px;padding:8px 12px;border:none;border-radius:6px;color:#fff;cursor:pointer}
-    button.add-btn{background:#3b82f6}
-    button.delete-btn{background:#e11d48}
-    button.edit-btn{background:#f59e0b}
-    button.download-btn{background:#10b981}
-    pre{background:#000;padding:10px;border-radius:6px;white-space:pre-wrap;max-height:300px;overflow:auto}
-    .movie-list{margin-top:20px}
-    .movie-item{background:#222;padding:10px;margin:6px 0;border-radius:6px;display:flex;justify-content:space-between;align-items:center}
-    .movie-title{font-weight:bold}
-    .btn-group{display:flex;gap:6px}
-    .episode-item{display:flex;gap:6px;margin:5px 0}
-    .episode-item input{flex:1}
-    .episode-item button{margin-top:0}
-    #posterPreview{max-width:150px;margin-top:6px;border-radius:8px}
-    .note{background:#333;padding:10px;border-radius:6px;margin-top:10px;font-size:14px;color:#ffcc00}
+    :root{--bg:#0f1115;--panel:#171923;--text:#e5e7eb;--muted:#a0aec0;--brand:#3b82f6;--danger:#ef4444;--ok:#10b981}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Segoe UI,Arial}
+    header{padding:16px 20px;background:#0b0d12;border-bottom:1px solid #111}
+    h1{margin:0;font-size:22px}
+    main{max-width:980px;margin:18px auto;padding:0 16px}
+    .card{background:var(--panel);border-radius:14px;padding:16px;margin-bottom:16px}
+    label{display:block;margin:8px 0 6px;color:#cbd5e1;font-size:14px}
+    input,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1f2430;background:#11131a;color:#fff}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 12px;border:none;border-radius:10px;color:#fff;background:var(--brand);cursor:pointer}
+    .btn.secondary{background:#374151}
+    .btn.danger{background:var(--danger)}
+    .btn.small{padding:5px 8px;font-size:13px;border-radius:8px}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{padding:10px;border-bottom:1px solid #202532;font-size:14px}
+    .pill{display:inline-block;padding:3px 8px;border-radius:999px;background:#26314a;color:#c7d2fe;font-size:12px}
+    .ep-row{display:flex;gap:8px;margin-bottom:8px}
+    .hint{color:var(--muted);font-size:12px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   </style>
 </head>
 <body>
-  <div class="box">
-    <h2 id="formTitle">➕ Thêm phim mới</h2>
-    <input id="title" placeholder="Tên phim">
-    <input id="year" placeholder="Năm">
-    <input id="genres" placeholder="Thể loại (cách nhau dấu phẩy)">
+<header><h1>TiHinTV – Admin</h1></header>
+<main>
+  <div class="card">
+    <h2>Thêm / sửa phim</h2>
+    <div class="row">
+      <div>
+        <label>Tên phim</label>
+        <input id="title" placeholder="Ví dụ: Devil May Cry">
+      </div>
+      <div>
+        <label>Năm</label>
+        <input id="year" placeholder="2025">
+      </div>
+    </div>
 
-    <!-- Poster upload -->
-    <label>Poster:</label>
-    <input type="file" id="posterFile" accept="image/*" onchange="handlePosterUpload(event)">
-    <input id="poster" placeholder="Poster (ví dụ: posters/abc.jpg)">
-    <img id="posterPreview" src="" alt="Preview poster">
+    <div class="row">
+      <div>
+        <label>Thể loại (cách nhau bằng dấu phẩy)</label>
+        <input id="genres" placeholder="Anime, Action">
+      </div>
+      <div>
+        <label>Poster (đường dẫn)</label>
+        <input id="poster" placeholder="posters/abc.jpg">
+        <div class="hint">Gợi ý: up ảnh vào thư mục <code>posters/</code> trong repo rồi điền đường dẫn.</div>
+      </div>
+    </div>
 
-    <input id="videoUrl" placeholder="Video chính (YouTube/MP4/Drive)">
-    
-    <h3>Tập phim</h3>
-    <div id="episodesContainer"></div>
-    <button onclick="addEpisodeField()">➕ Thêm tập</button>
+    <label>Video chính (YouTube/Drive/mp4…)</label>
+    <input id="videoUrl" placeholder="https://...">
 
-    <textarea id="description" placeholder="Mô tả"></textarea>
-    <button class="add-btn" id="saveBtn" onclick="addMovie()">➕ Lưu phim</button>
-    <button class="add-btn" style="display:none" id="updateBtn" onclick="updateMovie()">💾 Cập nhật phim</button>
-    <button onclick="resetForm()">↩️ Hủy</button>
+    <label>Mô tả</label>
+    <textarea id="description" rows="3" placeholder="Mô tả phim"></textarea>
 
-    <h2>Danh sách phim</h2>
-    <div class="movie-list" id="movieList"></div>
+    <div style="margin-top:12px">
+      <h3>Tập phim</h3>
+      <div id="episodes"></div>
+      <button class="btn small" id="btnAddEp">+ Thêm tập</button>
+    </div>
 
-    <h3>Dữ liệu JSON (copy hoặc tải xuống)</h3>
-    <pre id="output"></pre>
-    <button class="download-btn" onclick="downloadJSON()">💾 Tải movies.json</button>
-    <div class="note">
-      ⚠️ Lưu ý: Sau khi tải <b>movies.json</b> về máy, bạn phải upload file này lên GitHub repo 
-      (<code>tihintv/webphim/movies.json</code>) để lưu thay đổi vĩnh viễn.
+    <div style="margin-top:12px;display:flex;gap:8px">
+      <button class="btn" id="btnSave">💾 Lưu phim</button>
+      <button class="btn secondary" id="btnReset">↺ Reset form</button>
     </div>
   </div>
 
-  <script>
-    let movies = [];
-    let editingId = null;
+  <div class="card">
+    <h2>Danh sách phim</h2>
+    <table id="tblMovies">
+      <thead>
+        <tr><th>Tên phim</th><th>Năm</th><th>Thể loại</th><th>Updated</th><th>Hành động</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
-    async function loadMovies(){
-      try{
-        const res = await fetch("movies.json");
-        movies = await res.json();
-        renderMovies();
-        updateOutput();
-      }catch(e){
-        console.error("Không load được movies.json", e);
-      }
+  <div class="card">
+    <h2>Dữ liệu JSON</h2>
+    <div class="hint">Sau khi chỉnh sửa, bấm <b>Tải movies.json</b> để tải file rồi upload lên <code>webphim/movies.json</code> trong GitHub.</div>
+    <textarea id="jsonBox" rows="10"></textarea>
+    <div style="margin-top:10px"><button id="btnDownload" class="btn">⬇ Tải movies.json</button></div>
+  </div>
+</main>
+
+<script>
+  const $ = (id)=>document.getElementById(id);
+  const titleEl = $('title'), yearEl=$('year'), genresEl=$('genres'), posterEl=$('poster'),
+        videoUrlEl=$('videoUrl'), descEl=$('description'), episodesWrap=$('episodes'),
+        tblBody = $('tblMovies').querySelector('tbody'), jsonBox=$('jsonBox');
+
+  let movies = [];
+  let editingId = null;
+
+  async function loadMovies(){
+    try{
+      const res = await fetch('movies.json',{cache:'no-store'});
+      movies = await res.json();
+      renderTable();
+      jsonBox.value = JSON.stringify(movies,null,2);
+    }catch(e){
+      movies = [];
+      renderTable();
+      jsonBox.value = '[]';
     }
+  }
 
-    // Poster upload preview
-    function handlePosterUpload(e){
-      const file = e.target.files[0];
-      if(file){
-        document.getElementById("posterPreview").src=URL.createObjectURL(file);
-        document.getElementById("poster").value="posters/"+file.name;
-      }
-    }
-
-    // Episodes input
-    function addEpisodeField(name="", url=""){
-      const container = document.getElementById("episodesContainer");
-      const div=document.createElement("div");
-      div.className="episode-item";
-      div.innerHTML=`
-        <input type="text" placeholder="Tên tập" value="${name}">
-        <input type="text" placeholder="URL" value="${url}">
-        <button class="delete-btn" onclick="this.parentElement.remove()">❌</button>
+  function renderTable(){
+    tblBody.innerHTML = '';
+    movies.forEach(m=>{
+      const tr = document.createElement('tr');
+      const genres = m.genres ? m.genres.join(', ') : '';
+      const updated = m.updatedAt ? new Date(m.updatedAt).toLocaleString() : '-';
+      tr.innerHTML = `
+        <td>${m.title}</td>
+        <td>${m.year ?? ''}</td>
+        <td>${genres}</td>
+        <td>${updated}</td>
+        <td>
+          <button class="btn small" onclick="onEdit(${m.id})">Sửa</button>
+          <button class="btn small danger" onclick="onDel(${m.id})">Xoá</button>
+        </td>
       `;
-      container.appendChild(div);
-    }
+      tblBody.appendChild(tr);
+    });
+  }
 
-    function getEpisodesFromForm(){
-      const rows=document.querySelectorAll("#episodesContainer .episode-item");
-      return Array.from(rows).map(r=>{
-        const inputs=r.querySelectorAll("input");
-        return {name:inputs[0].value.trim(), url:inputs[1].value.trim()};
-      }).filter(ep=>ep.name && ep.url);
-    }
+  function makeEpisodeRow(ep={name:'Tập 1',url:''}){
+    const wrap = document.createElement('div');
+    wrap.className='ep-row';
+    wrap.innerHTML = `
+      <input class="ep-name" placeholder="Tên tập" value="${ep.name||''}" />
+      <input class="ep-url" placeholder="Link tập" value="${ep.url||''}" />
+      <button class="btn small danger">X</button>
+    `;
+    wrap.querySelector('button').onclick = ()=> wrap.remove();
+    return wrap;
+  }
 
-    function getFormData(){
-      const title=document.getElementById("title").value.trim();
-      const year=document.getElementById("year").value.trim();
-      const genres=document.getElementById("genres").value.split(",").map(g=>g.trim()).filter(Boolean);
-      let poster=document.getElementById("poster").value.trim();
-      const videoUrl=document.getElementById("videoUrl").value.trim();
-      const description=document.getElementById("description").value.trim();
-      const episodes=getEpisodesFromForm();
-      if(!poster.startsWith("http")) poster=poster.replace(/^\.?\//,"");
-      return {title,year,genres,poster,videoUrl,episodes,description};
-    }
+  function resetForm(){
+    editingId=null;
+    titleEl.value=''; yearEl.value=''; genresEl.value='';
+    posterEl.value=''; videoUrlEl.value=''; descEl.value='';
+    episodesWrap.innerHTML='';
+  }
 
-    function addMovie(){
-      const data=getFormData();
-      movies.push({id:Date.now(),...data});
-      renderMovies();
-      updateOutput();
-      resetForm();
-    }
+  $('btnAddEp').onclick = ()=> episodesWrap.appendChild(makeEpisodeRow());
 
-    function editMovie(id){
-      const m=movies.find(x=>x.id===id);
-      if(!m) return;
-      editingId=id;
+  $('btnReset').onclick = resetForm;
 
-      document.getElementById("title").value=m.title;
-      document.getElementById("year").value=m.year;
-      document.getElementById("genres").value=m.genres.join(", ");
-      document.getElementById("poster").value=m.poster;
-      document.getElementById("videoUrl").value=m.videoUrl;
-      document.getElementById("description").value=m.description;
+  $('btnSave').onclick = ()=>{
+    const title = titleEl.value.trim();
+    if(!title){ alert('Nhập tên phim'); return; }
+    const data = {
+      id: editingId ?? Date.now(),
+      title,
+      year: yearEl.value.trim() || '',
+      genres: (genresEl.value||'').split(',').map(s=>s.trim()).filter(Boolean),
+      poster: posterEl.value.trim(),
+      videoUrl: videoUrlEl.value.trim(),
+      description: descEl.value.trim(),
+      episodes: [...episodesWrap.querySelectorAll('.ep-row')].map((row,i)=>({
+        name: row.querySelector('.ep-name').value || `Tập ${i+1}`,
+        url: row.querySelector('.ep-url').value.trim()
+      })),
+      // cập nhật timestamp mỗi lần lưu / sửa / thêm tập
+      updatedAt: Date.now()
+    };
+    const idx = movies.findIndex(m=>m.id===data.id);
+    if(idx>=0) movies[idx]=data; else movies.push(data);
+    renderTable();
+    jsonBox.value = JSON.stringify(movies,null,2);
+    alert('Đã lưu vào bộ nhớ tạm. Hãy bấm "Tải movies.json" và upload file lên GitHub.');
+    resetForm();
+  };
 
-      document.getElementById("episodesContainer").innerHTML="";
-      (m.episodes||[]).forEach(ep=>addEpisodeField(ep.name,ep.url));
+  window.onEdit = (id)=>{
+    const m = movies.find(x=>x.id===id); if(!m) return;
+    editingId = m.id;
+    titleEl.value = m.title || '';
+    yearEl.value = m.year || '';
+    genresEl.value = (m.genres||[]).join(', ');
+    posterEl.value = m.poster || '';
+    videoUrlEl.value = m.videoUrl || '';
+    descEl.value = m.description || '';
+    episodesWrap.innerHTML='';
+    (m.episodes||[]).forEach(ep=> episodesWrap.appendChild(makeEpisodeRow(ep)));
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
 
-      document.getElementById("formTitle").textContent="✏️ Sửa phim";
-      document.getElementById("saveBtn").style.display="none";
-      document.getElementById("updateBtn").style.display="inline-block";
-    }
+  window.onDel = (id)=>{
+    if(!confirm('Xoá phim này?')) return;
+    movies = movies.filter(m=>m.id!==id);
+    renderTable();
+    jsonBox.value = JSON.stringify(movies,null,2);
+  };
 
-    function updateMovie(){
-      const data=getFormData();
-      movies=movies.map(m=>m.id===editingId?{...m,...data}:m);
-      renderMovies();
-      updateOutput();
-      resetForm();
-    }
+  $('btnDownload').onclick = ()=>{
+    const blob = new Blob([jsonBox.value],{type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'movies.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
 
-    function deleteMovie(id){
-      movies=movies.filter(m=>m.id!==id);
-      renderMovies();
-      updateOutput();
-    }
-
-    function renderMovies(){
-      const list=document.getElementById("movieList");
-      list.innerHTML=movies.map(m=>`
-        <div class="movie-item">
-          <span class="movie-title">${m.title} (${m.year})</span>
-          <div class="btn-group">
-            <button class="edit-btn" onclick="editMovie(${m.id})">✏️ Sửa</button>
-            <button class="delete-btn" onclick="deleteMovie(${m.id})">❌ Xoá</button>
-          </div>
-        </div>
-      `).join("");
-    }
-
-    function updateOutput(){
-      document.getElementById("output").textContent=JSON.stringify(movies,null,2);
-    }
-
-    function downloadJSON(){
-      const blob=new Blob([JSON.stringify(movies,null,2)],{type:"application/json"});
-      const url=URL.createObjectURL(blob);
-      const a=document.createElement("a");
-      a.href=url;
-      a.download="movies.json";
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function resetForm(){
-      editingId=null;
-      document.querySelectorAll("input,textarea").forEach(el=>el.value="");
-      document.getElementById("episodesContainer").innerHTML="";
-      document.getElementById("posterPreview").src="";
-      document.getElementById("formTitle").textContent="➕ Thêm phim mới";
-      document.getElementById("saveBtn").style.display="inline-block";
-      document.getElementById("updateBtn").style.display="none";
-    }
-
-    loadMovies();
-  </script>
+  loadMovies();
+</script>
 </body>
 </html>
