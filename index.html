@@ -5,36 +5,64 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TiHinTV</title>
   <style>
-    :root{--bg:#111;--panel:#1a1a1a;--text:#fff;--muted:#aaa;--brand:#007bff;--badge:#0ea5e9}
-    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
-    header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#000}
+    :root{
+      --bg:#111;--panel:#1a1a1a;--panel2:#16181f;--text:#fff;--muted:#9aa4b2;
+      --brand:#0ea5e9;--accent:#3b82f6;--border:#222533;--chip:#2c2f3a
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Arial,Helvetica,sans-serif}
+
+    /* HEADER */
+    header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#000;position:sticky;top:0;z-index:10}
     header h1{margin:0;font-size:20px;display:flex;align-items:center;gap:8px}
-    header h1::before{content:"🎬"} #searchInput{padding:8px 12px;border-radius:8px;border:none;outline:none;background:#1e1e1e;color:#fff;width:260px}
-    .section{padding:16px 18px}
+    header h1::before{content:"🎬"}
+    #searchInput{padding:10px 12px;border-radius:10px;border:none;outline:none;background:#1e1e1e;color:#fff;width:280px}
+    @media (max-width:680px){#searchInput{width:55%}}
+
+    /* SECTION TITLE */
+    .section{padding:12px 18px}
     .section h2{margin:0 0 10px;font-size:18px}
-    .updated-row{display:flex;gap:12px;overflow:auto;padding-bottom:6px}
-    .mini-card{min-width:180px;background:var(--panel);border-radius:12px;overflow:hidden;cursor:pointer}
-    .mini-card img{width:100%;height:230px;object-fit:cover;background:#222}
-    .mini-card .info{padding:8px}
-    .mini-card .title{margin:0;font-size:14px;line-height:1.3}
-    .mini-card .meta{margin:4px 0;color:var(--muted);font-size:12px}
-    .mini-card .tag{display:inline-block;margin-top:4px;background:var(--badge);padding:2px 6px;border-radius:999px;font-size:11px}
-    .movies-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;padding:16px 18px}
-    .movie-card{background:var(--panel);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .18s ease}
-    .movie-card:hover{transform:translateY(-2px)}
+
+    /* ==== COMPACT UPDATED LIST ==== */
+    #updatedRow{margin-top:6px}
+    .updated-list{display:flex;flex-direction:column;gap:8px}
+    .updated-item{
+      display:flex;align-items:center;gap:12px;background:var(--panel2);
+      border:1px solid var(--border);border-radius:10px;padding:10px 12px
+    }
+    .updated-time{width:56px;min-width:56px;text-align:right;color:var(--muted);font-weight:700}
+    .updated-title{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0;cursor:pointer}
+    .updated-title .name{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .updated-title .meta{color:#96a0ad;font-size:12px}
+    .updated-epbtn{
+      border:none;cursor:pointer;border-radius:8px;padding:6px 10px;
+      background:var(--chip);color:#cfe6ff;font-size:12px;font-weight:700
+    }
+    .updated-epbtn:hover{background:#3a3e4d}
+    @media (max-width:600px){
+      .updated-time{width:48px;min-width:48px}
+      .updated-epbtn{padding:6px 8px}
+    }
+
+    /* MOVIE GRID */
+    .movies-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;padding:0 18px 18px}
+    .movie-card{background:var(--panel);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}
+    .movie-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.35)}
     .movie-card img{width:100%;height:300px;object-fit:cover;background:#222}
     .movie-info{padding:12px}
     .movie-info h3{margin:0 0 6px;font-size:16px;line-height:1.25}
     .movie-info p{margin:4px 0;color:var(--muted);font-size:13px}
-    .epi-badge{display:inline-block;background:var(--badge);color:#fff;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:600;margin-top:5px}
+    .epi-badge{display:inline-block;background:var(--brand);color:#fff;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:700;margin-top:5px}
+
+    /* MODAL */
     .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);justify-content:center;align-items:center;z-index:1000;padding:16px}
-    .modal-content{background:#222;border-radius:14px;padding:20px;max-width:800px;width:100%;display:flex;gap:18px;position:relative}
+    .modal-content{background:#222;border-radius:14px;padding:20px;max-width:860px;width:100%;display:flex;gap:18px;position:relative}
     .modal img{width:220px;border-radius:10px;object-fit:cover}
     .modal-details{flex:1}
     .close-btn{position:absolute;top:10px;right:14px;cursor:pointer;font-size:22px;color:#fff}
-    .btn-watch,.btn-episode{display:inline-block;margin:5px 6px 0 0;padding:8px 12px;border:none;border-radius:8px;cursor:pointer;color:#fff;background:var(--brand);font-size:14px}
+    .btn-watch,.btn-episode{display:inline-block;margin:6px 6px 0 0;padding:8px 12px;border:none;border-radius:8px;cursor:pointer;color:#fff;background:var(--accent);font-size:14px}
     .btn-episode{background:#444}
-    @media (max-width:700px){.modal-content{flex-direction:column;align-items:center}.modal img{width:70%}#searchInput{width:55%}}
+    @media (max-width:740px){.modal-content{flex-direction:column;align-items:center}.modal img{width:70%}}
   </style>
 </head>
 <body>
@@ -43,31 +71,31 @@
     <input id="searchInput" type="text" placeholder="Tìm theo tên, thể loại..." />
   </header>
 
-  <!-- MỚI CẬP NHẬT -->
+  <!-- MỚI CẬP NHẬT (compact list) -->
   <section class="section" id="updatedSection" style="display:none">
     <h2>📺 Mới cập nhật</h2>
-    <div class="updated-row" id="updatedRow"></div>
+    <div id="updatedRow"></div>
   </section>
 
   <main>
     <div class="movies-container" id="moviesContainer"></div>
   </main>
 
-  <!-- MODAL -->
-  <div class="modal" id="movieModal">
+  <!-- MODAL CHI TIẾT -->
+  <div class="modal" id="movieModal" role="dialog" aria-modal="true">
     <div class="modal-content">
-      <span class="close-btn" id="closeModal">&times;</span>
+      <span class="close-btn" id="closeModal" aria-label="Đóng">&times;</span>
       <img id="modalPoster" src="" alt="Poster" />
       <div class="modal-details">
         <h2 id="modalTitle"></h2>
         <p><strong>Năm:</strong> <span id="modalYear"></span></p>
         <p id="modalGenre"></p>
         <button id="watchBtn" class="btn-watch">▶ Xem phim</button>
-        <div style="margin-top:10px">
+        <div style="margin-top:12px">
           <h3>Tập phim</h3>
           <div id="episodesList"></div>
         </div>
-        <p id="modalDescription" style="margin-top:12px;color:#ccc"></p>
+        <p id="modalDescription" style="margin-top:12px;color:#cfd6e0"></p>
       </div>
     </div>
   </div>
@@ -109,30 +137,61 @@
     }catch(e){ console.error(e); }
   }
 
+  /* ===== MỚI CẬP NHẬT: danh sách gọn ===== */
   function renderUpdated(list){
-    const items = [...list].filter(m=>m.updatedAt).sort((a,b)=>b.updatedAt-a.updatedAt).slice(0,10);
-    if(!items.length){ updatedSection.style.display='none'; return; }
-    updatedSection.style.display='block';
+    const items = [...list]
+      .filter(m => m.updatedAt)
+      .sort((a,b) => b.updatedAt - a.updatedAt)
+      .slice(0, 10);
+
+    if (!items.length){ updatedSection.style.display = 'none'; return; }
+    updatedSection.style.display = 'block';
+
+    updatedRow.className = 'updated-list';
     updatedRow.innerHTML = '';
-    items.forEach(m=>{
-      const badge = epLabel(m);
-      const div = document.createElement('div');
-      div.className = 'mini-card';
-      const t = new Date(m.updatedAt);
-      div.innerHTML = `
-        <img src="${m.poster}" alt="${m.title}"
-             onerror="this.src='https://via.placeholder.com/400x600?text=${encodeURIComponent(m.title)}'">
-        <div class="info">
-          <h4 class="title">${m.title}</h4>
-          <div class="meta">${t.toLocaleDateString()} ${t.toLocaleTimeString()}</div>
-          ${badge ? `<span class="tag">${badge}</span>`:''}
+
+    items.forEach(m => {
+      const d = new Date(m.updatedAt);
+      const hh = String(d.getHours()).padStart(2,'0');
+      const mm = String(d.getMinutes()).padStart(2,'0');
+      const timeStr = `${hh}:${mm}`;
+
+      let latestName = '';
+      let latestUrl  = '';
+      if (Array.isArray(m.episodes) && m.episodes.length){
+        const last = m.episodes[m.episodes.length - 1];
+        latestName = last.name || `Tập ${m.episodes.length}`;
+        latestUrl  = last.url  || '';
+      } else if (m.videoUrl){
+        latestName = 'Full';
+        latestUrl  = m.videoUrl;
+      }
+
+      const wrap = document.createElement('div');
+      wrap.className = 'updated-item';
+      wrap.innerHTML = `
+        <div class="updated-time">${timeStr}</div>
+        <div class="updated-title">
+          <div class="name">${m.title}</div>
+          <div class="meta">
+            ${m.genres ? m.genres.join(', ') : ''} • ${m.year ?? ''}
+            ${Array.isArray(m.episodes) && m.episodes.length ? ` • ${m.episodes.length} tập` : ''}
+          </div>
         </div>
+        ${latestName ? `<button class="updated-epbtn">▶ ${latestName}</button>` : ''}
       `;
-      div.onclick = ()=> openModal(m);
-      updatedRow.appendChild(div);
+
+      wrap.querySelector('.updated-title')?.addEventListener('click', () => openModal(m));
+
+      const epBtn = wrap.querySelector('.updated-epbtn');
+      if (epBtn && latestUrl){
+        epBtn.addEventListener('click', (e) => { e.stopPropagation(); window.open(latestUrl, '_blank'); });
+      }
+      updatedRow.appendChild(wrap);
     });
   }
 
+  /* ===== Lưới phim chính ===== */
   function renderMovies(movies){
     moviesContainer.innerHTML='';
     movies.forEach(m=>{
@@ -154,6 +213,7 @@
     });
   }
 
+  /* ===== Modal chi tiết ===== */
   function openModal(m){
     modalPoster.src = m.poster;
     modalTitle.textContent = m.title;
@@ -186,6 +246,7 @@
   closeModal.onclick = ()=> modal.style.display='none';
   window.onclick = (e)=>{ if(e.target===modal) modal.style.display='none'; };
 
+  /* Tìm kiếm */
   searchInput.addEventListener('input',e=>{
     const kw = e.target.value.toLowerCase();
     const filtered = allMovies.filter(m =>
