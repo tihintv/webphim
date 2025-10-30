@@ -103,6 +103,10 @@
     try{
       const res = await fetch('movies.json',{cache:'no-store'});
       movies = await res.json();
+
+      // ✅ Bù updatedAt cho dữ liệu cũ (nếu thiếu)
+      movies = (movies||[]).map(m => ({ ...m, updatedAt: m.updatedAt ?? Date.now() }));
+
       renderTable();
       jsonBox.value = JSON.stringify(movies,null,2);
     }catch(e){
@@ -152,7 +156,6 @@
   }
 
   $('btnAddEp').onclick = ()=> episodesWrap.appendChild(makeEpisodeRow());
-
   $('btnReset').onclick = resetForm;
 
   $('btnSave').onclick = ()=>{
@@ -170,7 +173,7 @@
         name: row.querySelector('.ep-name').value || `Tập ${i+1}`,
         url: row.querySelector('.ep-url').value.trim()
       })),
-      // cập nhật timestamp mỗi lần lưu / sửa / thêm tập
+      // luôn cập nhật timestamp khi lưu/sửa
       updatedAt: Date.now()
     };
     const idx = movies.findIndex(m=>m.id===data.id);
