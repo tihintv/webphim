@@ -12,7 +12,6 @@
     header h1::before{content:"🎬"} #searchInput{padding:8px 12px;border-radius:8px;border:none;outline:none;background:#1e1e1e;color:#fff;width:260px}
     .section{padding:16px 18px}
     .section h2{margin:0 0 10px;font-size:18px}
-    /* updated row */
     .updated-row{display:flex;gap:12px;overflow:auto;padding-bottom:6px}
     .mini-card{min-width:180px;background:var(--panel);border-radius:12px;overflow:hidden;cursor:pointer}
     .mini-card img{width:100%;height:230px;object-fit:cover;background:#222}
@@ -20,7 +19,6 @@
     .mini-card .title{margin:0;font-size:14px;line-height:1.3}
     .mini-card .meta{margin:4px 0;color:var(--muted);font-size:12px}
     .mini-card .tag{display:inline-block;margin-top:4px;background:var(--badge);padding:2px 6px;border-radius:999px;font-size:11px}
-    /* grid main */
     .movies-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;padding:16px 18px}
     .movie-card{background:var(--panel);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .18s ease}
     .movie-card:hover{transform:translateY(-2px)}
@@ -29,7 +27,6 @@
     .movie-info h3{margin:0 0 6px;font-size:16px;line-height:1.25}
     .movie-info p{margin:4px 0;color:var(--muted);font-size:13px}
     .epi-badge{display:inline-block;background:var(--badge);color:#fff;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:600;margin-top:5px}
-    /* Modal */
     .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);justify-content:center;align-items:center;z-index:1000;padding:16px}
     .modal-content{background:#222;border-radius:14px;padding:20px;max-width:800px;width:100%;display:flex;gap:18px;position:relative}
     .modal img{width:220px;border-radius:10px;object-fit:cover}
@@ -52,7 +49,6 @@
     <div class="updated-row" id="updatedRow"></div>
   </section>
 
-  <!-- DANH SÁCH CHÍNH -->
   <main>
     <div class="movies-container" id="moviesContainer"></div>
   </main>
@@ -104,6 +100,10 @@
     try{
       const res = await fetch("movies.json",{cache:"no-store"});
       allMovies = await res.json();
+
+      // ✅ Bù updatedAt cho dữ liệu cũ (nếu thiếu)
+      allMovies = (allMovies||[]).map(m => ({ ...m, updatedAt: m.updatedAt ?? Date.now() }));
+
       renderUpdated(allMovies);
       renderMovies(allMovies);
     }catch(e){ console.error(e); }
