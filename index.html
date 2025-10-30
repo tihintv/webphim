@@ -5,21 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TiHinTV</title>
   <style>
-    :root{
-      --bg:#111; --panel:#1a1a1a; --text:#fff; --muted:#aaa; --brand:#007bff; --badge:#0ea5e9;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+    :root{--bg:#111;--panel:#1a1a1a;--text:#fff;--muted:#aaa;--brand:#007bff;--badge:#0ea5e9}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
     header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#000}
     header h1{margin:0;font-size:20px;display:flex;align-items:center;gap:8px}
-    header h1::before{content:"🎬"}
-    #searchInput{padding:8px 12px;border-radius:8px;border:none;outline:none;background:#1e1e1e;color:#fff;width:260px}
-    .movies-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;padding:20px}
-    .movie-card{background:var(--panel);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .18s ease;position:relative}
+    header h1::before{content:"🎬"} #searchInput{padding:8px 12px;border-radius:8px;border:none;outline:none;background:#1e1e1e;color:#fff;width:260px}
+    .section{padding:16px 18px}
+    .section h2{margin:0 0 10px;font-size:18px}
+    /* updated row */
+    .updated-row{display:flex;gap:12px;overflow:auto;padding-bottom:6px}
+    .mini-card{min-width:180px;background:var(--panel);border-radius:12px;overflow:hidden;cursor:pointer}
+    .mini-card img{width:100%;height:230px;object-fit:cover;background:#222}
+    .mini-card .info{padding:8px}
+    .mini-card .title{margin:0;font-size:14px;line-height:1.3}
+    .mini-card .meta{margin:4px 0;color:var(--muted);font-size:12px}
+    .mini-card .tag{display:inline-block;margin-top:4px;background:var(--badge);padding:2px 6px;border-radius:999px;font-size:11px}
+    /* grid main */
+    .movies-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;padding:16px 18px}
+    .movie-card{background:var(--panel);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .18s ease}
     .movie-card:hover{transform:translateY(-2px)}
-    .movie-card img{width:100%;height:300px;object-fit:cover;display:block;background:#222}
+    .movie-card img{width:100%;height:300px;object-fit:cover;background:#222}
     .movie-info{padding:12px}
-    .movie-info h3{margin:0 0 6px 0;font-size:16px;line-height:1.25}
+    .movie-info h3{margin:0 0 6px;font-size:16px;line-height:1.25}
     .movie-info p{margin:4px 0;color:var(--muted);font-size:13px}
     .epi-badge{display:inline-block;background:var(--badge);color:#fff;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:600;margin-top:5px}
     /* Modal */
@@ -30,11 +37,7 @@
     .close-btn{position:absolute;top:10px;right:14px;cursor:pointer;font-size:22px;color:#fff}
     .btn-watch,.btn-episode{display:inline-block;margin:5px 6px 0 0;padding:8px 12px;border:none;border-radius:8px;cursor:pointer;color:#fff;background:var(--brand);font-size:14px}
     .btn-episode{background:#444}
-    @media (max-width:700px){
-      .modal-content{flex-direction:column;align-items:center}
-      .modal img{width:70%}
-      #searchInput{width:55%}
-    }
+    @media (max-width:700px){.modal-content{flex-direction:column;align-items:center}.modal img{width:70%}#searchInput{width:55%}}
   </style>
 </head>
 <body>
@@ -43,11 +46,18 @@
     <input id="searchInput" type="text" placeholder="Tìm theo tên, thể loại..." />
   </header>
 
+  <!-- MỚI CẬP NHẬT -->
+  <section class="section" id="updatedSection" style="display:none">
+    <h2>📺 Mới cập nhật</h2>
+    <div class="updated-row" id="updatedRow"></div>
+  </section>
+
+  <!-- DANH SÁCH CHÍNH -->
   <main>
     <div class="movies-container" id="moviesContainer"></div>
   </main>
 
-  <!-- Modal -->
+  <!-- MODAL -->
   <div class="modal" id="movieModal">
     <div class="modal-content">
       <span class="close-btn" id="closeModal">&times;</span>
@@ -66,108 +76,126 @@
     </div>
   </div>
 
-  <script>
-    const moviesContainer = document.getElementById("moviesContainer");
-    const searchInput = document.getElementById("searchInput");
+<script>
+  const moviesContainer = document.getElementById("moviesContainer");
+  const searchInput     = document.getElementById("searchInput");
+  const updatedSection  = document.getElementById("updatedSection");
+  const updatedRow      = document.getElementById("updatedRow");
 
-    const modal = document.getElementById("movieModal");
-    const closeModal = document.getElementById("closeModal");
-    const modalPoster = document.getElementById("modalPoster");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalYear = document.getElementById("modalYear");
-    const modalGenre = document.getElementById("modalGenre");
-    const modalDescription = document.getElementById("modalDescription");
-    const watchBtn = document.getElementById("watchBtn");
-    const episodesList = document.getElementById("episodesList");
+  const modal            = document.getElementById("movieModal");
+  const closeModal       = document.getElementById("closeModal");
+  const modalPoster      = document.getElementById("modalPoster");
+  const modalTitle       = document.getElementById("modalTitle");
+  const modalYear        = document.getElementById("modalYear");
+  const modalGenre       = document.getElementById("modalGenre");
+  const modalDescription = document.getElementById("modalDescription");
+  const watchBtn         = document.getElementById("watchBtn");
+  const episodesList     = document.getElementById("episodesList");
 
-    let allMovies = [];
+  let allMovies = [];
 
-    // Nhãn tập phim
-    function getEpisodeLabel(movie){
-      if (Array.isArray(movie.episodes) && movie.episodes.length > 0) {
-        return `${movie.episodes.length} tập`;
-      }
-      if (movie.videoUrl) return "Full";
-      return "";
-    }
+  const epLabel = (m)=>{
+    if (Array.isArray(m.episodes) && m.episodes.length>0) return `${m.episodes.length} tập`;
+    if (m.videoUrl) return "Full";
+    return "";
+  };
 
-    async function loadMovies() {
-      try {
-        const res = await fetch("movies.json", {cache: "no-store"});
-        allMovies = await res.json();
-        renderMovies(allMovies);
-      } catch (error) {
-        console.error("Lỗi tải movies.json", error);
-      }
-    }
+  async function loadMovies(){
+    try{
+      const res = await fetch("movies.json",{cache:"no-store"});
+      allMovies = await res.json();
+      renderUpdated(allMovies);
+      renderMovies(allMovies);
+    }catch(e){ console.error(e); }
+  }
 
-    function renderMovies(movies) {
-      moviesContainer.innerHTML = "";
-      movies.forEach((movie) => {
-        const badge = getEpisodeLabel(movie);
-        const card = document.createElement("div");
-        card.className = "movie-card";
-        card.innerHTML = `
-          <img src="${movie.poster}" alt="${movie.title}"
-               onerror="this.src='https://via.placeholder.com/400x600?text=${encodeURIComponent(movie.title)}'">
-          <div class="movie-info">
-            <h3>${movie.title}</h3>
-            <p>${movie.genres ? movie.genres.join(", ") : ""}</p>
-            <p>${movie.year ?? ""}</p>
-            ${badge ? `<span class="epi-badge">${badge}</span>` : ""}
-          </div>
-        `;
-        card.addEventListener("click", () => openModal(movie));
-        moviesContainer.appendChild(card);
-      });
-    }
-
-    function openModal(movie) {
-      modalPoster.src = movie.poster;
-      modalTitle.textContent = movie.title;
-      modalYear.textContent = movie.year ?? "";
-      modalGenre.textContent = movie.genres ? movie.genres.join(", ") : "";
-      modalDescription.textContent = movie.description || "";
-
-      if (movie.videoUrl) {
-        watchBtn.style.display = "inline-block";
-        watchBtn.onclick = () => window.open(movie.videoUrl, "_blank");
-      } else {
-        watchBtn.style.display = "none";
-      }
-
-      episodesList.innerHTML = "";
-      if (movie.episodes && movie.episodes.length > 0) {
-        movie.episodes.forEach((ep, i) => {
-          const epBtn = document.createElement("button");
-          epBtn.className = "btn-episode";
-          epBtn.textContent = ep.name || `Tập ${i + 1}`;
-          epBtn.onclick = (e) => {
-            e.stopPropagation();
-            window.open(ep.url, "_blank");
-          };
-          episodesList.appendChild(epBtn);
-        });
-      } else {
-        episodesList.innerHTML = "<p>Chưa có tập nào</p>";
-      }
-
-      modal.style.display = "flex";
-    }
-
-    closeModal.onclick = () => { modal.style.display = "none"; };
-    window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
-
-    searchInput.addEventListener("input", (e) => {
-      const kw = e.target.value.toLowerCase();
-      const filtered = allMovies.filter(m =>
-        m.title.toLowerCase().includes(kw) ||
-        (m.genres && m.genres.join(", ").toLowerCase().includes(kw))
-      );
-      renderMovies(filtered);
+  function renderUpdated(list){
+    const items = [...list].filter(m=>m.updatedAt).sort((a,b)=>b.updatedAt-a.updatedAt).slice(0,10);
+    if(!items.length){ updatedSection.style.display='none'; return; }
+    updatedSection.style.display='block';
+    updatedRow.innerHTML = '';
+    items.forEach(m=>{
+      const badge = epLabel(m);
+      const div = document.createElement('div');
+      div.className = 'mini-card';
+      const t = new Date(m.updatedAt);
+      div.innerHTML = `
+        <img src="${m.poster}" alt="${m.title}"
+             onerror="this.src='https://via.placeholder.com/400x600?text=${encodeURIComponent(m.title)}'">
+        <div class="info">
+          <h4 class="title">${m.title}</h4>
+          <div class="meta">${t.toLocaleDateString()} ${t.toLocaleTimeString()}</div>
+          ${badge ? `<span class="tag">${badge}</span>`:''}
+        </div>
+      `;
+      div.onclick = ()=> openModal(m);
+      updatedRow.appendChild(div);
     });
+  }
 
-    loadMovies();
-  </script>
+  function renderMovies(movies){
+    moviesContainer.innerHTML='';
+    movies.forEach(m=>{
+      const badge=epLabel(m);
+      const card=document.createElement('div');
+      card.className='movie-card';
+      card.innerHTML = `
+        <img src="${m.poster}" alt="${m.title}"
+             onerror="this.src='https://via.placeholder.com/400x600?text=${encodeURIComponent(m.title)}'">
+        <div class="movie-info">
+          <h3>${m.title}</h3>
+          <p>${m.genres ? m.genres.join(', ') : ''}</p>
+          <p>${m.year ?? ''}</p>
+          ${badge ? `<span class="epi-badge">${badge}</span>`:''}
+        </div>
+      `;
+      card.onclick = ()=> openModal(m);
+      moviesContainer.appendChild(card);
+    });
+  }
+
+  function openModal(m){
+    modalPoster.src = m.poster;
+    modalTitle.textContent = m.title;
+    modalYear.textContent  = m.year ?? '';
+    modalGenre.textContent = m.genres ? m.genres.join(', ') : '';
+    modalDescription.textContent = m.description || '';
+
+    if(m.videoUrl){
+      watchBtn.style.display='inline-block';
+      watchBtn.onclick = (e)=>{ e.stopPropagation(); window.open(m.videoUrl,'_blank'); };
+    }else{
+      watchBtn.style.display='none';
+    }
+
+    episodesList.innerHTML='';
+    if(m.episodes && m.episodes.length){
+      m.episodes.forEach((ep,i)=>{
+        const b=document.createElement('button');
+        b.className='btn-episode';
+        b.textContent = ep.name || `Tập ${i+1}`;
+        b.onclick = (e)=>{ e.stopPropagation(); window.open(ep.url,'_blank'); };
+        episodesList.appendChild(b);
+      });
+    }else{
+      episodesList.innerHTML='<p>Chưa có tập nào</p>';
+    }
+    modal.style.display='flex';
+  }
+
+  closeModal.onclick = ()=> modal.style.display='none';
+  window.onclick = (e)=>{ if(e.target===modal) modal.style.display='none'; };
+
+  searchInput.addEventListener('input',e=>{
+    const kw = e.target.value.toLowerCase();
+    const filtered = allMovies.filter(m =>
+      m.title.toLowerCase().includes(kw) ||
+      (m.genres && m.genres.join(', ').toLowerCase().includes(kw))
+    );
+    renderMovies(filtered);
+  });
+
+  loadMovies();
+</script>
 </body>
 </html>
