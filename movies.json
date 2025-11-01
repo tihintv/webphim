@@ -194,5 +194,27 @@
       }
     ],
     "updatedAt": 1761986645045
+  },
+  {
+    "id": 1761996836848,
+    "title": "Solo Camping For Two - Cắm Trại Một Mình Cho Hai Người",
+    "year": "2025",
+    "genres": [
+      "Đời Thường",
+      "Cắm Trại Ngoài Trời",
+      "Chữa Lành",
+      "Ẩm thực",
+      "Cuộc Sống Thường Ngày"
+    ],
+    "poster": "posters/Solo-Camping-for-Two.jpg",
+    "videoUrl": "",
+    "description": "Gen Kinokura chỉ muốn tận hưởng những chuyến cắm trại một mình yên bình—không phiền nhiễu, không rắc rối. Shizuku Kusano xuất hiện, một cô gái mới vào nghề nhưng lại rất nhiệt tình, đã phá hỏng khu cắm trại của anh (theo đúng nghĩa đen). Giờ đây, cô nàng yêu thích hoạt động ngoài trời này phải tự mình hướng dẫn. Những tiếng cười, những tai nạn và những khoảnh khắc ấm áp đang chờ đón chuyến phiêu lưu cắm trại đôi dưới bầu trời đầy sao này!",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1ihi1RMvWk7rurafUsaOtjyxRcltb2ytf/preview"
+      }
+    ],
+    "updatedAt": 1761996836848
   }
 ]
