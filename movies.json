@@ -128,6 +128,7 @@
     ],
     "poster": "posters/The-Banished-CourtMagician-Aimsto-Become-the-Strongest.jpg",
     "videoUrl": "",
+    "description": "Từng là một pháp sư triều đình trung thành, luôn âm thầm hỗ trợ thái tử, Alec Ygret bị ruồng bỏ và lưu đày chỉ vì biết đến phép thuật hỗ trợ. Nhưng đúng lúc chạm đáy vực thẳm, anh gặp lại Yorha Eisentz, một đồng đội cũ của nhóm Lasting Period huyền thoại. Được mời tái gia nhập đội ngũ đã từng làm nên lịch sử, Alec trở lại khám phá ngục tối—và bắt đầu một chương mới trong cuộc đời mình!",
     "episodes": [
       {
         "name": "Tập 1",
@@ -140,10 +141,13 @@
       {
         "name": "Tập 3",
         "url": "https://drive.google.com/file/d/1HMeI2W4iVu_fbsIzln7vbcwWO6kMuqxO/preview"
+      },
+      {
+        "name": "Tập 4",
+        "url": "https://drive.google.com/file/d/12Ga7kk2BKz6viBIn36xpWFoV7EQLvPXD/preview"
       }
     ],
-    "description": "Từng là một pháp sư triều đình trung thành, luôn âm thầm hỗ trợ thái tử, Alec Ygret bị ruồng bỏ và lưu đày chỉ vì biết đến phép thuật hỗ trợ. Nhưng đúng lúc chạm đáy vực thẳm, anh gặp lại Yorha Eisentz, một đồng đội cũ của nhóm Lasting Period huyền thoại. Được mời tái gia nhập đội ngũ đã từng làm nên lịch sử, Alec trở lại khám phá ngục tối—và bắt đầu một chương mới trong cuộc đời mình!",
-    "updatedAt": 1761840286495
+    "updatedAt": 1761986276772
   },
   {
     "id": 1761398752650,
