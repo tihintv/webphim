@@ -223,5 +223,30 @@
       }
     ],
     "updatedAt": 1762005785620
+  },
+  {
+    "id": 1762066565841,
+    "title": "Tôi Là Sát Thủ Nhưng Chỉ Số Mạnh Hơn Hẳn Dũng Sĩ - My Status as an Assassin Obviously Exceeds the Hero's",
+    "year": "2025",
+    "genres": [
+      "Chuyển Sinh",
+      "Triệu Hồi",
+      "Hành động",
+      "Phiêu lưu",
+      "Giả tưởng",
+      "Harem",
+      "Drama - Chính kịch",
+      "Anime"
+    ],
+    "poster": "posters/My-Status-As-An-Assassin-Obviously-Exceeds-The-Hero's.jpg",
+    "videoUrl": "",
+    "description": "Oda Akira là kiểu người dễ bị lãng quên nhưng chính sự mờ nhạt ấy lại trở thành lợi thế khi cả lớp của anh bị cuốn sang một thế giới giả tưởng và Akira nhanh chóng nhập vai sát thủ thầm lặng. Tuy nhiên, việc đào sâu vào bí mật hoàng gia là một trò chơi nguy hiểm và khi phát hiện âm mưu tàn độc, Akira đã vô tình biến nhà vua triệu hồi mình thành kẻ thù số một! Liệu với sự giúp sức của Amelia, nữ pháp sư tinh linh tộc, Akira có thể tìm ra sức mạnh để lật ngược tình thế và trả thù?",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/15_rQjtDHaF2S36vDk3H7G0erI6JZTibH/preview"
+      }
+    ],
+    "updatedAt": 1762066565841
   }
 ]
