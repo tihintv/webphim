@@ -13,13 +13,24 @@
     body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Arial,Helvetica,sans-serif}
 
     /* HEADER */
-    header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#000;position:sticky;top:0;z-index:10}
+    header{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:14px 18px;background:#000;position:sticky;top:0;z-index:10;flex-wrap:wrap;gap:8px
+    }
     header h1{margin:0;font-size:20px;display:flex;align-items:center;gap:8px}
     header h1::before{content:"🎬"}
-    #searchInput{padding:10px 12px;border-radius:10px;border:none;outline:none;background:#1e1e1e;color:#fff;width:280px}
-    @media (max-width:680px){#searchInput{width:55%}}
+    #searchInput{padding:10px 12px;border-radius:10px;border:none;outline:none;background:#1e1e1e;color:#fff;width:260px}
+    @media (max-width:680px){#searchInput{width:100%}}
 
-    /* SECTION TITLE */
+    /* MENU GROUP */
+    .menu-group{display:flex;gap:6px;margin-right:12px}
+    .menu-btn{
+      background:#1f1f1f;color:#fff;border:none;border-radius:8px;
+      padding:8px 12px;cursor:pointer;font-weight:600;transition:background .2s
+    }
+    .menu-btn:hover{background:#2b2b2b}
+    .menu-btn.active{background:#2563eb}
+
     .section{padding:12px 18px}
     .section h2{margin:0 0 10px;font-size:18px}
 
@@ -68,10 +79,18 @@
 <body>
   <header>
     <h1>TiHinTV</h1>
+
+    <!-- Bộ lọc -->
+    <div class="menu-group">
+      <button class="menu-btn active" id="btnAll">Tất cả</button>
+      <button class="menu-btn" id="btnSeries">Phim bộ</button>
+      <button class="menu-btn" id="btnMovie">Phim lẻ</button>
+    </div>
+
     <input id="searchInput" type="text" placeholder="Tìm theo tên, thể loại..." />
   </header>
 
-  <!-- MỚI CẬP NHẬT (compact list) -->
+  <!-- MỚI CẬP NHẬT -->
   <section class="section" id="updatedSection" style="display:none">
     <h2>📺 Mới cập nhật</h2>
     <div id="updatedRow"></div>
@@ -81,7 +100,7 @@
     <div class="movies-container" id="moviesContainer"></div>
   </main>
 
-  <!-- MODAL CHI TIẾT -->
+  <!-- MODAL -->
   <div class="modal" id="movieModal" role="dialog" aria-modal="true">
     <div class="modal-content">
       <span class="close-btn" id="closeModal" aria-label="Đóng">&times;</span>
@@ -106,6 +125,10 @@
   const updatedSection  = document.getElementById("updatedSection");
   const updatedRow      = document.getElementById("updatedRow");
 
+  const btnAll    = document.getElementById("btnAll");
+  const btnSeries = document.getElementById("btnSeries");
+  const btnMovie  = document.getElementById("btnMovie");
+
   const modal            = document.getElementById("movieModal");
   const closeModal       = document.getElementById("closeModal");
   const modalPoster      = document.getElementById("modalPoster");
@@ -128,8 +151,6 @@
     try{
       const res = await fetch("movies.json",{cache:"no-store"});
       allMovies = await res.json();
-
-      // ✅ Bù updatedAt cho dữ liệu cũ (nếu thiếu)
       allMovies = (allMovies||[]).map(m => ({ ...m, updatedAt: m.updatedAt ?? Date.now() }));
 
       renderUpdated(allMovies);
@@ -137,124 +158,119 @@
     }catch(e){ console.error(e); }
   }
 
-  /* ===== MỚI CẬP NHẬT: danh sách gọn ===== */
   function renderUpdated(list){
-    const items = [...list]
-      .filter(m => m.updatedAt)
-      .sort((a,b) => b.updatedAt - a.updatedAt)
-      .slice(0, 10);
+    const items = [...list].filter(m => m.updatedAt).sort((a,b)=>b.updatedAt - a.updatedAt).slice(0,10);
+    if (!items.length){ updatedSection.style.display='none'; return; }
+    updatedSection.style.display='block';
+    updatedRow.className='updated-list';
+    updatedRow.innerHTML='';
 
-    if (!items.length){ updatedSection.style.display = 'none'; return; }
-    updatedSection.style.display = 'block';
-
-    updatedRow.className = 'updated-list';
-    updatedRow.innerHTML = '';
-
-    items.forEach(m => {
-      const d = new Date(m.updatedAt);
-      const hh = String(d.getHours()).padStart(2,'0');
-      const mm = String(d.getMinutes()).padStart(2,'0');
-      const timeStr = `${hh}:${mm}`;
-
-      let latestName = '';
-      let latestUrl  = '';
-      if (Array.isArray(m.episodes) && m.episodes.length){
-        const last = m.episodes[m.episodes.length - 1];
-        latestName = last.name || `Tập ${m.episodes.length}`;
-        latestUrl  = last.url  || '';
-      } else if (m.videoUrl){
-        latestName = 'Full';
-        latestUrl  = m.videoUrl;
-      }
-
-      const wrap = document.createElement('div');
-      wrap.className = 'updated-item';
-      wrap.innerHTML = `
+    items.forEach(m=>{
+      const d=new Date(m.updatedAt);
+      const hh=String(d.getHours()).padStart(2,'0');
+      const mm=String(d.getMinutes()).padStart(2,'0');
+      const timeStr=`${hh}:${mm}`;
+      let latestName='',latestUrl='';
+      if (Array.isArray(m.episodes)&&m.episodes.length){
+        const last=m.episodes[m.episodes.length-1];
+        latestName=last.name||`Tập ${m.episodes.length}`;
+        latestUrl=last.url||'';
+      }else if(m.videoUrl){latestName='Full';latestUrl=m.videoUrl;}
+      const wrap=document.createElement('div');
+      wrap.className='updated-item';
+      wrap.innerHTML=`
         <div class="updated-time">${timeStr}</div>
         <div class="updated-title">
           <div class="name">${m.title}</div>
           <div class="meta">
             ${m.genres ? m.genres.join(', ') : ''} • ${m.year ?? ''}
-            ${Array.isArray(m.episodes) && m.episodes.length ? ` • ${m.episodes.length} tập` : ''}
+            ${Array.isArray(m.episodes)&&m.episodes.length?` • ${m.episodes.length} tập`:''}
           </div>
         </div>
-        ${latestName ? `<button class="updated-epbtn">▶ ${latestName}</button>` : ''}
+        ${latestName?`<button class="updated-epbtn">▶ ${latestName}</button>`:''}
       `;
-
-      wrap.querySelector('.updated-title')?.addEventListener('click', () => openModal(m));
-
-      const epBtn = wrap.querySelector('.updated-epbtn');
-      if (epBtn && latestUrl){
-        epBtn.addEventListener('click', (e) => { e.stopPropagation(); window.open(latestUrl, '_blank'); });
-      }
+      wrap.querySelector('.updated-title')?.addEventListener('click',()=>openModal(m));
+      const epBtn=wrap.querySelector('.updated-epbtn');
+      if(epBtn&&latestUrl){epBtn.addEventListener('click',e=>{e.stopPropagation();window.open(latestUrl,'_blank');});}
       updatedRow.appendChild(wrap);
     });
   }
 
-  /* ===== Lưới phim chính ===== */
   function renderMovies(movies){
     moviesContainer.innerHTML='';
     movies.forEach(m=>{
       const badge=epLabel(m);
       const card=document.createElement('div');
       card.className='movie-card';
-      card.innerHTML = `
-        <img src="${m.poster}" alt="${m.title}"
-             onerror="this.src='https://via.placeholder.com/400x600?text=${encodeURIComponent(m.title)}'">
+      card.innerHTML=`
+        <img src="${m.poster}" alt="${m.title}" onerror="this.src='https://via.placeholder.com/400x600?text=${encodeURIComponent(m.title)}'">
         <div class="movie-info">
           <h3>${m.title}</h3>
-          <p>${m.genres ? m.genres.join(', ') : ''}</p>
-          <p>${m.year ?? ''}</p>
-          ${badge ? `<span class="epi-badge">${badge}</span>`:''}
-        </div>
-      `;
-      card.onclick = ()=> openModal(m);
+          <p>${m.genres?m.genres.join(', '):''}</p>
+          <p>${m.year??''}</p>
+          ${badge?`<span class="epi-badge">${badge}</span>`:''}
+        </div>`;
+      card.onclick=()=>openModal(m);
       moviesContainer.appendChild(card);
     });
   }
 
-  /* ===== Modal chi tiết ===== */
   function openModal(m){
-    modalPoster.src = m.poster;
-    modalTitle.textContent = m.title;
-    modalYear.textContent  = m.year ?? '';
-    modalGenre.textContent = m.genres ? m.genres.join(', ') : '';
-    modalDescription.textContent = m.description || '';
-
+    modalPoster.src=m.poster;
+    modalTitle.textContent=m.title;
+    modalYear.textContent=m.year??'';
+    modalGenre.textContent=m.genres?m.genres.join(', '):'';
+    modalDescription.textContent=m.description||'';
     if(m.videoUrl){
       watchBtn.style.display='inline-block';
-      watchBtn.onclick = (e)=>{ e.stopPropagation(); window.open(m.videoUrl,'_blank'); };
-    }else{
-      watchBtn.style.display='none';
-    }
-
+      watchBtn.onclick=e=>{e.stopPropagation();window.open(m.videoUrl,'_blank');};
+    }else watchBtn.style.display='none';
     episodesList.innerHTML='';
-    if(m.episodes && m.episodes.length){
+    if(m.episodes&&m.episodes.length){
       m.episodes.forEach((ep,i)=>{
         const b=document.createElement('button');
         b.className='btn-episode';
-        b.textContent = ep.name || `Tập ${i+1}`;
-        b.onclick = (e)=>{ e.stopPropagation(); window.open(ep.url,'_blank'); };
+        b.textContent=ep.name||`Tập ${i+1}`;
+        b.onclick=e=>{e.stopPropagation();window.open(ep.url,'_blank');};
         episodesList.appendChild(b);
       });
-    }else{
-      episodesList.innerHTML='<p>Chưa có tập nào</p>';
-    }
+    }else episodesList.innerHTML='<p>Chưa có tập nào</p>';
     modal.style.display='flex';
   }
+  closeModal.onclick=()=>modal.style.display='none';
+  window.onclick=e=>{if(e.target===modal)modal.style.display='none';};
 
-  closeModal.onclick = ()=> modal.style.display='none';
-  window.onclick = (e)=>{ if(e.target===modal) modal.style.display='none'; };
-
-  /* Tìm kiếm */
+  /* TÌM KIẾM */
   searchInput.addEventListener('input',e=>{
-    const kw = e.target.value.toLowerCase();
-    const filtered = allMovies.filter(m =>
-      m.title.toLowerCase().includes(kw) ||
-      (m.genres && m.genres.join(', ').toLowerCase().includes(kw))
+    const kw=e.target.value.toLowerCase();
+    const filtered=allMovies.filter(m=>
+      m.title.toLowerCase().includes(kw)||
+      (m.genres&&m.genres.join(', ').toLowerCase().includes(kw))
     );
     renderMovies(filtered);
+    clearActive();
+    btnAll.classList.add('active');
   });
+
+  /* Bộ lọc */
+  const clearActive=()=>[btnAll,btnSeries,btnMovie].forEach(b=>b.classList.remove('active'));
+
+  btnAll.onclick=()=>{
+    renderMovies(allMovies);
+    clearActive(); btnAll.classList.add("active");
+  };
+
+  btnSeries.onclick=()=>{
+    const phimBo = allMovies.filter(m=> m.type==="series" || m.genres?.includes("Phim bộ"));
+    renderMovies(phimBo);
+    clearActive(); btnSeries.classList.add("active");
+  };
+
+  btnMovie.onclick=()=>{
+    const phimLe = allMovies.filter(m=> m.type==="movie" || m.genres?.includes("Phim lẻ"));
+    renderMovies(phimLe);
+    clearActive(); btnMovie.classList.add("active");
+  };
 
   loadMovies();
 </script>
