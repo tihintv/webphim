@@ -6,13 +6,17 @@
   <title>TiHinTV – Admin</title>
   <style>
     :root{--bg:#0f1115;--panel:#171923;--text:#e5e7eb;--muted:#a0aec0;--brand:#3b82f6;--danger:#ef4444;--ok:#10b981}
-    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Segoe UI,Arial}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Segoe UI,Arial}
     header{padding:16px 20px;background:#0b0d12;border-bottom:1px solid #111}
     h1{margin:0;font-size:22px}
     main{max-width:980px;margin:18px auto;padding:0 16px}
     .card{background:var(--panel);border-radius:14px;padding:16px;margin-bottom:16px}
     label{display:block;margin:8px 0 6px;color:#cbd5e1;font-size:14px}
-    input,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1f2430;background:#11131a;color:#fff}
+    input,textarea,select{
+      width:100%;padding:10px 12px;border-radius:10px;
+      border:1px solid #1f2430;background:#11131a;color:#fff;
+    }
     .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 12px;border:none;border-radius:10px;color:#fff;background:var(--brand);cursor:pointer}
     .btn.secondary{background:#374151}
@@ -23,7 +27,6 @@
     .pill{display:inline-block;padding:3px 8px;border-radius:999px;background:#26314a;color:#c7d2fe;font-size:12px}
     .ep-row{display:flex;gap:8px;margin-bottom:8px}
     .hint{color:var(--muted);font-size:12px}
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   </style>
 </head>
 <body>
@@ -54,8 +57,20 @@
       </div>
     </div>
 
-    <label>Video chính (YouTube/Drive/mp4…)</label>
-    <input id="videoUrl" placeholder="https://...">
+    <div class="row">
+      <div>
+        <label>Loại phim (type)</label>
+        <select id="type">
+          <option value="">-- Chọn loại --</option>
+          <option value="series">Phim bộ</option>
+          <option value="movie">Phim lẻ</option>
+        </select>
+      </div>
+      <div>
+        <label>Video chính (YouTube/Drive/mp4…)</label>
+        <input id="videoUrl" placeholder="https://...">
+      </div>
+    </div>
 
     <label>Mô tả</label>
     <textarea id="description" rows="3" placeholder="Mô tả phim"></textarea>
@@ -76,7 +91,7 @@
     <h2>Danh sách phim</h2>
     <table id="tblMovies">
       <thead>
-        <tr><th>Tên phim</th><th>Năm</th><th>Thể loại</th><th>Updated</th><th>Hành động</th></tr>
+        <tr><th>Tên phim</th><th>Năm</th><th>Loại</th><th>Thể loại</th><th>Updated</th><th>Hành động</th></tr>
       </thead>
       <tbody></tbody>
     </table>
@@ -91,130 +106,107 @@
 </main>
 
 <script>
-  const $ = (id)=>document.getElementById(id);
-  const titleEl = $('title'), yearEl=$('year'), genresEl=$('genres'), posterEl=$('poster'),
-        videoUrlEl=$('videoUrl'), descEl=$('description'), episodesWrap=$('episodes'),
-        tblBody = $('tblMovies').querySelector('tbody'), jsonBox=$('jsonBox');
+const $ = (id)=>document.getElementById(id);
+const titleEl=$('title'),yearEl=$('year'),genresEl=$('genres'),posterEl=$('poster'),
+      typeEl=$('type'),videoUrlEl=$('videoUrl'),descEl=$('description'),
+      episodesWrap=$('episodes'),tblBody=$('tblMovies').querySelector('tbody'),jsonBox=$('jsonBox');
+let movies=[],editingId=null;
 
-  let movies = [];
-  let editingId = null;
+async function loadMovies(){
+  try{
+    const res=await fetch('movies.json',{cache:'no-store'});
+    movies=await res.json();
+    renderTable();jsonBox.value=JSON.stringify(movies,null,2);
+  }catch(e){movies=[];renderTable();jsonBox.value='[]';}
+}
 
-  async function loadMovies(){
-    try{
-      const res = await fetch('movies.json',{cache:'no-store'});
-      movies = await res.json();
+function renderTable(){
+  tblBody.innerHTML='';
+  movies.forEach(m=>{
+    const tr=document.createElement('tr');
+    const genres=m.genres?m.genres.join(', '):'';
+    const updated=m.updatedAt?new Date(m.updatedAt).toLocaleString():'-';
+    tr.innerHTML=`
+      <td>${m.title}</td>
+      <td>${m.year??''}</td>
+      <td>${m.type??''}</td>
+      <td>${genres}</td>
+      <td>${updated}</td>
+      <td>
+        <button class="btn small" onclick="onEdit(${m.id})">Sửa</button>
+        <button class="btn small danger" onclick="onDel(${m.id})">Xoá</button>
+      </td>`;
+    tblBody.appendChild(tr);
+  });
+}
 
-      // ✅ Bù updatedAt cho dữ liệu cũ (nếu thiếu)
-      movies = (movies||[]).map(m => ({ ...m, updatedAt: m.updatedAt ?? Date.now() }));
+function makeEpisodeRow(ep={name:'Tập 1',url:''}){
+  const wrap=document.createElement('div');
+  wrap.className='ep-row';
+  wrap.innerHTML=`
+    <input class="ep-name" placeholder="Tên tập" value="${ep.name||''}" />
+    <input class="ep-url" placeholder="Link tập" value="${ep.url||''}" />
+    <button class="btn small danger">X</button>`;
+  wrap.querySelector('button').onclick=()=>wrap.remove();
+  return wrap;
+}
 
-      renderTable();
-      jsonBox.value = JSON.stringify(movies,null,2);
-    }catch(e){
-      movies = [];
-      renderTable();
-      jsonBox.value = '[]';
-    }
-  }
+function resetForm(){
+  editingId=null;titleEl.value='';yearEl.value='';genresEl.value='';
+  posterEl.value='';typeEl.value='';videoUrlEl.value='';descEl.value='';
+  episodesWrap.innerHTML='';
+}
+$('btnAddEp').onclick=()=>episodesWrap.appendChild(makeEpisodeRow());
+$('btnReset').onclick=resetForm;
 
-  function renderTable(){
-    tblBody.innerHTML = '';
-    movies.forEach(m=>{
-      const tr = document.createElement('tr');
-      const genres = m.genres ? m.genres.join(', ') : '';
-      const updated = m.updatedAt ? new Date(m.updatedAt).toLocaleString() : '-';
-      tr.innerHTML = `
-        <td>${m.title}</td>
-        <td>${m.year ?? ''}</td>
-        <td>${genres}</td>
-        <td>${updated}</td>
-        <td>
-          <button class="btn small" onclick="onEdit(${m.id})">Sửa</button>
-          <button class="btn small danger" onclick="onDel(${m.id})">Xoá</button>
-        </td>
-      `;
-      tblBody.appendChild(tr);
-    });
-  }
-
-  function makeEpisodeRow(ep={name:'Tập 1',url:''}){
-    const wrap = document.createElement('div');
-    wrap.className='ep-row';
-    wrap.innerHTML = `
-      <input class="ep-name" placeholder="Tên tập" value="${ep.name||''}" />
-      <input class="ep-url" placeholder="Link tập" value="${ep.url||''}" />
-      <button class="btn small danger">X</button>
-    `;
-    wrap.querySelector('button').onclick = ()=> wrap.remove();
-    return wrap;
-  }
-
-  function resetForm(){
-    editingId=null;
-    titleEl.value=''; yearEl.value=''; genresEl.value='';
-    posterEl.value=''; videoUrlEl.value=''; descEl.value='';
-    episodesWrap.innerHTML='';
-  }
-
-  $('btnAddEp').onclick = ()=> episodesWrap.appendChild(makeEpisodeRow());
-  $('btnReset').onclick = resetForm;
-
-  $('btnSave').onclick = ()=>{
-    const title = titleEl.value.trim();
-    if(!title){ alert('Nhập tên phim'); return; }
-    const data = {
-      id: editingId ?? Date.now(),
-      title,
-      year: yearEl.value.trim() || '',
-      genres: (genresEl.value||'').split(',').map(s=>s.trim()).filter(Boolean),
-      poster: posterEl.value.trim(),
-      videoUrl: videoUrlEl.value.trim(),
-      description: descEl.value.trim(),
-      episodes: [...episodesWrap.querySelectorAll('.ep-row')].map((row,i)=>({
-        name: row.querySelector('.ep-name').value || `Tập ${i+1}`,
-        url: row.querySelector('.ep-url').value.trim()
-      })),
-      // luôn cập nhật timestamp khi lưu/sửa
-      updatedAt: Date.now()
-    };
-    const idx = movies.findIndex(m=>m.id===data.id);
-    if(idx>=0) movies[idx]=data; else movies.push(data);
-    renderTable();
-    jsonBox.value = JSON.stringify(movies,null,2);
-    alert('Đã lưu vào bộ nhớ tạm. Hãy bấm "Tải movies.json" và upload file lên GitHub.');
-    resetForm();
+$('btnSave').onclick=()=>{
+  const title=titleEl.value.trim();if(!title){alert('Nhập tên phim');return;}
+  const data={
+    id:editingId??Date.now(),
+    title,
+    year:yearEl.value.trim()||'',
+    type:typeEl.value||'',
+    genres:(genresEl.value||'').split(',').map(s=>s.trim()).filter(Boolean),
+    poster:posterEl.value.trim(),
+    videoUrl:videoUrlEl.value.trim(),
+    description:descEl.value.trim(),
+    episodes:[...episodesWrap.querySelectorAll('.ep-row')].map((r,i)=>({
+      name:r.querySelector('.ep-name').value||`Tập ${i+1}`,
+      url:r.querySelector('.ep-url').value.trim()
+    })),
+    updatedAt:Date.now()
   };
+  const idx=movies.findIndex(m=>m.id===data.id);
+  if(idx>=0)movies[idx]=data;else movies.push(data);
+  renderTable();jsonBox.value=JSON.stringify(movies,null,2);
+  alert('Đã lưu tạm. Hãy bấm "Tải movies.json" và upload lên GitHub.');
+  resetForm();
+};
 
-  window.onEdit = (id)=>{
-    const m = movies.find(x=>x.id===id); if(!m) return;
-    editingId = m.id;
-    titleEl.value = m.title || '';
-    yearEl.value = m.year || '';
-    genresEl.value = (m.genres||[]).join(', ');
-    posterEl.value = m.poster || '';
-    videoUrlEl.value = m.videoUrl || '';
-    descEl.value = m.description || '';
-    episodesWrap.innerHTML='';
-    (m.episodes||[]).forEach(ep=> episodesWrap.appendChild(makeEpisodeRow(ep)));
-    window.scrollTo({top:0,behavior:'smooth'});
-  };
+window.onEdit=(id)=>{
+  const m=movies.find(x=>x.id===id);if(!m)return;
+  editingId=m.id;titleEl.value=m.title||'';yearEl.value=m.year||'';
+  typeEl.value=m.type||'';genresEl.value=(m.genres||[]).join(', ');
+  posterEl.value=m.poster||'';videoUrlEl.value=m.videoUrl||'';
+  descEl.value=m.description||'';episodesWrap.innerHTML='';
+  (m.episodes||[]).forEach(ep=>episodesWrap.appendChild(makeEpisodeRow(ep)));
+  window.scrollTo({top:0,behavior:'smooth'});
+};
 
-  window.onDel = (id)=>{
-    if(!confirm('Xoá phim này?')) return;
-    movies = movies.filter(m=>m.id!==id);
-    renderTable();
-    jsonBox.value = JSON.stringify(movies,null,2);
-  };
+window.onDel=(id)=>{
+  if(!confirm('Xoá phim này?'))return;
+  movies=movies.filter(m=>m.id!==id);
+  renderTable();jsonBox.value=JSON.stringify(movies,null,2);
+};
 
-  $('btnDownload').onclick = ()=>{
-    const blob = new Blob([jsonBox.value],{type:'application/json'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'movies.json';
-    a.click();
-    URL.revokeObjectURL(a.href);
-  };
+$('btnDownload').onclick=()=>{
+  const blob=new Blob([jsonBox.value],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download='movies.json';
+  a.click();URL.revokeObjectURL(a.href);
+};
 
-  loadMovies();
+loadMovies();
 </script>
 </body>
 </html>
