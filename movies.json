@@ -3,6 +3,7 @@
     "id": 1,
     "title": "Devil May Cry - Quỷ Khóc Thần Sầu",
     "year": "2025",
+    "type": "series",
     "genres": [
       "Anime",
       "Action",
@@ -45,12 +46,13 @@
         "url": "https://drive.google.com/file/d/1pAw9V9Y_zREiRJ7oNZORj_ziWd_4hj8g/preview"
       }
     ],
-    "updatedAt": 1761840329720
+    "updatedAt": 1762168179882
   },
   {
     "id": 2,
     "title": "A Gatherer's Adventure in Isekai - Nhật Ký Du Hành Dị Giới Của Nhà Thu Thập Nguyên Liệu",
     "year": "2025",
+    "type": "series",
     "genres": [
       "Anime",
       "Dị Giới",
@@ -62,6 +64,7 @@
     ],
     "poster": "posters/A-Gatherer's-Adventure-in-Isekai.jpg",
     "videoUrl": "https://drive.google.com/file/d/1y3lsCkdN6A88ryL8PYVjjmnqsetoyfOW/preview",
+    "description": "Takeru Kamishiro là một chàng trai bình thường với công việc văn phòng bình thường nhưng lại bị triệu hồi đến một thế giới khác. Takeru bắt đầu cuộc sống mới của mình tại \"Madeus\", một thế giới với kiếm và ma thuật, được trang bị đầy đủ các kỹ năng! Anh không chỉ sở hữu thể chất cường hóa và khả năng ma thuật tuyệt vời, mà còn có khả năng \"tìm kiếm\" những vật phẩm giá trị. Với những kỹ năng gian lận được trang bị, Takeru bắt đầu cuộc phiêu lưu mới của mình trong thế giới isekai mới!!",
     "episodes": [
       {
         "name": "Tập 1",
@@ -80,13 +83,13 @@
         "url": "https://drive.google.com/file/d/1hw6MatynW-Qy6Mg1l0AjQ-vCvzuP4171/preview"
       }
     ],
-    "description": "Takeru Kamishiro là một chàng trai bình thường với công việc văn phòng bình thường nhưng lại bị triệu hồi đến một thế giới khác. Takeru bắt đầu cuộc sống mới của mình tại \"Madeus\", một thế giới với kiếm và ma thuật, được trang bị đầy đủ các kỹ năng! Anh không chỉ sở hữu thể chất cường hóa và khả năng ma thuật tuyệt vời, mà còn có khả năng \"tìm kiếm\" những vật phẩm giá trị. Với những kỹ năng gian lận được trang bị, Takeru bắt đầu cuộc phiêu lưu mới của mình trong thế giới isekai mới!!",
-    "updatedAt": 1761840286495
+    "updatedAt": 1762168233304
   },
   {
     "id": 1759323515525,
     "title": "My Gift Lvl 9999 Unlimited Gacha- Backstabbed in a Backwater Dungeon, I'm Out for Revenge - Quà tặng của tôi Lvl 9999 Gacha không giới hạn: Bị đâm sau lưng trong ngục tối hẻo lánh, tôi sẽ trả thù!",
     "year": "2025",
+    "type": "series",
     "genres": [
       "Anime",
       "Dị Giới",
@@ -117,12 +120,13 @@
         "url": "https://drive.google.com/file/d/1c8XcgTN9UWRIH4kmuSI2P8tLf7HUiYFV/preview"
       }
     ],
-    "updatedAt": 1761887097435
+    "updatedAt": 1762168197444
   },
   {
     "id": 1760620708740,
     "title": "The Banished Court Magician Aims to Become the Strongest - Pháp Sư Bị Trục Xuất Muốn Trở Thành Người Mạnh Nhất",
     "year": "2025",
+    "type": "series",
     "genres": [
       "Anime",
       "Hành Động",
@@ -150,12 +154,13 @@
         "url": "https://drive.google.com/file/d/12Ga7kk2BKz6viBIn36xpWFoV7EQLvPXD/preview"
       }
     ],
-    "updatedAt": 1761986276772
+    "updatedAt": 1762168206778
   },
   {
     "id": 1761398752650,
     "title": "Hero Without a Class Who Even Needs Skills - Anh Hùng Không Có Chức Nghiệp: Ai Cần Kỹ Năng Chứ?!",
     "year": "2025",
+    "type": "series",
     "genres": [
       "Anime Bộ",
       "Bí Ẩn",
@@ -196,12 +201,13 @@
         "url": "https://drive.google.com/file/d/1vjmusNHi39NISFYxVKLaG4o0sH3fQnII/preview"
       }
     ],
-    "updatedAt": 1761986645045
+    "updatedAt": 1762168215718
   },
   {
     "id": 1761996836848,
     "title": "Solo Camping For Two - Cắm Trại Một Mình Cho Hai Người",
     "year": "2025",
+    "type": "series",
     "genres": [
       "Đời Thường",
       "Cắm Trại Ngoài Trời",
@@ -222,12 +228,13 @@
         "url": "https://drive.google.com/file/d/1Ki4_yjjnj83iGHe2C3VZv6AT1xxX_zfp/preview"
       }
     ],
-    "updatedAt": 1762005785620
+    "updatedAt": 1762168222782
   },
   {
     "id": 1762066565841,
     "title": "Tôi Là Sát Thủ Nhưng Chỉ Số Mạnh Hơn Hẳn Dũng Sĩ - My Status as an Assassin Obviously Exceeds the Hero's",
     "year": "2025",
+    "type": "series",
     "genres": [
       "Chuyển Sinh",
       "Triệu Hồi",
@@ -259,6 +266,6 @@
         "url": "https://drive.google.com/file/d/1Pt9KWaCdI-9hs6c2yj-wgdqr3CnJpHin/preview"
       }
     ],
-    "updatedAt": 1762100988058
+    "updatedAt": 1762168228544
   }
 ]
