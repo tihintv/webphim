@@ -275,5 +275,31 @@
       }
     ],
     "updatedAt": 1762431799076
+  },
+  {
+    "id": 1762516009855,
+    "title": "Tales of Wedding Rings - Câu Chuyện Nhẫn Cưới - Season 2",
+    "year": "2025",
+    "type": "series",
+    "genres": [
+      "Anime",
+      "16+",
+      "Dị Giới",
+      "Giả Tưởng",
+      "Lãng Mạn",
+      "Hành Động",
+      "Gợi Cảm",
+      "Dàn Hậu Cung"
+    ],
+    "poster": "posters/Tales-of-Wedding-Rings-Season2.jpg",
+    "videoUrl": "",
+    "description": "Câu Chuyện Nhẫn Cưới Phần 2 hay Tales of Wedding Rings (Season 2) / Kekkon Yubiwa Monogatari II tiếp nối hành trình lãng mạn-huyền ảo của Satō Haruto và các công chúa từ thế giới khác. Dựa trên manga của Maybe, series tiếp tục khai thác chủ đề fantasy-romance với tông vừa thơ mộng vừa có nhiều cảnh chiến đấu phép thuật khi nhân vật chính phải tích lũy “nhẫn” để tăng sức mạnh và bảo vệ thế giới. Phần 1 đã khởi chiếu đầu năm 2024 và phần 2 nối tiếp để mở rộng các arc cảm xúc lẫn thử thách mới.\n\nPhần 2 hứa hẹn nhiều khoảnh khắc cảm xúc được dàn xếp kỹ càng: các mối quan hệ phát triển, bí ẩn về nguồn gốc nhẫn được hé lộ dần, và những trận đấu có nhịp độ cao hơn trước tất cả giữ đúng nhịp lãng mạn pha hành động đã làm nên thương hiệu của series.",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1SFoWxA9EsYzC02iSsXpoZvaCvY-07q8a/preview"
+      }
+    ],
+    "updatedAt": 1762516009855
   }
 ]
