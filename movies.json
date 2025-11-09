@@ -321,5 +321,42 @@
       }
     ],
     "updatedAt": 1762533926711
+  },
+  {
+    "id": 1762680595722,
+    "title": "The Water Magician - Pháp Sư Hệ Thủy",
+    "year": "",
+    "type": "series",
+    "genres": [
+      "Anime",
+      "Giả tưởng",
+      "Thế giới phép thuật",
+      "Hành động",
+      "Phiêu lưu",
+      "Phép thuật",
+      "Siêu nhiên"
+    ],
+    "poster": "posters/the-water-magician.jpg",
+    "videoUrl": "",
+    "description": "Reincarnation khiến Ryo mơ về hòa bình, nhưng thay vào đó, anh ta lại rơi vào một vùng đất hoang vu đầy quái vật. Với phép thuật nước và tuổi trẻ vĩnh cửu, anh ta sống sót sau vô số hỗn hợp độc ác trong 20 năm, trở thành một trong những pháp sư mạnh nhất từ ​​trước đến nay. Số phận của Ryo thay đổi khi anh gặp Abel, một hiệp sĩ thiên tài, đẩy anh ta vào ánh đèn sân khấu của xã hội phép thuật. Vì vậy, cuộc phiêu lưu hoang dã của Pháp sư nước bắt đầu!",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1f-V9SBvQmwORXmw7m-fwE769S9OIp35F/preview"
+      },
+      {
+        "name": "Tập 2",
+        "url": "https://drive.google.com/file/d/1fIgvm6gw2ztjEHJx0nlkzp7zFloFDi2T/preview"
+      },
+      {
+        "name": "Tập 3",
+        "url": "https://drive.google.com/file/d/1fd-GwLcjWjetXYaBElk4fsnsVC9lq_IY/preview"
+      },
+      {
+        "name": "Tập 4",
+        "url": "https://drive.google.com/file/d/1bx5kDPmW90vJLCaZdsAoPOFVA1oaPJKp/preview"
+      }
+    ],
+    "updatedAt": 1762680595722
   }
 ]
