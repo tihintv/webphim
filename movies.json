@@ -374,5 +374,31 @@
       }
     ],
     "updatedAt": 1762680595722
+  },
+  {
+    "id": 1763038305138,
+    "title": "Tales of Wedding Rings - Câu Chuyện Nhẫn Cưới - Season 1",
+    "year": "2025",
+    "type": "series",
+    "genres": [
+      "Anime",
+      "16+",
+      "Dị Giới",
+      "Giả Tưởng",
+      "Lãng Mạn",
+      "Hành Động",
+      "Gợi Cảm",
+      "Dàn Hậu Cung"
+    ],
+    "poster": "posters/tales-of-wedding-rings-season-1.jpg",
+    "videoUrl": "",
+    "description": "Satou đã yêu đương với người bạn thời thơ ấu và hàng xóm của mình, Hime, từ khi cô và ông nội của cô xuất hiện đột ngột cách đây 10 năm. Bây giờ, Hime trở thành một cô gái xinh đẹp rực rỡ nhưng bí ẩn, khiến cho việc thổ lộ tình cảm của anh trở nên khó khăn hơn. Khi ngày kỷ niệm của cuộc gặp gỡ đầu tiên của họ đang đến gần, liệu anh ấy có đủ can đảm để biến mối quan hệ bạn bè của họ thành một điều gì đó hơn? Hay một số số phận hoàn toàn khác đang chờ đợi đôi bạnc mặc kết nối chặt chẽ này?",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1HExJ9MwtYsBA4loMVWkLnQutqiwgjK-T/preview"
+      }
+    ],
+    "updatedAt": 1763038305138
   }
 ]
