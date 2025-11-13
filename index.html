@@ -159,7 +159,7 @@
   }
 
   function renderUpdated(list){
-    const items = [...list].filter(m => m.updatedAt).sort((a,b)=>b.updatedAt - a.updatedAt).slice(0,10);
+    const items = [...list].filter(m => m.updatedAt).sort((a,b)=>b.updatedAt - a.updatedAt).slice(0,5);
     if (!items.length){ updatedSection.style.display='none'; return; }
     updatedSection.style.display='block';
     updatedRow.className='updated-list';
