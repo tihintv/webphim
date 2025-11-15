@@ -416,5 +416,27 @@
       }
     ],
     "updatedAt": 1763046236535
+  },
+  {
+    "id": 1763200601370,
+    "title": "Mechanical Marie",
+    "year": "2025",
+    "type": "series",
+    "genres": [
+      "Hài Hước",
+      "Khoa Học",
+      "Tâm Lý",
+      "Viễn Tưởng"
+    ],
+    "poster": "posters/Mechanical-Marie.jpg",
+    "videoUrl": "",
+    "description": "Huyền thoại võ thuật Marie đã nhận một công việc mới là \"người hầu máy móc\"… ngoại trừ việc cô là người thật 100%, và Arthur, sếp mới của cô, lại khinh miệt con người. May mắn thay, khuôn mặt vô cảm bẩm sinh của Marie giúp cô tiếp tục vai diễn robot trong khi âm thầm bảo vệ Arthur khỏi những âm mưu ám sát liên miên. Nhưng khi Arthur phải lòng cô hầu gái \"hoàn hảo\" của mình, mọi thứ nhanh chóng vượt khỏi tầm kiểm soát!",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/19r5W33nS4lT7M3iuqRqWq98LkYWxOjNF/preview"
+      }
+    ],
+    "updatedAt": 1763200601370
   }
 ]
