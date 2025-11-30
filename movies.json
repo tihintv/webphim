@@ -746,5 +746,29 @@
       }
     ],
     "updatedAt": 1764315456088
+  },
+  {
+    "id": 1764484756847,
+    "title": "Tôi Có Thể Thỉnh Cầu Một Điều Cuối Cùng Không? - May I Ask for One Final Thing?",
+    "year": "2025",
+    "type": "series",
+    "genres": [
+      "Chính kịch",
+      "Hài Hước",
+      "Hành Động",
+      "Khoa Học",
+      "Phiêu Lưu",
+      "Viễn Tưởng"
+    ],
+    "poster": "posters/May-I-Ask-for-One-Final-Thing.jpg",
+    "videoUrl": "",
+    "description": "Giữa buổi dạ tiệc, vị hôn phu Kyle bất ngờ hủy bỏ hôn ước với Scarlet. Cô bị vu oan là kẻ bắt nạt và bị gán cho danh hiệu “Ác nữ”. Giới quý tộc đồng loạt lên án, dù cho suốt bao năm qua, Scarlet đã phải chịu đựng sự ngu ngốc và tàn nhẫn của hắn. Lần này, cô không thể nhẫn nhịn thêm nữa! Trong cơn tuyệt vọng, Scarlet chỉ xin một điều cuối cùng: được tung cú đấm thẳng vào mặt hắn. Câu chuyện báo thù Kyle và bè lũ bắt đầu! Một hành trình giả tưởng về một nữ chiến binh kiêu hãnh nhưng nổi loạn - người sẽ không bao giờ để bất kỳ ai lợi dụng mình!",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1HcRBGboMydQNp8jKCBqlQNLlo7x7bWIG/preview"
+      }
+    ],
+    "updatedAt": 1764484756847
   }
 ]
