@@ -978,5 +978,26 @@
       }
     ],
     "updatedAt": 1765105955272
+  },
+  {
+    "id": 1765518302548,
+    "title": "Chainsaw Man - The Movie: Chương Reze",
+    "year": "2025",
+    "type": "movie",
+    "genres": [
+      "Hành Động",
+      "Viễn Tưởng",
+      "Hoạt Hình"
+    ],
+    "poster": "posters/chainsaw-man-the-reze.jpg",
+    "videoUrl": "",
+    "description": "Tiếp nối series anime chuyển thể đình đám, Chainsaw Man lần đầu tiên oanh tạc màn ảnh rộng trong một cuộc phiêu lưu hoành tráng, ngập tràn các phân cảnh hành động. Ở phần trước, ta đã biết Denji từng làm Thợ Săn Quỷ cho yakuza để trả món nợ của cha mẹ nhưng bị họ phản bội và trừ khử. Trong khoảnh khắc hấp hối, chú chó quỷ cưa máy Pochita (người bạn đồng hành trung thành của Denji) đã đưa ra một khế ước, cứu sống cậu và hợp thể cùng cậu. Từ đó, một Quỷ Cưa bất khả chiến bại ra đời. Giờ đây ở Chainsaw Man – The Movie: Chương Reze, trong cuộc chiến tàn khốc giữa quỷ dữ, thợ săn quỷ và những kẻ thù trong bóng tối, một cô gái bí ẩn tên Reze xuất hiện trong thế giới của Denji. Denji buộc phải đối mặt với trận chiến sinh tử khốc liệt nhất của mình, một trận chiến được tiếp sức bởi tình yêu trong một thế giới nơi mọi người phải sinh tồn mà không biết bất kỳ luật lệ nào.",
+    "episodes": [
+      {
+        "name": "Tập 0",
+        "url": "https://drive.google.com/file/d/1L19uIeJGSmueRbqYJN8ZEi2Q2p7JDkMM/preview"
+      }
+    ],
+    "updatedAt": 1765518302548
   }
 ]
