@@ -101,6 +101,24 @@
       }
     }
 
+
+    /* CONTACT */
+    .contact-card{
+      background:var(--panel2);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px 14px;
+      max-width:780px;
+      margin:0 18px 18px;
+    }
+    .contact-list{display:flex;flex-direction:column;gap:10px}
+    .contact-label{color:var(--muted);font-weight:700;display:inline-block;min-width:88px}
+    .contact-link{color:#cfe6ff;text-decoration:none}
+    .contact-link:hover{text-decoration:underline}
+    .contact-hint{margin:12px 0 0;color:var(--muted);font-size:12px}
+    @media (max-width:680px){.contact-card{margin:0 12px 18px}}
+
+
     /* MODAL */
     .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);justify-content:center;align-items:center;z-index:1000;padding:16px}
     .modal-content{background:#222;border-radius:14px;padding:20px;max-width:860px;width:100%;display:flex;gap:18px;position:relative}
@@ -141,6 +159,7 @@
       <button class="menu-btn active" id="btnAll">Tất cả</button>
       <button class="menu-btn" id="btnSeries">Phim bộ</button>
       <button class="menu-btn" id="btnMovie">Phim lẻ</button>
+      <button class="menu-btn" id="btnContact">Liên hệ</button>
     </div>
 
     <input id="searchInput" type="text" placeholder="Tìm theo tên, thể loại..." />
@@ -151,6 +170,22 @@
     <h2>📺 Mới cập nhật</h2>
     <div id="updatedRow"></div>
   </section>
+
+
+  <!-- LIÊN HỆ -->
+  <section class="section" id="contactSection" style="display:none">
+    <h2>📩 Liên hệ</h2>
+    <div class="contact-card">
+      <p style="margin:0 0 8px;color:#cfd6e0">Nếu bạn có góp ý / báo lỗi link / yêu cầu phim, hãy liên hệ:</p>
+      <div class="contact-list">
+        <div><span class="contact-label">Email:</span> <a class="contact-link" href="mailto:luongcuatoi309@gmail.com">luongcuatoi309@gmail.com</a></div>
+        <div><span class="contact-label">Facebook:</span> <a class="contact-link" href="#" onclick="alert('Bạn có thể thay link Facebook trong contactSection ở index.html');return false;">(thêm link)</a></div>
+        <div><span class="contact-label">Telegram:</span> <a class="contact-link" href="#" onclick="alert('Bạn có thể thay link Telegram trong contactSection ở index.html');return false;">(thêm link)</a></div>
+      </div>
+      <p class="contact-hint">Tip: Bạn có thể sửa nội dung phần này trực tiếp trong file <code>index.html</code>.</p>
+    </div>
+  </section>
+
 
   <main>
     <div class="movies-container" id="moviesContainer"></div>
@@ -180,10 +215,12 @@
   const searchInput     = document.getElementById("searchInput");
   const updatedSection  = document.getElementById("updatedSection");
   const updatedRow      = document.getElementById("updatedRow");
+  const contactSection  = document.getElementById("contactSection");
 
   const btnAll    = document.getElementById("btnAll");
   const btnSeries = document.getElementById("btnSeries");
   const btnMovie  = document.getElementById("btnMovie");
+  const btnContact= document.getElementById("btnContact");
 
   const modal            = document.getElementById("movieModal");
   const closeModal       = document.getElementById("closeModal");
@@ -296,6 +333,20 @@
   closeModal.onclick=()=>modal.style.display='none';
   window.onclick=e=>{if(e.target===modal)modal.style.display='none';};
 
+  function showContact(){
+    // Ẩn khu vực phim
+    updatedSection.style.display='none';
+    moviesContainer.style.display='none';
+    // Hiện liên hệ
+    contactSection.style.display='block';
+  }
+
+  function showMoviesView(){
+    contactSection.style.display='none';
+    moviesContainer.style.display='';
+    renderUpdated(allMovies);
+  }
+
   /* TÌM KIẾM */
   searchInput.addEventListener('input',e=>{
     const kw=e.target.value.toLowerCase();
@@ -303,6 +354,7 @@
       m.title.toLowerCase().includes(kw)||
       (m.genres&&m.genres.join(', ').toLowerCase().includes(kw))
     );
+    showMoviesView();
     renderMovies(filtered);
     clearActive();
     btnAll.classList.add('active');
@@ -312,20 +364,28 @@
   const clearActive=()=>[btnAll,btnSeries,btnMovie].forEach(b=>b.classList.remove('active'));
 
   btnAll.onclick=()=>{
+    showMoviesView();
     renderMovies(allMovies);
     clearActive(); btnAll.classList.add("active");
   };
 
   btnSeries.onclick=()=>{
+    showMoviesView();
     const phimBo = allMovies.filter(m=> m.type==="series" || m.genres?.includes("Phim bộ"));
     renderMovies(phimBo);
     clearActive(); btnSeries.classList.add("active");
   };
 
   btnMovie.onclick=()=>{
+    showMoviesView();
     const phimLe = allMovies.filter(m=> m.type==="movie" || m.genres?.includes("Phim lẻ"));
     renderMovies(phimLe);
     clearActive(); btnMovie.classList.add("active");
+  };
+
+  btnContact.onclick=()=>{
+    clearActive(); btnContact.classList.add('active');
+    showContact();
   };
 
   loadMovies();
