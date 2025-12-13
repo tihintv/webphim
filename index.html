@@ -121,6 +121,16 @@
     gtag('config', 'G-7YN1381SB7');
   </script>
 
+  <script>
+    // GA4 helper: safe event tracker
+    window.trackGA = function(eventName, params){
+      try{
+        if (typeof gtag === 'function') gtag('event', eventName, params || {});
+      }catch(e){}
+    };
+  </script>
+
+
 </head>
 <body>
   <header>
@@ -235,9 +245,9 @@
         </div>
         ${latestName?`<button class="updated-epbtn">▶ ${latestName}</button>`:''}
       `;
-      wrap.querySelector('.updated-title')?.addEventListener('click',()=>openModal(m));
+      wrap.querySelector('.updated-title')?.addEventListener('click',()=>{trackGA('movie_open',{movie_title:m.title, movie_id:String(m.id||''), movie_type:m.type||''});openModal(m);});
       const epBtn=wrap.querySelector('.updated-epbtn');
-      if(epBtn&&latestUrl){epBtn.addEventListener('click',e=>{e.stopPropagation();window.open(latestUrl,'_blank');});}
+      if(epBtn&&latestUrl){epBtn.addEventListener('click',e=>{e.stopPropagation();trackGA('updated_latest_click',{movie_title:m.title, movie_id:String(m.id||''), label:latestName});window.open(latestUrl,'_blank');});}
       updatedRow.appendChild(wrap);
     });
   }
@@ -256,7 +266,7 @@
           <p>${m.year??''}</p>
           ${badge?`<span class="epi-badge">${badge}</span>`:''}
         </div>`;
-      card.onclick=()=>openModal(m);
+      card.onclick=()=>{trackGA('movie_open',{movie_title:m.title, movie_id:String(m.id||''), movie_type:m.type||''});openModal(m);};
       moviesContainer.appendChild(card);
     });
   }
@@ -269,7 +279,7 @@
     modalDescription.textContent=m.description||'';
     if(m.videoUrl){
       watchBtn.style.display='inline-block';
-      watchBtn.onclick=e=>{e.stopPropagation();window.open(m.videoUrl,'_blank');};
+      watchBtn.onclick=e=>{e.stopPropagation();trackGA('watch_click',{movie_title:m.title, movie_id:String(m.id||''), movie_type:m.type||'', year:String(m.year||'')});window.open(m.videoUrl,'_blank');};
     }else watchBtn.style.display='none';
     episodesList.innerHTML='';
     if(m.episodes&&m.episodes.length){
@@ -277,7 +287,7 @@
         const b=document.createElement('button');
         b.className='btn-episode';
         b.textContent=ep.name||`Tập ${i+1}`;
-        b.onclick=e=>{e.stopPropagation();window.open(ep.url,'_blank');};
+        b.onclick=e=>{e.stopPropagation();trackGA('episode_click',{movie_title:m.title, movie_id:String(m.id||''), episode_name:ep.name||`Tập ${i+1}`, episode_index:i+1});window.open(ep.url,'_blank');};
         episodesList.appendChild(b);
       });
     }else episodesList.innerHTML='<p>Chưa có tập nào</p>';
