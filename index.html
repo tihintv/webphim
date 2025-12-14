@@ -175,28 +175,15 @@
   <!-- LIÊN HỆ -->
   <section class="section" id="contactSection" style="display:none">
     <h2>📩 Liên hệ</h2>
-    <div class="contact-list">
-  <div>
-    <span class="contact-label">Email:</span>
-    <a class="contact-link" href="mailto:tihintv@gmail.com">
-      tihintv@gmail.com
-    </a>
-  </div>
-
-  <div>
-    <span class="contact-label">Hotline:</span>
-    <a class="contact-link" href="tel:0966098861">
-      0966.098.861
-    </a>
-  </div>
-
-  <div>
-    <span class="contact-label">Donate:</span>
-    <a class="contact-link" href="https://me.momo.vn/8vIEuzs1sbInumiVi5s4" target="_blank">
-      Ủng hộ duy trì website ❤️
-    </a>
-  </div>
-</div>
+    <div class="contact-card">
+      <p style="margin:0 0 8px;color:#cfd6e0">Nếu bạn có góp ý / báo lỗi link / yêu cầu phim, hãy liên hệ:</p>
+      <div class="contact-list">
+        <div><span class="contact-label">Email:</span> <a class="contact-link" href="mailto:tihintv@gmail.com">tihintv@gmail.com</a></div>
+        <div><span class="contact-label">Facebook:</span> <a class="contact-link" href="#" onclick="alert('Bạn có thể thay link Facebook trong contactSection ở index.html');return false;">(thêm link)</a></div>
+        <div><span class="contact-label">Telegram:</span> <a class="contact-link" href="#" onclick="alert('Bạn có thể thay link Telegram trong contactSection ở index.html');return false;">(thêm link)</a></div>
+      </div>
+      <p class="contact-hint">Tip: Bạn có thể sửa nội dung phần này trực tiếp trong file <code>index.html</code>.</p>
+    </div>
   </section>
 
 
@@ -247,6 +234,10 @@
 
   let allMovies = [];
 
+  const sortByUpdated = (list)=>{
+    return [...(list||[])].sort((a,b)=>((b.updatedAt||0) - (a.updatedAt||0)));
+  };
+
   const epLabel = (m)=>{
     if (Array.isArray(m.episodes) && m.episodes.length>0) return `${m.episodes.length} tập`;
     if (m.videoUrl) return "Full";
@@ -258,6 +249,7 @@
       const res = await fetch("movies.json",{cache:"no-store"});
       allMovies = await res.json();
       allMovies = (allMovies||[]).map(m => ({ ...m, updatedAt: m.updatedAt ?? Date.now() }));
+      allMovies = sortByUpdated(allMovies);
 
       renderUpdated(allMovies);
       renderMovies(allMovies);
@@ -363,10 +355,10 @@
   /* TÌM KIẾM */
   searchInput.addEventListener('input',e=>{
     const kw=e.target.value.toLowerCase();
-    const filtered=allMovies.filter(m=>
+    const filtered=sortByUpdated(allMovies.filter(m=>
       m.title.toLowerCase().includes(kw)||
       (m.genres&&m.genres.join(', ').toLowerCase().includes(kw))
-    );
+    ));
     showMoviesView();
     renderMovies(filtered);
     clearActive();
@@ -384,14 +376,14 @@
 
   btnSeries.onclick=()=>{
     showMoviesView();
-    const phimBo = allMovies.filter(m=> m.type==="series" || m.genres?.includes("Phim bộ"));
+    const phimBo = sortByUpdated(allMovies.filter(m=> m.type==="series" || m.genres?.includes("Phim bộ")));
     renderMovies(phimBo);
     clearActive(); btnSeries.classList.add("active");
   };
 
   btnMovie.onclick=()=>{
     showMoviesView();
-    const phimLe = allMovies.filter(m=> m.type==="movie" || m.genres?.includes("Phim lẻ"));
+    const phimLe = sortByUpdated(allMovies.filter(m=> m.type==="movie" || m.genres?.includes("Phim lẻ")));
     renderMovies(phimLe);
     clearActive(); btnMovie.classList.add("active");
   };
