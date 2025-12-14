@@ -1019,5 +1019,28 @@
       }
     ],
     "updatedAt": 1765632660381
+  },
+  {
+    "id": 1765701165359,
+    "title": "Monster Strike: Deadverse Reloaded",
+    "year": "2025",
+    "type": "series",
+    "genres": [
+      "Hành động",
+      "Giả Tưởng",
+      "Khoa Học Viễn Tưởng",
+      "Fantasy",
+      "Bùa Chú..."
+    ],
+    "poster": "posters/Monster-Strike-Deadverse-Reloaded.jpg",
+    "videoUrl": "",
+    "description": "Sinh ra trong một gia đình trừ tà truyền thống, Rinne , một nữ sinh trung học , lại có khả năng không nhìn thấy khuôn mặt người khác. Rinne bắt đầu nhiệm vụ đầu tiên của mình— chỉ để chạm trán với một kẻ thù kỳ lạ hơn nhiều, đẩy cô vào nguy hiểm. Bất ngờ thay, cô được một người đàn ông bí ẩn tên Jugemu cứu giúp , và biết được rằng không chỉ thế giới của cô, mà tất cả các thế giới— được gọi chung là Thế giới Tấn công —đều đang bị đe dọa.",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1cp3BjkPwY-QVufFPHlxw00CflDOs6F3K/preview"
+      }
+    ],
+    "updatedAt": 1765701165359
   }
 ]
