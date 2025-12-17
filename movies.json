@@ -1054,5 +1054,27 @@
       }
     ],
     "updatedAt": 1765864648644
+  },
+  {
+    "id": 1765973952188,
+    "title": "A Wild Last Boss Appeared - Trùm Cuối Hoang Dã Giá Lâm",
+    "year": "2025",
+    "type": "series",
+    "genres": [
+      "Chuyển Sinh",
+      "Fantasy",
+      "Hành Động",
+      "Phiêu Lưu"
+    ],
+    "poster": "posters/A_Wild_Last_Boss_Appeared.jpg",
+    "videoUrl": "",
+    "description": "Ufas Maphaahl, chúa tể cánh đen và là thủ lĩnh của Mười Hai Ngôi Sao Thiên Đường, đã bị đánh bại.\n\nMột người đàn ông tỉnh dậy trong cơ thể của Lufas, nhân vật Lufas trong game Exgate, hai trăm năm sau khi cô bị bảy anh hùng đánh bại. Thế giới game Exgate mà anh ta biết không còn bị con người thống trị nữa—và nó cũng không còn là một trò chơi nữa. Exgate là một thế giới riêng biệt, nơi các nhân vật suy nghĩ, cảm nhận và sống giống hệt như anh ta. Lufas du hành qua Exgate, tìm kiếm Mười Hai Ngôi Sao Thiên Đường đã tan rã từ lâu.\n\nLufas không còn đất nước, quân đội hay đồng minh. Một câu hỏi vẫn còn đó: lý do thực sự khiến một người đàn ông bình thường được tái sinh vào Exgate với tư cách là Lufas là gì?",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1F-L7vasJP70BKgUHvlOq-L7xX2glPLS5/preview"
+      }
+    ],
+    "updatedAt": 1765973952189
   }
 ]
