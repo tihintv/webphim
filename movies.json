@@ -1112,5 +1112,55 @@
       }
     ],
     "updatedAt": 1765973952189
+  },
+  {
+    "id": 1766404238324,
+    "title": "[Lồng Tiếng] Attack On Titan Season 1 - Đại Chiến Titan",
+    "year": "2013",
+    "type": "series",
+    "genres": [
+      "Anime bộ",
+      "Shounen",
+      "Super Power",
+      "Fantasy",
+      "Drama",
+      "Mystery",
+      "Military",
+      "Action"
+    ],
+    "poster": "posters/Attack_on_Titan_Season_1.jpg",
+    "videoUrl": "",
+    "description": "Attack On Titan lấy bối cảnh hậu tận thế, khi nhân loại đang dần đi đến bờ vực diệt vong bởi sự xâm lược của người khổng lồ Titan. Để ngăn cản chúng, loài người đã phải dựng lên những bức tường cao chót vót và trú ẩn bên trong. Một ngày nọ, quê hương của Eren bất ngờ bị người khổng lồ tấn công, cậu bé đã phải tận mắt chứng kiến cảnh mẹ mình bị chúng nuốt chửng. Từ đó, Eren càng thêm hận thù lũ Titan. Cậu gia nhập quân đội cùng với quyết tâm phải giết chết tất cả người khổng lồ trên Trái Đất, để trả thù cho những người thân yêu và bạn bè chiến hữu đã ngã xuống.",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1JFs4AK5ZXohM5uwIg4gpnbYOiQfXNhf0/preview"
+      },
+      {
+        "name": "Tập 2",
+        "url": "https://drive.google.com/file/d/1N4aVc44S8j_O7sfTLVKn2sj5xW2eRzFB/preview"
+      },
+      {
+        "name": "Tập 3",
+        "url": "https://drive.google.com/file/d/1pAi2IjwpdlWBI6wYwFeSPHjIKNtiqf74/preview"
+      },
+      {
+        "name": "Tập 4",
+        "url": "https://drive.google.com/file/d/1n7WRUAorIaqVKxQZyplYKH63wnLS37f5/preview"
+      },
+      {
+        "name": "Tập 5",
+        "url": "https://drive.google.com/file/d/14DD3dj_IPdttK9QI-uSl_IH4AUQnXDtW/preview"
+      },
+      {
+        "name": "Tập 6",
+        "url": "https://drive.google.com/file/d/17WUPln8Ma8NR0ktS0J9WiKr76UUyZyu-/preview"
+      },
+      {
+        "name": "Tập 7",
+        "url": "https://drive.google.com/file/d/1DeX3hv3f-Dds8Cjs4KiIM4SAQg2k76eF/preview"
+      }
+    ],
+    "updatedAt": 1766404238324
   }
 ]
