@@ -543,9 +543,13 @@
       {
         "name": "Tập 6",
         "url": "https://drive.google.com/file/d/1JqSNJsimTYHg1LP3-W7_Q_F3vDpfK9r4/preview"
+      },
+      {
+        "name": "Tập 7",
+        "url": "https://drive.google.com/file/d/1ow3E579bvK9yCKvocJZ1dGD2vPIImdAp/preview"
       }
     ],
-    "updatedAt": 1765612803779
+    "updatedAt": 1766662923065
   },
   {
     "id": 1763038305138,
@@ -1170,7 +1174,7 @@
       },
       {
         "name": "Tập 8",
-        "url": ""
+        "url": "https://drive.google.com/file/d/1bEJwVaQmRguTUX6zfaIZsSCbJmMOb0tn/preview"
       },
       {
         "name": "Tập 9",
@@ -1181,6 +1185,6 @@
         "url": "https://drive.google.com/file/d/1Zyht2Vn2wcRlN9mQok2gRNviiMvp4BSO/preview"
       }
     ],
-    "updatedAt": 1766660298305
+    "updatedAt": 1766660889004
   }
 ]
