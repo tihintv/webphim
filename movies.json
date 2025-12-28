@@ -1202,5 +1202,28 @@
       }
     ],
     "updatedAt": 1766897054695
+  },
+  {
+    "id": 1766902122546,
+    "title": "Cat's ♥ Eye",
+    "year": "2025",
+    "type": "series",
+    "genres": [
+      "Hài Hước",
+      "Hành Động",
+      "Mystery",
+      "Phiêu Lưu",
+      "Romance"
+    ],
+    "poster": "posters/cats-eye-anime-2025.jpg",
+    "videoUrl": "",
+    "description": "Nhân vật chính của bộ truyện là ba chị em nhà Kisugi—Hitomi, Rui và Ai—chủ một quán cà phê tên là Mắt Mèo. Hai chị em sống một cuộc sống hai mặt như một bộ ba trộm cắp nghệ thuật lão luyện, để lại những tấm thiệp có tên “Mắt Mèo” tại hiện trường vụ án. Họ đánh cắp các tác phẩm nghệ thuật thuộc về người cha mất tích từ lâu của họ, Heinz, một nhà sưu tập nghệ thuật nổi tiếng dưới thời Đức Quốc xã, với hy vọng ông sẽ liên lạc với họ. Toshio, viên cảnh sát điều tra vụ án này, chính là hôn phu của Hitomi. Anh cũng thề sẽ bắt giữ và triệt hạ Băng Mắt Mèo.",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1XhMux5dffJDK8k9wRWTgdYSEmLZAObuJ/preview"
+      }
+    ],
+    "updatedAt": 1766902122546
   }
 ]
