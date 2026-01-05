@@ -1257,5 +1257,26 @@
       }
     ],
     "updatedAt": 1767186693803
+  },
+  {
+    "id": 1767626321158,
+    "title": "Án Phạt Dũng Giả - Sentenced to Be a Hero",
+    "year": "2026",
+    "type": "series",
+    "genres": [
+      "Hành động",
+      "Nhật",
+      "Anime chuyển thể từ Light Novel"
+    ],
+    "poster": "posters/Sentenced_to_Be_a_Hero.jpg",
+    "videoUrl": "",
+    "description": "Xylo giải cứu Dotta, thành viên trong đơn vị Dũng Sĩ Chịu Án, khỏi cái chết không thể tránh khỏi. Sau đó, cậu phát hiện Dotta đã vô tình trộm chiếc quan tài có Nữ Thần bên trong.",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": ""
+      }
+    ],
+    "updatedAt": 1767626321158
   }
 ]
