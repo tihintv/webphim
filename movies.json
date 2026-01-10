@@ -1393,5 +1393,27 @@
       }
     ],
     "updatedAt": 1768059179190
+  },
+  {
+    "id": 1768063738123,
+    "title": "Chuyển Sinh Thành Rồng - Reincarnated as a Dragon Hatchling",
+    "year": "2026",
+    "type": "series",
+    "genres": [
+      "Hành động",
+      "Phiêu lưu",
+      "Giả tưởng",
+      "Isekai"
+    ],
+    "poster": "posters/Reincarnated-as-a-Dragon-Hatchling.jpg",
+    "videoUrl": "",
+    "description": "Anh hùng của chúng ta tỉnh dậy một ngày nọ trong một thế giới hoàn toàn mới… nhưng cuộc sống mới của cậu không đi kèm với kỹ năng chiến đấu, sức mạnh ma thuật, hay thậm chí cả tay chân! Cậu được tái sinh thành một quả trứng yếu ớt, mắc kẹt trong một khu rừng xa lạ bao quanh bởi những con thú hung dữ, đói khát. Nhưng trứng nở, rồng con lớn lên, và những khởi đầu khiêm tốn có thể dẫn đến điều vĩ đại. Cậu sẽ cố gắng hết sức để trở thành con rồng mạnh nhất từ ​​trước đến nay, và không một cái vỏ nhỏ bé nào có thể cản đường cậu!",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1PG-Hs1zuhxnnPvCSO3j2vB-oDK36Bj9B/preview"
+      }
+    ],
+    "updatedAt": 1768063738123
   }
 ]
