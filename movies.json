@@ -1372,5 +1372,26 @@
       }
     ],
     "updatedAt": 1767971198495
+  },
+  {
+    "id": 1768059179190,
+    "title": "Cardfight!! Vanguard: Divinez Parallactic Clash",
+    "year": "2026",
+    "type": "series",
+    "genres": [
+      "Anime",
+      "Game",
+      "Action"
+    ],
+    "poster": "posters/Cardfight-Vanguard-Divinez-Parallactic-Clash.jpg",
+    "videoUrl": "",
+    "description": "Thế giới thực bị xâm chiếm bởi hiện tượng \"Ảo ảnh\" khiến thành phố Kanazawa biến đổi kỳ lạ, buộc Akina Myodo và các đồng đội phải dấn thân vào cuộc chiến cuối cùng chống lại những kẻ thù mới như Veissrugr để bảo vệ thực tại và tìm ra ý nghĩa thực sự của bản thân sau khi điều ước của em gái đã được thực hiện.",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1-gi5ByStPHHDOjL0dvAwt0kaYJbjHPYE/preview"
+      }
+    ],
+    "updatedAt": 1768059179190
   }
 ]
