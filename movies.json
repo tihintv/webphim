@@ -509,7 +509,7 @@
   {
     "id": 1762680595722,
     "title": "The Water Magician - Pháp Sư Hệ Thủy",
-    "year": "",
+    "year": "2025",
     "type": "series",
     "genres": [
       "Anime",
@@ -557,7 +557,7 @@
         "url": "https://drive.google.com/file/d/1Yxuymd6O8yV-ArWHqpUmNTanIf4khT_s/preview"
       }
     ],
-    "updatedAt": 1766666480671
+    "updatedAt": 1768229790859
   },
   {
     "id": 1763038305138,
@@ -1499,8 +1499,12 @@
       {
         "name": "Tập 1",
         "url": "https://drive.google.com/file/d/1deMGgrCOthlm3cXRExy2QzaiHcRzV6Mx/preview"
+      },
+      {
+        "name": "Tập 2",
+        "url": "https://drive.google.com/file/d/1uGxNGCJT3ZDkaVbYZeqK_8pOeRwiF6yT/preview"
       }
     ],
-    "updatedAt": 1768223399010
+    "updatedAt": 1768231985596
   }
 ]
