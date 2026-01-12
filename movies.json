@@ -1437,5 +1437,25 @@
       }
     ],
     "updatedAt": 1768145166785
+  },
+  {
+    "id": 1768195703732,
+    "title": "Chim Ăn Lửa: Đội Cứu Hỏa Rách Rưới Vùng Ushu - Oedo Fire Slayer: The Legend of Phoenix",
+    "year": "2026",
+    "type": "series",
+    "genres": [
+      "Historical",
+      "Anime"
+    ],
+    "poster": "posters/Oedo-Fire-Slayer-The-Legend-of-Phoenix.jpg",
+    "videoUrl": "",
+    "description": "Lấy bối cảnh thời kỳ Edo sau trận đại hỏa hoạn Meiwa lịch sử, câu chuyện xoay quanh Gengo Matsunaga, một samurai chữa cháy tài ba từng là niềm tự hào của vùng Edo. Anh dẫn dắt một đội cứu hỏa kỳ quặc mang tên Boroho-gumi (hay Boro Tobi-gumi), bao gồm những thành viên có cá tính và kỹ năng đặc biệt. Họ không chỉ chiến đấu với những ngọn lửa hung tàn để bảo vệ người dân mà còn phải đối mặt với những âm mưu và sự cạnh tranh khốc liệt giữa các nhóm cứu hỏa trong thành phố.",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1fM56vWbTPCR7Ka8c9GDF3PcDWBJtohPY/preview"
+      }
+    ],
+    "updatedAt": 1768195703732
   }
 ]
