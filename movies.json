@@ -1510,5 +1510,27 @@
       }
     ],
     "updatedAt": 1768231985596
+  },
+  {
+    "id": 1768479917075,
+    "title": "Kẻ Đa Tài Nhưng Vô Dụng Bị Đuổi Khỏi Tổ Đội Anh Hùng - Jack of All Trades Party of None",
+    "year": "2026",
+    "type": "series",
+    "genres": [
+      "Hành Động",
+      "Khoa Học",
+      "Phiêu Lưu",
+      "Viễn Tưởng"
+    ],
+    "poster": "posters/Jack-of-All-Trades_Party_of_None.jpg",
+    "videoUrl": "",
+    "description": "Kẻ Đa Tài Nhưng Vô Dụng Bị Đuổi Khỏi Tổ Đội Anh Hùng (Yuusha Party wo Oidasareta Kiyoubinbou) là một bộ phim hứa hẹn sẽ mang đến cho người xem những trải nghiệm đầy phấn khích và cảm xúc. Bị phản bội bởi chính người bạn thuở nhỏ và bị trục xuất khỏi Tổ đội Anh hùng, Orhun Dura - người từng là Pháp sư Cường hóa (Enchanter) trung thành của họ đã bị các đồng đội cũ gắn mác là 'kẻ đa tài nhưng vô dụng'. Cô độc giữa thế gian, anh dấn thân vào một hành trình mới với tư cách là một mạo hiểm giả đơn độc. Chuyến đi của anh bùng nổ với những trận chiến rực lửa, những đối thủ chết chóc và cả những đồng minh không ngờ tới – để rồi anh sẽ đứng lên phá tan mọi định kiến của kẻ khác. Cuộc lội ngược dòng vĩ đại nhất của kẻ độc hành chính thức bắt đầu!",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1oJP0fNuB-47fNnpBNCxE83QDYHnlYNXT/preview"
+      }
+    ],
+    "updatedAt": 1768479917075
   }
 ]
