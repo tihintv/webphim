@@ -1552,5 +1552,28 @@
       }
     ],
     "updatedAt": 1768487321166
+  },
+  {
+    "id": 1768745555633,
+    "title": "Fate/strange Fake",
+    "year": "2025",
+    "type": "series",
+    "genres": [
+      "Chính Kịch",
+      "Hành Động",
+      "Khoa Học",
+      "Phiêu Lưu",
+      "Viễn Tưởng"
+    ],
+    "poster": "posters/fate-strange-fake.jpg",
+    "videoUrl": "",
+    "description": "Trong một cuộc chiến Chén Thánh, các Pháp sư (Master) và Linh hồn Anh hùng (Servant) của họ chiến đấu để giành quyền kiểm soát Chén Thánh — một thiết bị ban điều ước toàn năng được cho là có thể thực hiện bất kỳ điều ước nào. Nhiều năm đã trôi qua kể từ khi kết thúc Cuộc chiến Chén Thánh lần thứ năm ở Nhật Bản. Bây giờ, những dấu hiệu báo trước sự xuất hiện của một Chén Thánh mới ở thành phố Snowfield phía tây nước Mỹ",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1kZqAnPLJ_2f66QtEIY1KdZUTd8qd8hJn/preview"
+      }
+    ],
+    "updatedAt": 1768745555633
   }
 ]
