@@ -1660,5 +1660,29 @@
       }
     ],
     "updatedAt": 1769244720626
+  },
+  {
+    "id": 1769696847570,
+    "title": "An Adventurer's Daily Grind at Age 29 - Cuộc Sống Vất Vả Của Mạo Hiểm Giả Độc Thân 29 Tuổi",
+    "year": "2026",
+    "type": "series",
+    "genres": [
+      "Chính Kịch",
+      "Hành Động",
+      "Khoa Học",
+      "Phiêu Lưu",
+      "Tâm Lý",
+      "Viễn Tưởng"
+    ],
+    "poster": "posters/an-adventurers-daily-grind-at-age-29.jpg",
+    "videoUrl": "",
+    "description": "Sinh ra và lớn lên trong khu ổ chuột, Hajime Shinonome – một mạo hiểm giả 29 tuổi – hiện đang tận hưởng cuộc sống bình lặng tại ngôi làng Komai. Thế nhưng, chuỗi ngày yên ả ấy bỗng chốc đảo lộn khi anh phát hiện Lirui, một cô bé bị bỏ rơi, đang bị lũ Slime tấn công. Xúc động trước sự tuyệt vọng của cô bé và nhìn thấy hình ảnh của chính mình năm xưa, Hajime đã đưa cô về làng chăm sóc. Từ đây, Hajime và Lirui bắt đầu một chương mới trong cuộc đời, nơi đan xen giữa những thử thách bất ngờ và những ngày tháng dịu dàng bên nhau!",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1aRoJhWSbmNz1gy9EYT22cCtqRGyAGW5d/preview"
+      }
+    ],
+    "updatedAt": 1769696847570
   }
 ]
