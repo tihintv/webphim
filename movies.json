@@ -1571,9 +1571,17 @@
       {
         "name": "Tập 2",
         "url": "https://drive.google.com/file/d/1uGxNGCJT3ZDkaVbYZeqK_8pOeRwiF6yT/preview"
+      },
+      {
+        "name": "Tập 3",
+        "url": "https://drive.google.com/file/d/16Qd9bttEbCAK4Okn0hDBKxvVtr_t9521/preview"
+      },
+      {
+        "name": "Tập 4",
+        "url": "https://drive.google.com/file/d/1-mx8-dgHAUr3e-YcnN1mJ5QFRnJA6gTy/preview"
       }
     ],
-    "updatedAt": 1768231985596
+    "updatedAt": 1769867989294
   },
   {
     "id": 1768479917075,
@@ -1740,5 +1748,29 @@
       }
     ],
     "updatedAt": 1769858769455
+  },
+  {
+    "id": 1769867895134,
+    "title": "Does It Count If You Lose Your Innocence to an Android? - Mất Lần Đầu Với Android Thì Có Tính Không?",
+    "year": "2026",
+    "type": "series",
+    "genres": [
+      "Không Phù Hợp Với Trẻ Dị Thành Niên",
+      "18+",
+      "Anime",
+      "Lesbian",
+      "Đồng Tính",
+      "Viễn Tưỡng"
+    ],
+    "poster": "posters/Does-It-Count-If-You-Lose-Your-Innocence-to-an-Android.jpg",
+    "videoUrl": "",
+    "description": "Tsuda Akane xinh đẹp, thông minh là một nhân tố không thể thiếu tại công ty sản xuất robot nơi cô làm việc, nhưng các đồng nghiệp chưa bao giờ nhìn thấy mặt tối của cô. Ở nhà, Akane là kẻ bầy hầy với chỗ ở không khác gì bãi rác. Một lần khi say rượu, cô đã đặt mua một hầu gái về dọn dẹp nhưng người đến lại là một cô nàng người máy quyến rũ háo sắc sắp phục vụ Akane nhiều hơn những gì cô cần!",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1uvzaCLrRhX8Qub6MhcSLu8CTGOaaBKzV/preview"
+      }
+    ],
+    "updatedAt": 1769867895134
   }
 ]
