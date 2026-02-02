@@ -1804,5 +1804,26 @@
       }
     ],
     "updatedAt": 1769929767249
+  },
+  {
+    "id": 1770036546264,
+    "title": "Công chúa vũ trụ! - Cosmic Princess Kaguya!",
+    "year": "2026",
+    "type": "movie",
+    "genres": [
+      "Viễn Tưởng",
+      "Khoa Học",
+      "Hoạt Hình"
+    ],
+    "poster": "posters/Cosmic-Princess-Kaguya.jpg",
+    "videoUrl": "",
+    "description": "Trong thế giới ảo Tsukuyomi, hy vọng và trí tưởng tượng đan xen vào nhau. Iroha, một nữ sinh trung học 17 tuổi ở Tokyo, chia sẻ cuộc sống hàng ngày của mình giữa việc học, làm việc và thời gian dành cho không gian kỹ thuật số, nơi cô theo dõi streamer Yachiyo. Một buổi tối, cô phát hiện một em bé xuất hiện từ một cột đèn. Đứa trẻ lớn lên nhanh chóng đến tuổi của cô, tiết lộ một danh tính lấy cảm hứng từ công chúa Kaguya.Kaguya mơ ước trở thành streamer và ca sĩ trong Tsukuyomi. Iroha trở thành nhà sản xuất và nhạc sĩ mặc dù bị đe dọa bởi những thực thể bí ẩn sẵn sàng đưa cô gái trở lại mặt trăng. Hành trình của họ khám phá một phiên bản tương lai của câu chuyện, được thể hiện qua âm nhạc và mối quan hệ dựa trên sự sáng tạo và khám phá bản thân.",
+    "episodes": [
+      {
+        "name": "Tập 0",
+        "url": "https://drive.google.com/file/d/1TXrCivkCBKRwbKXrcbl6EdWHNzqtiMlf/preview"
+      }
+    ],
+    "updatedAt": 1770036546264
   }
 ]
