@@ -1877,5 +1877,28 @@
       }
     ],
     "updatedAt": 1770036546264
+  },
+  {
+    "id": 1771682484917,
+    "title": "Sakuna: Of Rice and Ruin (2026)",
+    "year": "2026",
+    "type": "series",
+    "genres": [
+      "Hành Động",
+      "Hoạt Hình",
+      "Khoa Học",
+      "Phiêu Lưu",
+      "Viễn Tưởng"
+    ],
+    "poster": "posters/SAKUNA-OF-RICE-AND-RUIN.jpg",
+    "videoUrl": "",
+    "description": "Ngoài việc là một nhà phát minh, Kokorowa còn có một bí mật: cô là một tiểu thuyết gia giấu mặt. Khi đang gặp bế tắc trong việc tìm cảm hứng cho tác phẩm mới, một tình huống trớ trêu đã xảy ra khiến Kokorowa buộc phải \"từ bỏ ngòi bút để cầm lấy chiếc cuốc\". Cô phải đích thân trải nghiệm công việc trồng lúa đầy vất vả, lấm lem bùn đất và hoàn toàn lạ lẫm trên đảo Hinoe.",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/1KOFKKYG05f3Xguz-TuYcD7DGbPOPUZWQ/preview"
+      }
+    ],
+    "updatedAt": 1771682484917
   }
 ]
