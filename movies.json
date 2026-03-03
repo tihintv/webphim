@@ -1526,9 +1526,21 @@
       {
         "name": "Tập 5",
         "url": "https://drive.google.com/file/d/184_AIn65wRXFLJQhcF0UkOkVpG7PG5l9/preview"
+      },
+      {
+        "name": "Tập 6",
+        "url": ""
+      },
+      {
+        "name": "Tập 7",
+        "url": "https://drive.google.com/file/d/1O71Z2Py9KVFl5CwY23uVZ--NfxydIVJ7/preview"
+      },
+      {
+        "name": "Tập 8",
+        "url": "https://drive.google.com/file/d/1E9OtJ6c6xZcRMFY2gaRfWt2HWVcrRv62/preview"
       }
     ],
-    "updatedAt": 1770630433412
+    "updatedAt": 1772547126893
   },
   {
     "id": 1768195703732,
@@ -1562,9 +1574,17 @@
       {
         "name": "Tập 5",
         "url": "https://drive.google.com/file/d/1WEqJTqg9EJBmyT5r8w10JZmulNhil-vm/preview"
+      },
+      {
+        "name": "Tập 6",
+        "url": "https://drive.google.com/file/d/1rws0bHW58cjAK3GcAyP_GMDfQlL4SDrx/preview"
+      },
+      {
+        "name": "Tập 7",
+        "url": "https://drive.google.com/file/d/1rqLv_wmHm3IPUNnVU5Ng7HeqU9rfCI-d/preview"
       }
     ],
-    "updatedAt": 1771940524648
+    "updatedAt": 1772546919577
   },
   {
     "id": 1768214846867,
@@ -1610,9 +1630,13 @@
       {
         "name": "Tập 7",
         "url": "https://drive.google.com/file/d/1dRB9UL7L2s6acmJ6RcYlvXgovX_wJ6hw/preview"
+      },
+      {
+        "name": "Tập 8",
+        "url": "https://drive.google.com/file/d/1NtjK7plfdCfBVaFQGNIJPr43N7GRRZj0/preview"
       }
     ],
-    "updatedAt": 1772191750709
+    "updatedAt": 1772547011883
   },
   {
     "id": 1768223399010,
@@ -1659,9 +1683,13 @@
       {
         "name": "Tập 8",
         "url": "https://drive.google.com/file/d/1Wx2Fk7dg33d_7DIxJtapEEvmABBW6dZw/preview"
+      },
+      {
+        "name": "Tập 9",
+        "url": "https://drive.google.com/file/d/1GhKpMEVtsm-HPPC4PgOh57k12amOHg4y/preview"
       }
     ],
-    "updatedAt": 1771846138956
+    "updatedAt": 1772546977023
   },
   {
     "id": 1768479917075,
@@ -1940,5 +1968,26 @@
       }
     ],
     "updatedAt": 1771760575226
+  },
+  {
+    "id": 1772546834145,
+    "title": "Giới Thiệu Phù Thủy - Release that witch",
+    "year": "2026",
+    "type": "series",
+    "genres": [
+      "Hoạt động",
+      "Cuộc phiêu lưu",
+      "Giả tưởng"
+    ],
+    "poster": "posters/Release-that-Witch.jpg",
+    "videoUrl": "",
+    "description": "Roland, một người đàn ông hiện đại tái sinh thành hoàng tử ở thị trần biên giới nguy hiểm, giải cứu hai phù thủy Anna và Nana Pine khỏi Giáo hội. Khai thác sức mạnh phi thường của họ, anh kết hợp phép thuật và công nghệ để chê tạo vũ khí, quân đội và động cơ hơi nước nhằm bảo vệ người dân của mình. Khi Trăng Quỷ mọc lên và những âm mưu ngày càng siết chặt gia đình anh, Roland phải lãnh đạo một cuộc cách mạng để bảo vệ đồng minh và định hình lại thế giới.",
+    "episodes": [
+      {
+        "name": "Tập 1",
+        "url": "https://drive.google.com/file/d/118nZSei_pFbec-eVRklxyqNLASHP9qfT/preview"
+      }
+    ],
+    "updatedAt": 1772546834145
   }
 ]
